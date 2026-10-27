@@ -2,1200 +2,1224 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoPilot OS — Advanced Local-First Browser Automation Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WILD FRONTIER: JUNGLE SURVIVAL</title>
+    <!-- Tailwind CSS for modern UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ==========================================================
-           AUTOPILOT OS — STYLESHEET (INLINE DESIGN SYSTEM)
-           ========================================================== */
-        :root {
-            --bg: #0B1020;
-            --surface: #11182B;
-            --panel: #151F35;
-            --panel-hover: #1C2942;
-            --primary: #6366F1;
-            --primary-hover: #4F46E5;
-            --secondary: #06B6D4;
-            --success: #22C55E;
-            --warning: #F59E0B;
-            --danger: #EF4444;
-            --text: #F8FAFC;
-            --muted: #A7B2C8;
-            --border: rgba(148, 163, 184, 0.18);
-            --border-focus: rgba(99, 102, 241, 0.5);
-            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-mono: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
-            --radius-sm: 6px;
-            --radius-md: 10px;
-            --radius-lg: 16px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-            --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.25);
-            --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #050b08;
+            font-family: 'Rajdhani', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
         }
-
-        body.theme-light {
-            --bg: #F1F5F9;
-            --surface: #E2E8F0;
-            --panel: #FFFFFF;
-            --panel-hover: #F8FAFC;
-            --text: #0F172A;
-            --muted: #64748B;
-            --border: rgba(100, 116, 139, 0.2);
+        h1, h2, h3, .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
         }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-sans); background-color: var(--bg); color: var(--text); line-height: 1.5; font-size: 14px; overflow: hidden; height: 100vh; width: 100vw; }
-        input, button, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
-        button { cursor: pointer; background: none; border: none; }
-        ul { list-style: none; }
-        a { color: var(--secondary); text-decoration: none; }
-        kbd { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; font-size: 11px; font-family: var(--font-mono); color: var(--muted); }
-
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-        .app-container { display: flex; height: 100vh; width: 100vw; overflow: hidden; }
-
-        /* Sidebar */
-        .app-sidebar { width: 260px; background-color: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; transition: width var(--transition); z-index: 100; flex-shrink: 0; }
-        .app-container.sidebar-collapsed .app-sidebar { width: 72px; }
-        .sidebar-header { height: 64px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
-        .brand-logo { display: flex; align-items: center; gap: 10px; color: var(--primary); font-weight: 700; font-size: 16px; white-space: nowrap; overflow: hidden; }
-        .brand-badge { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; }
-        .app-container.sidebar-collapsed .brand-name { display: none; }
-        .sidebar-toggle-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; transition: var(--transition); }
-        .sidebar-toggle-btn:hover { background: var(--panel-hover); color: var(--text); }
-        .app-container.sidebar-collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
-
-        .sidebar-nav { flex: 1; overflow-y: auto; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
-        .nav-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); padding: 12px 10px 6px 10px; white-space: nowrap; }
-        .app-container.sidebar-collapsed .nav-section-title { display: none; }
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--radius-sm); color: var(--muted); font-weight: 500; width: 100%; text-align: left; transition: var(--transition); white-space: nowrap; }
-        .nav-item:hover { background-color: var(--panel-hover); color: var(--text); }
-        .nav-item.active { background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.1)); color: var(--text); border-left: 3px solid var(--primary); }
-        .app-container.sidebar-collapsed .nav-item span { display: none; }
-        .sidebar-footer { padding: 16px; border-top: 1px solid var(--border); }
-        .app-container.sidebar-collapsed .sidebar-footer { display: none; }
-
-        /* Main Wrapper */
-        .app-main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; background-color: var(--bg); }
-        .app-topbar { height: 64px; padding: 0 24px; background-color: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 16px; z-index: 90; }
-        .topbar-left { display: flex; align-items: center; min-width: 180px; }
-        .page-title { font-size: 18px; font-weight: 600; color: var(--text); }
-        .topbar-center { flex: 1; max-width: 480px; }
-        .global-search-bar { background-color: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 14px; display: flex; align-items: center; gap: 10px; color: var(--muted); cursor: pointer; transition: var(--transition); }
-        .global-search-bar:hover { border-color: var(--primary); color: var(--text); }
-        .global-search-bar span { flex: 1; font-size: 13px; }
-        .topbar-right { display: flex; align-items: center; gap: 12px; }
-
-        .status-badge { display: flex; align-items: center; gap: 8px; background-color: var(--panel); border: 1px solid var(--border); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
-        .status-dot.ready { background-color: var(--success); box-shadow: 0 0 8px var(--success); }
-        .status-dot.running { background-color: var(--primary); animation: pulse 1.5s infinite; }
-        .status-dot.paused { background-color: var(--warning); }
-        .status-dot.error { background-color: var(--danger); }
-        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
-
-        .icon-btn { width: 36px; height: 36px; background-color: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--muted); display: flex; align-items: center; justify-content: center; position: relative; transition: var(--transition); }
-        .icon-btn:hover { background-color: var(--panel-hover); color: var(--text); border-color: var(--border-focus); }
-        .notification-badge { position: absolute; top: -4px; right: -4px; background-color: var(--danger); color: white; font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 10px; }
-
-        .app-content { flex: 1; overflow-y: auto; padding: 24px; position: relative; }
-
-        /* Components & Buttons */
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; border-radius: var(--radius-sm); font-weight: 600; transition: var(--transition); cursor: pointer; border: 1px solid transparent; font-size: 13px; }
-        .btn-sm { padding: 5px 10px; font-size: 12px; }
-        .btn-lg { padding: 12px 24px; font-size: 15px; }
-        .btn-primary { background-color: var(--primary); color: white; }
-        .btn-primary:hover { background-color: var(--primary-hover); box-shadow: var(--shadow-glow); }
-        .btn-secondary { background-color: var(--panel); border-color: var(--border); color: var(--text); }
-        .btn-secondary:hover { background-color: var(--panel-hover); border-color: var(--primary); }
-        .btn-danger { background-color: var(--danger); color: white; }
-        .btn-danger:hover { opacity: 0.9; }
-
-        .card { background-color: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-sm); }
-        .storage-meter { background-color: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; }
-        .storage-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-        .storage-bar { height: 4px; background-color: var(--bg); border-radius: 2px; overflow: hidden; }
-        .storage-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 300ms; }
-
-        /* Modals & Overlays */
-        .modal-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(11, 16, 32, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-dialog { background-color: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg); width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
-        .modal-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-weight: 600; font-size: 16px; }
-        .modal-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-        .modal-footer { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
-
-        /* Toast Container */
-        .toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 1100; pointer-events: none; }
-        .toast { background-color: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 12px 18px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 12px; min-width: 280px; pointer-events: auto; animation: toastIn 200ms ease-out; }
-        .toast.success { border-left: 4px solid var(--success); }
-        .toast.error { border-left: 4px solid var(--danger); }
-        .toast.warning { border-left: 4px solid var(--warning); }
-        @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Command Palette */
-        .command-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(11, 16, 32, 0.75); backdrop-filter: blur(4px); display: flex; align-items: flex-start; justify-content: center; padding-top: 12vh; z-index: 1200; }
-        .command-container { background-color: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg); width: 100%; max-width: 640px; box-shadow: var(--shadow-lg); overflow: hidden; }
-        .command-search { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border); color: var(--muted); }
-        .command-search input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-size: 16px; }
-        .command-list { max-height: 360px; overflow-y: auto; padding: 8px; }
-        .command-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: var(--radius-sm); color: var(--muted); cursor: pointer; transition: var(--transition); }
-        .command-item:hover, .command-item.selected { background-color: var(--panel-hover); color: var(--text); }
-
-        /* Workflow Studio & Canvas */
-        .studio-layout { display: flex; height: calc(100vh - 116px); gap: 16px; position: relative; overflow: hidden; }
-        .palette-sidebar { width: 260px; background-color: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
-        .canvas-area { flex: 1; background-color: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); position: relative; overflow: hidden; background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 24px 24px; }
-        .config-sidebar { width: 320px; background-color: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
-        .studio-toolbar { position: absolute; top: 12px; left: 12px; z-index: 10; display: flex; gap: 8px; background: var(--panel); padding: 6px; border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); }
-
-        /* Forms & Inputs */
-        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-        .form-label { font-size: 12px; font-weight: 600; color: var(--muted); }
-        .form-input, .form-select, .form-textarea { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; color: var(--text); outline: none; transition: var(--transition); width: 100%; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
-
-        /* Grid & Flex Utilities */
-        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-        .flex-between { display: flex; align-items: center; justify-content: space-between; }
-        .flex-center { display: flex; align-items: center; justify-content: center; }
-        .flex-gap { display: flex; align-items: center; gap: 10px; }
-
-        @media (max-width: 1024px) {
-            .app-sidebar { position: fixed; height: 100vh; left: 0; top: 0; }
-            .app-main-wrapper { margin-left: 72px; }
+        /* Custom Scrollbar for Journal */
+        ::-webkit-scrollbar {
+            width: 6px;
         }
-        @media (max-width: 768px) {
-            .topbar-center { display: none; }
-            .grid-3, .grid-4 { grid-template-columns: 1fr; }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 3px;
+        }
+        .glass-panel {
+            background: rgba(10, 25, 18, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
 </head>
-<body class="theme-dark">
-    <div class="app-container" id="appContainer">
-        <!-- Sidebar Navigation -->
-        <aside class="app-sidebar" aria-label="Main Navigation">
-            <div class="sidebar-header">
-                <div class="brand-logo">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                    <span class="brand-name">AutoPilot <span class="brand-badge">OS</span></span>
+<body class="text-white">
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-zinc-950 transition-opacity duration-1000">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-950/40 via-zinc-950 to-zinc-950"></div>
+        <div class="relative z-10 flex flex-col items-center max-w-lg px-6 text-center">
+            <div class="w-20 h-20 mb-6 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+            <h1 class="text-3xl md:text-5xl font-black tracking-wider text-emerald-400 glow-text mb-2">WILD FRONTIER</h1>
+            <p class="text-sm tracking-widest text-emerald-600 uppercase mb-8 font-semibold">Jungle Survival & Exploration 3D</p>
+            <div class="w-full bg-zinc-800 h-2 rounded-full overflow-hidden mb-4 border border-emerald-900">
+                <div id="loading-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+            </div>
+            <p id="loading-status" class="text-xs text-zinc-400 tracking-wider">Initializing ecosystem...</p>
+            <div class="mt-8 p-4 glass-panel rounded-xl text-xs text-zinc-300 border border-emerald-500/20">
+                <span class="text-emerald-400 font-bold">TIP:</span> Explore deep river valleys and dense bamboo thickets to discover rare apex predators and elusive canopy species.
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN MENU -->
+    <div id="main-menu" class="fixed inset-0 z-40 hidden flex flex-col items-center justify-between p-6 md:p-12 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(5,11,8,0.8), rgba(5,11,8,0.95))">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+        
+        <!-- Header -->
+        <div class="relative z-10 text-center mt-6">
+            <h2 class="text-emerald-500 tracking-widest text-sm uppercase font-semibold mb-1">AAA Open-World Simulation</h2>
+            <h1 class="text-4xl md:text-7xl font-black tracking-wider text-white glow-text">WILD FRONTIER</h1>
+            <p class="text-zinc-400 text-sm md:text-base mt-2 max-w-xl mx-auto">Immersive wilderness exploration featuring 35 unique wildlife species, dynamic weather, and procedural tropical ecosystems.</p>
+        </div>
+
+        <!-- Menu Actions -->
+        <div class="relative z-10 flex flex-col gap-4 w-full max-w-sm mb-8">
+            <button id="btn-play" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-black font-extrabold tracking-widest uppercase rounded-xl transition-all shadow-lg shadow-emerald-900/50 flex items-center justify-center gap-2 group text-lg">
+                <span>Start Expedition</span>
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+            <button id="btn-menu-journal" class="w-full py-3 glass-panel hover:bg-emerald-950/50 text-emerald-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-emerald-500/30">
+                Wildlife Journal (0/35)
+            </button>
+            <button id="btn-menu-settings" class="w-full py-3 glass-panel hover:bg-emerald-950/50 text-emerald-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-emerald-500/30">
+                Settings
+            </button>
+        </div>
+
+        <!-- Footer Credits -->
+        <div class="relative z-10 text-xs text-zinc-500 text-center">
+            Three.js WebGL Engine &bull; Optimized for Mobile & Desktop
+        </div>
+    </div>
+
+    <!-- IN-GAME HUD -->
+    <div id="game-hud" class="fixed inset-0 z-20 pointer-events-none hidden flex flex-col justify-between p-4 md:p-6">
+        <!-- Top Bar -->
+        <div class="flex justify-between items-start">
+            <!-- Stats & Discovery -->
+            <div class="flex flex-col gap-2">
+                <div class="glass-panel px-4 py-2 rounded-xl flex items-center gap-3 pointer-events-auto">
+                    <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-xs tracking-widest text-emerald-300 font-bold">SPECIES DISCOVERED:</span>
+                    <span id="hud-discovery-count" class="text-sm font-extrabold text-white">0 / 35</span>
                 </div>
-                <button class="sidebar-toggle-btn" id="sidebarToggle" title="Toggle Sidebar">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <div class="glass-panel px-4 py-2 rounded-xl flex items-center gap-3 pointer-events-auto">
+                    <span class="text-xs tracking-widest text-zinc-400 font-bold">TIME:</span>
+                    <span id="hud-time" class="text-xs font-bold text-emerald-400">06:30 AM (DAWN)</span>
+                </div>
+            </div>
+
+            <!-- Top Right Controls -->
+            <div class="flex items-center gap-3 pointer-events-auto">
+                <button id="btn-hud-journal" class="glass-panel px-4 py-2.5 rounded-xl text-xs font-bold text-emerald-300 hover:bg-emerald-900/40 transition-all flex items-center gap-2 border border-emerald-500/30">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <span>Journal</span>
+                </button>
+                <button id="btn-hud-pause" class="glass-panel p-2.5 rounded-xl text-emerald-300 hover:bg-emerald-900/40 transition-all border border-emerald-500/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </button>
             </div>
-            <nav class="sidebar-nav" id="sidebarNav">
-                <div class="nav-section-title">Core</div>
-                <button class="nav-item active" data-view="overview"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span>Overview</span></button>
-                <button class="nav-item" data-view="studio"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg><span>Workflow Studio</span></button>
-                <button class="nav-item" data-view="automations"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg><span>My Automations</span></button>
-                <button class="nav-item" data-view="scheduler"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span>Scheduler</span></button>
-                <button class="nav-item" data-view="history"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"></path><circle cx="12" cy="12" r="9"></circle></svg><span>Execution History</span></button>
+        </div>
 
-                <div class="nav-section-title">Tools & Data</div>
-                <button class="nav-item" data-view="test-center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><span>Test Center</span></button>
-                <button class="nav-item" data-view="analytics"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg><span>Analytics</span></button>
-                <button class="nav-item" data-view="variables"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3"></path><path d="M9 20h6"></path><path d="M12 4v16"></path></svg><span>Variables</span></button>
-                <button class="nav-item" data-view="templates"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg><span>Templates</span></button>
-
-                <div class="nav-section-title">System</div>
-                <button class="nav-item" data-view="backup"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg><span>Backup & Restore</span></button>
-                <button class="nav-item" data-view="settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Settings</span></button>
-                <button class="nav-item" data-view="help"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><span>Help & Docs</span></button>
-            </nav>
-            <div class="sidebar-footer">
-                <div class="storage-meter" id="storageMeter" title="Local Storage Usage">
-                    <div class="storage-label"><span>Local Storage</span><span id="storagePercent">0%</span></div>
-                    <div class="storage-bar"><div class="storage-fill" id="storageFill" style="width: 0%;"></div></div>
+        <!-- Center Notification Toast -->
+        <div id="discovery-toast" class="self-center mb-auto mt-4 transition-all duration-500 opacity-0 transform -translate-y-4 pointer-events-none">
+            <div class="glass-panel px-6 py-3 rounded-2xl border border-emerald-500/50 bg-emerald-950/80 shadow-2xl flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                </div>
+                <div>
+                    <p class="text-[10px] tracking-widest text-emerald-400 font-extrabold uppercase">New Species Logged</p>
+                    <p id="toast-species-name" class="text-base font-bold text-white font-orbitron">Bengal Tiger</p>
                 </div>
             </div>
-        </aside>
+        </div>
 
-        <!-- Main Wrapper -->
-        <div class="app-main-wrapper">
-            <header class="app-topbar">
-                <div class="topbar-left"><h1 class="page-title" id="pageTitle">Overview</h1></div>
-                <div class="topbar-center">
-                    <div class="global-search-bar" id="globalSearchTrigger" title="Global Search (Ctrl+K)">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <span>Search workflows, variables, logs...</span><kbd>Ctrl K</kbd>
+        <!-- Interaction Prompt -->
+        <div id="interaction-prompt" class="self-center mb-24 opacity-0 transition-opacity duration-200 pointer-events-none">
+            <div class="glass-panel px-5 py-2.5 rounded-xl border border-emerald-400/40 bg-black/60 flex items-center gap-3">
+                <span class="px-2 py-0.5 bg-emerald-500 text-black font-bold text-xs rounded">E</span>
+                <span id="interaction-text" class="text-sm font-semibold tracking-wider text-emerald-200">Examine Campfire</span>
+            </div>
+        </div>
+
+        <!-- Bottom HUD: Compass & Stamina & Mobile Controls -->
+        <div class="flex justify-between items-end w-full">
+            <!-- Left: Stamina & Minimap Compass -->
+            <div class="flex flex-col gap-3 pointer-events-auto">
+                <div class="glass-panel p-3 rounded-2xl w-48 border border-emerald-500/20">
+                    <div class="flex justify-between items-center mb-1 text-[10px] tracking-wider text-zinc-400 font-bold">
+                        <span>STAMINA</span>
+                        <span id="stamina-text" class="text-emerald-400">100%</span>
+                    </div>
+                    <div class="w-full bg-zinc-900 h-2 rounded-full overflow-hidden border border-emerald-900/50">
+                        <div id="stamina-bar" class="bg-emerald-500 h-full w-full transition-all duration-150"></div>
                     </div>
                 </div>
-                <div class="topbar-right">
-                    <div class="status-badge" id="appStatusBadge" title="Engine Status">
-                        <span class="status-dot ready" id="statusDot"></span>
-                        <span id="statusText">Ready</span>
-                    </div>
-                    <button class="icon-btn" id="themeToggle" title="Toggle Theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></button>
-                    <button class="icon-btn" id="notificationBtn" title="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="notification-badge" id="notificationBadge" style="display: none;">0</span></button>
-                    <button class="btn btn-primary btn-sm" id="quickCreateBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Quick Create</span></button>
+                <div class="glass-panel px-4 py-2 rounded-xl flex items-center justify-between w-48 border border-emerald-500/20 text-xs font-bold text-emerald-300">
+                    <span class="text-zinc-500">HEADING</span>
+                    <span id="compass-heading" class="font-orbitron">NORTH (0°)</span>
                 </div>
-            </header>
-            <main class="app-content" id="appContent"></main>
+            </div>
+
+            <!-- Right: Action Buttons (Jump, Run, Interact) -->
+            <div id="mobile-action-buttons" class="hidden md:flex flex-col gap-3 pointer-events-auto">
+                <div class="flex gap-3">
+                    <button id="btn-run" class="w-16 h-16 glass-panel rounded-2xl flex flex-col items-center justify-center text-emerald-300 border border-emerald-500/40 active:bg-emerald-500 active:text-black transition-colors">
+                        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <span class="text-[9px] font-bold">RUN</span>
+                    </button>
+                    <button id="btn-jump" class="w-16 h-16 glass-panel rounded-2xl flex flex-col items-center justify-center text-emerald-300 border border-emerald-500/40 active:bg-emerald-500 active:text-black transition-colors">
+                        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                        <span class="text-[9px] font-bold">JUMP</span>
+                    </button>
+                </div>
+                <button id="btn-interact" class="w-full py-3 glass-panel rounded-2xl flex items-center justify-center gap-2 text-emerald-300 border border-emerald-500/40 active:bg-emerald-500 active:text-black transition-colors font-bold text-xs uppercase tracking-wider">
+                    <span>Interact</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Virtual Joystick Area (Left Side) -->
+        <div id="joystick-zone" class="absolute bottom-6 left-6 w-36 h-36 rounded-full border-2 border-emerald-500/20 bg-emerald-950/10 backdrop-blur-sm pointer-events-auto hidden md:hidden items-center justify-center">
+            <div id="joystick-thumb" class="w-14 h-14 rounded-full bg-emerald-500/50 border border-emerald-400 absolute transition-transform duration-75"></div>
         </div>
     </div>
 
-    <div class="modal-backdrop" id="modalBackdrop" style="display: none;">
-        <div class="modal-dialog" id="modalDialog"></div>
-    </div>
-
-    <div class="command-overlay" id="commandOverlay" style="display: none;">
-        <div class="command-container">
-            <div class="command-search">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" id="commandInput" placeholder="Type a command or search workflows..." autofocus>
-                <kbd>ESC</kbd>
+    <!-- WILDLIFE JOURNAL MODAL -->
+    <div id="journal-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-4xl h-[85vh] rounded-3xl flex flex-col border border-emerald-500/40 overflow-hidden shadow-2xl">
+            <!-- Modal Header -->
+            <div class="px-6 py-5 border-b border-emerald-500/20 flex justify-between items-center bg-emerald-950/40">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-black text-white font-orbitron flex items-center gap-3">
+                        <span>WILDLIFE FIELD JOURNAL</span>
+                        <span id="journal-counter-badge" class="text-xs px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 font-semibold">0 / 35</span>
+                    </h2>
+                    <p class="text-xs text-zinc-400 mt-0.5">Catalog of native fauna discovered across the jungle ecosystem.</p>
+                </div>
+                <button id="btn-close-journal" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-emerald-400 hover:bg-emerald-900/50 border border-emerald-500/30">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
-            <div class="command-list" id="commandList"></div>
+
+            <!-- Modal Content Grid -->
+            <div class="flex-1 overflow-y-auto p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Dynamically populated via JS -->
+            </div>
         </div>
     </div>
 
-    <div class="toast-container" id="toastContainer"></div>
-
-    <script>
-        /* ==========================================================
-           AUTOPILOT OS — COMPLETE SINGLE-FILE JAVASCRIPT APPLICATION
-           ========================================================== */
-
-        // 1. Storage Manager (LocalStorage & IndexedDB wrapper)
-        const Storage = {
-            async get(key) {
-                try {
-                    const val = localStorage.getItem('ap_' + key);
-                    return val ? JSON.parse(val) : null;
-                } catch (e) { console.error(e); return null; }
-            },
-            async set(key, data) {
-                try {
-                    localStorage.setItem('ap_' + key, JSON.stringify(data));
-                    return true;
-                } catch (e) { console.error(e); return false; }
-            },
-            async getQuota() {
-                if (navigator.storage && navigator.storage.estimate) {
-                    const est = await navigator.storage.estimate();
-                    return { usage: est.usage || 0, quota: est.quota || 50 * 1024 * 1024 };
-                }
-                return { usage: 0, quota: 50 * 1024 * 1024 };
-            }
-        };
-
-        // 2. Application State Store
-        const State = {
-            currentView: 'overview',
-            theme: 'dark',
-            sidebarCollapsed: false,
-            status: 'ready', // ready, running, paused, error
-            workflows: [],
-            executions: [],
-            variables: [],
-            schedules: [],
-            notifications: [],
-            settings: {
-                maxLoopIterations: 1000,
-                maxNodeExecutions: 5000,
-                executionTimeoutMs: 30000,
-                missedSchedulePolicy: 'skip',
-                confirmDestructive: true
-            },
-            activeWorkflow: null,
-            selectedNodeId: null,
-
-            async init() {
-                this.workflows = (await Storage.get('workflows')) || [];
-                this.executions = (await Storage.get('executions')) || [];
-                this.variables = (await Storage.get('variables')) || [];
-                this.schedules = (await Storage.get('schedules')) || [];
-                this.notifications = (await Storage.get('notifications')) || [];
-                const savedSettings = await Storage.get('settings');
-                if (savedSettings) this.settings = { ...this.settings, ...savedSettings };
-
-                if (this.workflows.length === 0) {
-                    this.loadDefaultTemplates();
-                }
-            },
-
-            async save(key) {
-                await Storage.set(key, this[key]);
-            },
-
-            loadDefaultTemplates() {
-                const sample = {
-                    id: 'wf_' + Date.now(),
-                    name: 'Sample Sequential Workflow',
-                    description: 'Demonstrates basic sequential execution, variables, and notifications.',
-                    enabled: true,
-                    created: Date.now(),
-                    updated: Date.now(),
-                    nodes: [
-                        { id: 'node_1', type: 'ManualStart', name: 'Start', x: 100, y: 150, config: {} },
-                        { id: 'node_2', type: 'SetVariable', name: 'Set Greeting', x: 340, y: 150, config: { varName: 'greeting', varValue: 'Hello AutoPilot OS' } },
-                        { id: 'node_3', type: 'ShowNotification', name: 'Notify User', x: 580, y: 150, config: { message: 'Workflow executed successfully!' } }
-                    ],
-                    connections: [
-                        { from: 'node_1', to: 'node_2' },
-                        { from: 'node_2', to: 'node_3' }
-                    ],
-                    variables: [],
-                    schedule: {}
-                };
-                this.workflows.push(sample);
-                this.save('workflows');
-            }
-        };
-
-        // 3. Node Registry & Definitions
-        const NodeRegistry = {
-            categories: {
-                TRIGGERS: ['ManualStart', 'ScheduleTrigger', 'IntervalTrigger'],
-                LOGIC: ['Condition', 'RepeatCount', 'ForEach', 'Wait', 'SetVariable', 'CompareValues'],
-                DATA: ['TextValue', 'NumberValue', 'CreateList', 'FilterList', 'TransformText', 'CalculateExpression'],
-                ACTIONS: ['ShowNotification', 'WriteLog', 'SaveResult', 'ExportJSON', 'CopyText'],
-                TESTING: ['AssertEquals', 'AssertTrue', 'AssertExists', 'AssertRange']
-            },
-            definitions: {
-                ManualStart: { name: 'Manual Start', category: 'TRIGGERS', color: '#6366F1', inputs: [], outputs: [{ name: 'out' }] },
-                ScheduleTrigger: { name: 'Schedule Trigger', category: 'TRIGGERS', color: '#6366F1', inputs: [], outputs: [{ name: 'out' }] },
-                IntervalTrigger: { name: 'Interval Trigger', category: 'TRIGGERS', color: '#6366F1', inputs: [], outputs: [{ name: 'out' }] },
-                
-                Condition: { name: 'Condition (If-Else)', category: 'LOGIC', color: '#06B6D4', inputs: [{ name: 'in' }], outputs: [{ name: 'true' }, { name: 'false' }], configFields: [{ key: 'expression', label: 'Expression (e.g. x > 5)', type: 'text', default: '' }] },
-                RepeatCount: { name: 'Repeat N Times', category: 'LOGIC', color: '#06B6D4', inputs: [{ name: 'in' }], outputs: [{ name: 'loop' }, { name: 'done' }], configFields: [{ key: 'count', label: 'Iteration Count', type: 'number', default: 3 }] },
-                ForEach: { name: 'For Each Item', category: 'LOGIC', color: '#06B6D4', inputs: [{ name: 'in' }], outputs: [{ name: 'item' }, { name: 'done' }], configFields: [{ key: 'list', label: 'List (comma separated)', type: 'text', default: 'apple, banana, cherry' }] },
-                Wait: { name: 'Wait (ms)', category: 'LOGIC', color: '#06B6D4', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'duration', label: 'Milliseconds', type: 'number', default: 1000 }] },
-                SetVariable: { name: 'Set Variable', category: 'LOGIC', color: '#06B6D4', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'varName', label: 'Variable Name', type: 'text', default: 'myVar' }, { key: 'varValue', label: 'Value', type: 'text', default: '100' }] },
-                CompareValues: { name: 'Compare Values', category: 'LOGIC', color: '#06B6D4', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'valA', label: 'Value A', type: 'text', default: '' }, { key: 'valB', label: 'Value B', type: 'text', default: '' }] },
-
-                TextValue: { name: 'Text Value', category: 'DATA', color: '#22C55E', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'text', label: 'Text Content', type: 'text', default: 'Sample' }] },
-                NumberValue: { name: 'Number Value', category: 'DATA', color: '#22C55E', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'number', label: 'Number', type: 'number', default: 42 }] },
-                CreateList: { name: 'Create List', category: 'DATA', color: '#22C55E', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'items', label: 'Items (comma separated)', type: 'text', default: 'one, two, three' }] },
-                FilterList: { name: 'Filter List', category: 'DATA', color: '#22C55E', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'query', label: 'Contains Keyword', type: 'text', default: '' }] },
-                TransformText: { name: 'Transform Text', category: 'DATA', color: '#22C55E', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'mode', label: 'Mode', type: 'select', options: ['UPPERCASE', 'LOWERCASE', 'TRIM'], default: 'UPPERCASE' }] },
-                CalculateExpression: { name: 'Calculate Expression', category: 'DATA', color: '#22C55E', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'expr', label: 'Math Expression (e.g. 5 + 10 * 2)', type: 'text', default: '10 + 20' }] },
-
-                ShowNotification: { name: 'Show Notification', category: 'ACTIONS', color: '#F59E0B', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'message', label: 'Message', type: 'text', default: 'Hello from AutoPilot OS' }] },
-                WriteLog: { name: 'Write Execution Log', category: 'ACTIONS', color: '#F59E0B', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'logText', label: 'Log Message', type: 'text', default: 'Step executed' }] },
-                SaveResult: { name: 'Save Local Result', category: 'ACTIONS', color: '#F59E0B', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'keyName', label: 'Key Name', type: 'text', default: 'resultKey' }] },
-                ExportJSON: { name: 'Export JSON', category: 'ACTIONS', color: '#F59E0B', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [] },
-                CopyText: { name: 'Copy Text', category: 'ACTIONS', color: '#F59E0B', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'content', label: 'Text to copy', type: 'text', default: '' }] },
-
-                AssertEquals: { name: 'Assert Equals', category: 'TESTING', color: '#EF4444', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'expected', label: 'Expected', type: 'text', default: '' }, { key: 'actual', label: 'Actual', type: 'text', default: '' }] },
-                AssertTrue: { name: 'Assert True', category: 'TESTING', color: '#EF4444', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'condition', label: 'Condition (true/false)', type: 'text', default: 'true' }] },
-                AssertExists: { name: 'Assert Exists', category: 'TESTING', color: '#EF4444', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'value', label: 'Value to check', type: 'text', default: '' }] },
-                AssertRange: { name: 'Assert Number Range', category: 'TESTING', color: '#EF4444', inputs: [{ name: 'in' }], outputs: [{ name: 'out' }], configFields: [{ key: 'val', label: 'Number', type: 'number', default: 5 }, { key: 'min', label: 'Min', type: 'number', default: 0 }, { key: 'max', label: 'Max', type: 'number', default: 10 }] }
-            }
-        };
-
-        // 4. Safe Expression Parser (No eval / No new Function)
-        const SafeExpressionParser = {
-            evaluateMath(expr) {
-                try {
-                    // Simple arithmetic parser for numbers and basic operators (+, -, *, /)
-                    const sanitized = expr.replace(/[^0-9+\-*/(). ]/g, '');
-                    if (!sanitized) return 0;
-                    // Using Function strictly limited to math operations without closures or globals
-                    const fn = new Function(`return ${sanitized};`);
-                    const res = fn();
-                    return typeof res === 'number' && !isNaN(res) ? res : 0;
-                } catch { return 0; }
-            },
-            evaluateCondition(expr, contextVars) {
-                try {
-                    // Supports basic comparisons like x > 5, a == b
-                    let parsed = expr;
-                    for (const [k, v] of Object.entries(contextVars)) {
-                        parsed = parsed.replaceAll(k, JSON.stringify(v));
-                    }
-                    const sanitized = parsed.replace(/[^0-9+\-*/<>=!&|(). "truefalse]/g, '');
-                    const fn = new Function(`return Boolean(${sanitized});`);
-                    return fn();
-                } catch { return false; }
-            }
-        };
-
-        // 5. Workflow Execution Engine
-        const ExecutionEngine = {
-            async runWorkflow(workflow) {
-                State.status = 'running';
-                updateStatusBadge();
-                const executionId = 'exec_' + Date.now();
-                const startTime = Date.now();
-                const logs = [];
-                const contextVars = {};
-
-                // Find start node
-                let currentNode = workflow.nodes.find(n => n.type === 'ManualStart' || n.type === 'ScheduleTrigger');
-                if (!currentNode) {
-                    currentNode = workflow.nodes[0];
-                }
-
-                let status = 'Completed';
-                let executedCount = 0;
-                let errorDetails = null;
-
-                try {
-                    while (currentNode && executedCount < State.settings.maxNodeExecutions) {
-                        executedCount++;
-                        logs.push({ nodeId: currentNode.id, nodeName: currentNode.name, time: Date.now(), status: 'Running' });
-
-                        const config = currentNode.config || {};
-                        let outputVal = null;
-
-                        switch (currentNode.type) {
-                            case 'ManualStart':
-                            case 'ScheduleTrigger':
-                            case 'IntervalTrigger':
-                                outputVal = true;
-                                break;
-                            case 'SetVariable':
-                                contextVars[config.varName] = config.varValue;
-                                outputVal = config.varValue;
-                                break;
-                            case 'ShowNotification':
-                                showToast(config.message || 'Workflow Notification', 'success');
-                                addNotification('Workflow Notification', config.message);
-                                break;
-                            case 'WriteLog':
-                                console.log('[AutoPilot OS Log]:', config.logText);
-                                break;
-                            case 'Wait':
-                                await new Promise(r => setTimeout(r, Number(config.duration) || 100));
-                                break;
-                            case 'TextValue':
-                                outputVal = config.text;
-                                break;
-                            case 'NumberValue':
-                                outputVal = Number(config.number);
-                                break;
-                            case 'CalculateExpression':
-                                outputVal = SafeExpressionParser.evaluateMath(config.expr);
-                                break;
-                            case 'Condition':
-                                const cond = SafeExpressionParser.evaluateCondition(config.expression, contextVars);
-                                // route based on condition
-                                const conn = workflow.connections.find(c => c.from === currentNode.id);
-                                currentNode = workflow.nodes.find(n => n.id === (cond ? conn?.to : null));
-                                continue;
-                            case 'RepeatCount':
-                                const count = Number(config.count) || 1;
-                                // Simple loop emulation
-                                break;
-                            case 'AssertEquals':
-                                if (String(config.expected) !== String(config.actual)) {
-                                    throw new Error(`Assertion Failed: expected ${config.expected}, got ${config.actual}`);
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-
-                        // Find next connected node
-                        const nextConn = workflow.connections.find(c => c.from === currentNode.id);
-                        currentNode = nextConn ? workflow.nodes.find(n => n.id === nextConn.to) : null;
-                    }
-                } catch (err) {
-                    status = 'Failed';
-                    errorDetails = err.message;
-                    showToast('Workflow execution failed: ' + err.message, 'error');
-                }
-
-                const endTime = Date.now();
-                const record = {
-                    id: executionId,
-                    workflowId: workflow.id,
-                    workflowName: workflow.name,
-                    startTime,
-                    endTime,
-                    duration: endTime - startTime,
-                    status,
-                    executedCount,
-                    errorDetails,
-                    logs
-                };
-
-                State.executions.unshift(record);
-                if (State.executions.length > 100) State.executions.pop();
-                await State.save('executions');
-
-                State.status = status === 'Completed' ? 'ready' : 'error';
-                updateStatusBadge();
-                showToast(`Workflow "${workflow.name}" ${status.toLowerCase()}`, status === 'Completed' ? 'success' : 'error');
-                return record;
-            }
-        };
-
-        // 6. Notification Manager
-        function addNotification(title, message, type = 'info') {
-            const notif = { id: 'notif_' + Date.now(), title, message, type, read: false, time: Date.now() };
-            State.notifications.unshift(notif);
-            State.save('notifications');
-            updateBadgeCount();
-        }
-
-        function updateBadgeCount() {
-            const unread = State.notifications.filter(n => !n.read).length;
-            const badge = document.getElementById('notificationBadge');
-            if (unread > 0) {
-                badge.style.display = 'block';
-                badge.textContent = unread;
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 200);
-            }, 3500);
-        }
-
-        function updateStatusBadge() {
-            const dot = document.getElementById('statusDot');
-            const text = document.getElementById('statusText');
-            dot.className = `status-dot ${State.status}`;
-            text.textContent = State.status.charAt(0).toUpperCase() + State.status.slice(1);
-        }
-
-        // 7. Views / Modules Rendering
-        const Views = {
-            overview() {
-                const totalWf = State.workflows.length;
-                const enabledWf = State.workflows.filter(w => w.enabled).length;
-                const totalExec = State.executions.length;
-                const successExec = State.executions.filter(e => e.status === 'Completed').length;
-                const failExec = State.executions.filter(e => e.status === 'Failed').length;
-                const successRate = totalExec > 0 ? Math.round((successExec / totalExec) * 100) : 0;
-
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 24px;">
-                        <div class="grid-4">
-                            <div class="card">
-                                <div style="color: var(--muted); font-size: 12px; font-weight: 600;">Total Workflows</div>
-                                <div style="font-size: 28px; font-weight: 700; margin-top: 6px;">${totalWf}</div>
-                            </div>
-                            <div class="card">
-                                <div style="color: var(--muted); font-size: 12px; font-weight: 600;">Successful Runs</div>
-                                <div style="font-size: 28px; font-weight: 700; color: var(--success); margin-top: 6px;">${successExec}</div>
-                            </div>
-                            <div class="card">
-                                <div style="color: var(--muted); font-size: 12px; font-weight: 600;">Failed Runs</div>
-                                <div style="font-size: 28px; font-weight: 700; color: var(--danger); margin-top: 6px;">${failExec}</div>
-                            </div>
-                            <div class="card">
-                                <div style="color: var(--muted); font-size: 12px; font-weight: 600;">Success Rate</div>
-                                <div style="font-size: 28px; font-weight: 700; color: var(--secondary); margin-top: 6px;">${successRate}%</div>
-                            </div>
-                        </div>
-
-                        <div class="grid-2">
-                            <div class="card" style="display: flex; flex-direction: column; gap: 14px;">
-                                <div class="flex-between">
-                                    <h3 style="font-size: 16px; font-weight: 600;">Recent Executions</h3>
-                                    <button class="btn btn-secondary btn-sm" onclick="switchView('history')">View All</button>
-                                </div>
-                                ${State.executions.length === 0 ? '<div style="color: var(--muted); text-align: center; padding: 20px;">No execution records yet.</div>' : `
-                                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                                        ${State.executions.slice(0, 5).map(e => `
-                                            <div class="flex-between" style="padding: 10px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border);">
-                                                <div>
-                                                    <div style="font-weight: 600; font-size: 13px;">${e.workflowName}</div>
-                                                    <div style="font-size: 11px; color: var(--muted);">${new Date(e.startTime).toLocaleTimeString()}</div>
-                                                </div>
-                                                <span style="font-size: 12px; font-weight: 600; color: ${e.status === 'Completed' ? 'var(--success)' : 'var(--danger)'};">${e.status}</span>
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                `}
-                            </div>
-
-                            <div class="card" style="display: flex; flex-direction: column; gap: 14px;">
-                                <h3 style="font-size: 16px; font-weight: 600;">Quick Actions</h3>
-                                <div style="display: flex; flex-direction: column; gap: 10px;">
-                                    <button class="btn btn-primary" onclick="createNewWorkflow()">Create New Workflow</button>
-                                    <button class="btn btn-secondary" onclick="switchView('studio')">Open Workflow Studio</button>
-                                    <button class="btn btn-secondary" onclick="switchView('scheduler')">Manage Scheduler</button>
-                                    <button class="btn btn-secondary" onclick="switchView('test-center')">Run Test Suite</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            },
-
-            studio() {
-                const wf = State.activeWorkflow || State.workflows[0];
-                if (!wf) return `<div style="text-align: center; padding: 40px;"><p>No workflow selected.</p><button class="btn btn-primary" style="margin-top: 10px;" onclick="createNewWorkflow()">Create Workflow</button></div>`;
-                State.activeWorkflow = wf;
-
-                return `
-                    <div class="studio-layout">
-                        <!-- Node Palette -->
-                        <div class="palette-sidebar">
-                            <div style="padding: 14px; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 13px;">Node Palette</div>
-                            <div style="flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 12px;">
-                                ${Object.entries(NodeRegistry.categories).map(([cat, nodes]) => `
-                                    <div>
-                                        <div style="font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase;">${cat}</div>
-                                        <div style="display: flex; flex-direction: column; gap: 6px;">
-                                            ${nodes.map(nodeType => {
-                                                const def = NodeRegistry.definitions[nodeType];
-                                                return `<div draggable="true" ondragstart="event.dataTransfer.setData('text/plain', '${nodeType}')" style="padding: 8px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 12px; cursor: grab; font-weight: 500; display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: ${def.color};"></span>${def.name}</div>`;
-                                            }).join('')}
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-
-                        <!-- Canvas Area -->
-                        <div class="canvas-area" id="workflowCanvas" ondragover="event.preventDefault()" ondrop="handleCanvasDrop(event)">
-                            <div class="studio-toolbar">
-                                <button class="btn btn-secondary btn-sm" onclick="runActiveWorkflow()">Run Workflow</button>
-                                <button class="btn btn-secondary btn-sm" onclick="saveActiveWorkflow()">Save</button>
-                                <button class="btn btn-danger btn-sm" onclick="clearCanvas()">Clear</button>
-                            </div>
-                            <div style="position: absolute; top: 16px; right: 16px; background: var(--panel); padding: 8px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 600;">
-                                Editing: ${wf.name}
-                            </div>
-                            <!-- Rendered Nodes -->
-                            <div id="nodesContainer" style="position: relative; width: 100%; height: 100%; min-height: 600px;">
-                                ${wf.nodes.map(n => {
-                                    const def = NodeRegistry.definitions[n.type] || { color: '#6366F1', name: n.type };
-                                    return `
-                                        <div onclick="selectNode('${n.id}')" style="position: absolute; left: ${n.x}px; top: ${n.y}px; width: 180px; background: var(--panel); border: 2px solid ${State.selectedNodeId === n.id ? 'var(--primary)' : 'var(--border)'}; border-radius: var(--radius-md); padding: 12px; box-shadow: var(--shadow-sm); cursor: pointer;">
-                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                                                <span style="width: 8px; height: 8px; border-radius: 50%; background: ${def.color};"></span>
-                                                <span style="font-weight: 600; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${n.name}</span>
-                                            </div>
-                                            <div style="font-size: 11px; color: var(--muted);">${def.name}</div>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        </div>
-
-                        <!-- Configuration Sidebar -->
-                        <div class="config-sidebar">
-                            <div style="padding: 14px; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 13px;">Node Configuration</div>
-                            <div style="flex: 1; overflow-y: auto; padding: 14px;" id="nodeConfigContent">
-                                ${renderNodeConfig()}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            },
-
-            automations() {
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <div class="flex-between">
-                            <h2 style="font-size: 20px; font-weight: 600;">My Automations</h2>
-                            <button class="btn btn-primary" onclick="createNewWorkflow()">New Workflow</button>
-                        </div>
-                        <div class="grid-3">
-                            ${State.workflows.map(wf => `
-                                <div class="card" style="display: flex; flex-direction: column; gap: 12px;">
-                                    <div class="flex-between">
-                                        <h3 style="font-size: 15px; font-weight: 600;">${wf.name}</h3>
-                                        <span style="font-size: 11px; padding: 2px 6px; border-radius: 4px; background: ${wf.enabled ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color: ${wf.enabled ? 'var(--success)' : 'var(--danger)'};">${wf.enabled ? 'Enabled' : 'Disabled'}</span>
-                                    </div>
-                                    <p style="color: var(--muted); font-size: 13px;">${wf.description || 'No description provided.'}</p>
-                                    <div style="display: flex; gap: 8px; margin-top: auto; pt: 10px;">
-                                        <button class="btn btn-primary btn-sm" onclick="editWorkflow('${wf.id}')">Edit Studio</button>
-                                        <button class="btn btn-secondary btn-sm" onclick="executeWorkflow('${wf.id}')">Run</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteWorkflow('${wf.id}')">Delete</button>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            },
-
-            scheduler() {
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <div class="flex-between">
-                            <h2 style="font-size: 20px; font-weight: 600;">Scheduler</h2>
-                            <button class="btn btn-primary" onclick="showToast('Schedule creation modal coming up', 'success')">New Schedule</button>
-                        </div>
-                        <div class="card">
-                            <p style="color: var(--muted); margin-bottom: 14px;">Browser local scheduler controls automated background triggers. Note that browser tabs may throttle timers if suspended.</p>
-                            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                                <thead>
-                                    <tr style="border-bottom: 1px solid var(--border); color: var(--muted); font-size: 12px;">
-                                        <th style="padding: 10px;">Workflow</th>
-                                        <th style="padding: 10px;">Frequency</th>
-                                        <th style="padding: 10px;">Next Run</th>
-                                        <th style="padding: 10px;">Status</th>
-                                        <th style="padding: 10px;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="5" style="text-align: center; padding: 24px; color: var(--muted);">No scheduled tasks configured.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                `;
-            },
-
-            history() {
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <div class="flex-between">
-                            <h2 style="font-size: 20px; font-weight: 600;">Execution History</h2>
-                            <button class="btn btn-secondary btn-sm" onclick="clearHistory()">Clear History</button>
-                        </div>
-                        <div class="card">
-                            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                                <thead>
-                                    <tr style="border-bottom: 1px solid var(--border); color: var(--muted); font-size: 12px;">
-                                        <th style="padding: 10px;">Workflow Name</th>
-                                        <th style="padding: 10px;">Started</th>
-                                        <th style="padding: 10px;">Duration</th>
-                                        <th style="padding: 10px;">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${State.executions.length === 0 ? '<tr><td colspan="4" style="text-align: center; padding: 24px; color: var(--muted);">No execution history recorded.</td></tr>' : State.executions.map(e => `
-                                        <tr style="border-bottom: 1px solid var(--border);">
-                                            <td style="padding: 12px; font-weight: 600;">${e.workflowName}</td>
-                                            <td style="padding: 12px; color: var(--muted);">${new Date(e.startTime).toLocaleString()}</td>
-                                            <td style="padding: 12px; color: var(--muted);">${e.duration}ms</td>
-                                            <td style="padding: 12px; font-weight: 600; color: ${e.status === 'Completed' ? 'var(--success)' : 'var(--danger)'};">${e.status}</td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                `;
-            },
-
-            'test-center'() {
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <div class="flex-between">
-                            <h2 style="font-size: 20px; font-weight: 600;">Test Center</h2>
-                            <button class="btn btn-primary" onclick="runTestSuite()">Run All Tests</button>
-                        </div>
-                        <div class="card">
-                            <p style="color: var(--muted); margin-bottom: 14px;">Verify core engine behavior, math expressions, assertions, and validators.</p>
-                            <div id="testResultsList" style="display: flex; flex-direction: column; gap: 8px;">
-                                <div style="color: var(--muted); padding: 10px; background: var(--bg); border-radius: var(--radius-sm);">Click 'Run All Tests' to execute automated test suite.</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            },
-
-            analytics() {
-                const total = State.executions.length;
-                const success = State.executions.filter(e => e.status === 'Completed').length;
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <h2 style="font-size: 20px; font-weight: 600;">Analytics Dashboard</h2>
-                        <div class="grid-3">
-                            <div class="card"><div style="color: var(--muted); font-size: 12px;">Total Executions</div><div style="font-size: 24px; font-weight: 700; margin-top: 4px;">${total}</div></div>
-                            <div class="card"><div style="color: var(--muted); font-size: 12px;">Successful Runs</div><div style="font-size: 24px; font-weight: 700; color: var(--success); margin-top: 4px;">${success}</div></div>
-                            <div class="card"><div style="color: var(--muted); font-size: 12px;">Failed Runs</div><div style="font-size: 24px; font-weight: 700; color: var(--danger); margin-top: 4px;">${total - success}</div></div>
-                        </div>
-                    </div>
-                `;
-            },
-
-            variables() {
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <div class="flex-between">
-                            <h2 style="font-size: 20px; font-weight: 600;">Variables Manager</h2>
-                            <button class="btn btn-primary" onclick="showToast('Variable creation modal coming up', 'success')">New Variable</button>
-                        </div>
-                        <div class="card">
-                            <p style="color: var(--muted); margin-bottom: 14px;">Manage global persistent variables available across workflow executions.</p>
-                            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                                <thead>
-                                    <tr style="border-bottom: 1px solid var(--border); color: var(--muted); font-size: 12px;">
-                                        <th style="padding: 10px;">Name</th>
-                                        <th style="padding: 10px;">Type</th>
-                                        <th style="padding: 10px;">Value</th>
-                                        <th style="padding: 10px;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td colspan="4" style="text-align: center; padding: 24px; color: var(--muted);">No custom variables defined.</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                `;
-            },
-
-            templates() {
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <h2 style="font-size: 20px; font-weight: 600;">Workflow Templates</h2>
-                        <div class="grid-3">
-                            <div class="card" style="display: flex; flex-direction: column; gap: 10px;">
-                                <h3 style="font-size: 15px; font-weight: 600;">Basic Sequential Workflow</h3>
-                                <p style="color: var(--muted); font-size: 13px;">Demonstrates linear execution and notifications.</p>
-                                <button class="btn btn-primary btn-sm" style="margin-top: auto;" onclick="loadTemplateSample()">Use Template</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            },
-
-            backup() {
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <h2 style="font-size: 20px; font-weight: 600;">Backup & Restore</h2>
-                        <div class="grid-2">
-                            <div class="card" style="display: flex; flex-direction: column; gap: 14px;">
-                                <h3 style="font-size: 15px; font-weight: 600;">Export Backup</h3>
-                                <p style="color: var(--muted); font-size: 13px;">Download a complete JSON file containing all workflows, variables, and execution records.</p>
-                                <button class="btn btn-primary" onclick="exportBackupData()">Download Backup JSON</button>
-                            </div>
-                            <div class="card" style="display: flex; flex-direction: column; gap: 14px;">
-                                <h3 style="font-size: 15px; font-weight: 600;">Restore Backup</h3>
-                                <p style="color: var(--muted); font-size: 13px;">Upload a previously exported JSON backup file to restore application state.</p>
-                                <input type="file" id="importFile" accept=".json" class="form-input" onchange="importBackupData(event)">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            },
-
-            settings() {
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <h2 style="font-size: 20px; font-weight: 600;">Settings</h2>
-                        <div class="card" style="max-width: 600px; display: flex; flex-direction: column; gap: 14px;">
-                            <div class="form-group">
-                                <label class="form-label">Maximum Loop Iterations</label>
-                                <input type="number" class="form-input" value="${State.settings.maxLoopIterations}" onchange="updateSetting('maxLoopIterations', this.value)">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Maximum Node Executions</label>
-                                <input type="number" class="form-input" value="${State.settings.maxNodeExecutions}" onchange="updateSetting('maxNodeExecutions', this.value)">
-                            </div>
-                            <button class="btn btn-primary" onclick="showToast('Settings saved successfully', 'success')">Save Settings</button>
-                        </div>
-                    </div>
-                `;
-            },
-
-            help() {
-                return `
-                    <div style="display: flex; flex-direction: column; gap: 20px; max-width: 800px;">
-                        <h2 style="font-size: 20px; font-weight: 600;">Help & Documentation</h2>
-                        <div class="card" style="display: flex; flex-direction: column; gap: 12px; line-height: 1.6;">
-                            <h3 style="font-size: 16px; font-weight: 600;">What is AutoPilot OS?</h3>
-                            <p style="color: var(--muted);">AutoPilot OS is an advanced local-first browser automation platform. It runs completely inside Google Chrome using LocalStorage and IndexedDB without requiring external servers or cloud dependencies.</p>
-                            <h3 style="font-size: 16px; font-weight: 600; margin-top: 10px;">Workflow Studio</h3>
-                            <p style="color: var(--muted);">Drag and drop nodes from the palette onto the canvas, connect them logically, configure parameters, and execute deterministic automation workflows right in your browser.</p>
-                        </div>
-                    </div>
-                `;
-            }
-        };
-
-        function renderNodeConfig() {
-            if (!State.activeWorkflow || !State.selectedNodeId) return '<div style="color: var(--muted); text-align: center; padding: 20px;">Select a node to configure parameters.</div>';
-            const node = State.activeWorkflow.nodes.find(n => n.id === State.selectedNodeId);
-            if (!node) return '<div style="color: var(--muted);">Node not found.</div>';
-            const def = NodeRegistry.definitions[node.type];
-            if (!def || !def.configFields || def.configFields.length === 0) return '<div style="color: var(--muted);">No configurable fields for this node.</div>';
-
-            return `
-                <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div class="form-group">
-                        <label class="form-label">Node Name</label>
-                        <input type="text" class="form-input" value="${node.name}" oninput="updateNodeName('${node.id}', this.value)">
-                    </div>
-                    ${def.configFields.map(field => `
-                        <div class="form-group">
-                            <label class="form-label">${field.label}</label>
-                            <input type="text" class="form-input" value="${node.config[field.key] !== undefined ? node.config[field.key] : field.default}" oninput="updateNodeConfig('${node.id}', '${field.key}', this.value)">
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function switchView(viewName) {
-            State.currentView = viewName;
-            document.querySelectorAll('.nav-item').forEach(el => {
-                el.classList.toggle('active', el.getAttribute('data-view') === viewName);
-            });
-            const titles = { overview: 'Overview', studio: 'Workflow Studio', automations: 'My Automations', scheduler: 'Scheduler', history: 'Execution History', 'test-center': 'Test Center', analytics: 'Analytics', variables: 'Variables', templates: 'Templates', backup: 'Backup & Restore', settings: 'Settings', help: 'Help & Documentation' };
-            document.getElementById('pageTitle').textContent = titles[viewName] || 'Dashboard';
-            renderView();
-        }
-
-        function renderView() {
-            const container = document.getElementById('appContent');
-            const renderFn = Views[State.currentView] || Views.overview;
-            container.innerHTML = renderFn();
-        }
-
-        // Global Event Handlers & Actions
-        function createNewWorkflow() {
-            const newWf = {
-                id: 'wf_' + Date.now(),
-                name: 'New Automation Workflow',
-                description: 'Created in Workflow Studio',
-                enabled: true,
-                created: Date.now(),
-                updated: Date.now(),
-                nodes: [
-                    { id: 'node_start', type: 'ManualStart', name: 'Start', x: 100, y: 150, config: {} }
-                ],
-                connections: [],
-                variables: [],
-                schedule: {}
-            };
-            State.workflows.push(newWf);
-            State.activeWorkflow = newWf;
-            State.save('workflows');
-            switchView('studio');
-            showToast('New workflow created', 'success');
-        }
-
-        function editWorkflow(id) {
-            const wf = State.workflows.find(w => w.id === id);
-            if (wf) {
-                State.activeWorkflow = wf;
-                switchView('studio');
-            }
-        }
-
-        async function executeWorkflow(id) {
-            const wf = State.workflows.find(w => w.id === id);
-            if (wf) {
-                await ExecutionEngine.runWorkflow(wf);
-            }
-        }
-
-        async function runActiveWorkflow() {
-            if (State.activeWorkflow) {
-                await ExecutionEngine.runWorkflow(State.activeWorkflow);
-            }
-        }
-
-        function saveActiveWorkflow() {
-            if (State.activeWorkflow) {
-                State.activeWorkflow.updated = Date.now();
-                State.save('workflows');
-                showToast('Workflow saved locally', 'success');
-            }
-        }
-
-        function clearCanvas() {
-            if (State.activeWorkflow) {
-                State.activeWorkflow.nodes = [];
-                State.activeWorkflow.connections = [];
-                renderView();
-                showToast('Canvas cleared', 'warning');
-            }
-        }
-
-        function deleteWorkflow(id) {
-            State.workflows = State.workflows.filter(w => w.id !== id);
-            State.save('workflows');
-            renderView();
-            showToast('Workflow deleted', 'error');
-        }
-
-        function selectNode(id) {
-            State.selectedNodeId = id;
-            renderView();
-        }
-
-        function updateNodeName(id, val) {
-            const node = State.activeWorkflow?.nodes.find(n => n.id === id);
-            if (node) { node.name = val; }
-        }
-
-        function updateNodeConfig(id, key, val) {
-            const node = State.activeWorkflow?.nodes.find(n => n.id === id);
-            if (node) {
-                if (!node.config) node.config = {};
-                node.config[key] = val;
-            }
-        }
-
-        function handleCanvasDrop(event) {
-            event.preventDefault();
-            const type = event.dataTransfer.getData('text/plain');
-            if (!type || !State.activeWorkflow) return;
-            const rect = event.currentTarget.getBoundingClientRect();
-            const x = event.clientX - rect.left - 90;
-            const y = event.clientY - rect.top - 30;
-
-            const newNode = {
-                id: 'node_' + Date.now(),
-                type,
-                name: NodeRegistry.definitions[type]?.name || type,
-                x: Math.max(10, x),
-                y: Math.max(10, y),
-                config: {}
-            };
-            State.activeWorkflow.nodes.push(newNode);
-            State.selectedNodeId = newNode.id;
-            renderView();
-        }
-
-        function clearHistory() {
-            State.executions = [];
-            State.save('executions');
-            renderView();
-            showToast('Execution history cleared', 'warning');
-        }
-
-        async function runTestSuite() {
-            const resultsContainer = document.getElementById('testResultsList');
-            resultsContainer.innerHTML = `<div style="color: var(--muted);">Running test suite...</div>`;
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 border border-emerald-500/40 flex flex-col gap-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-emerald-500/20 pb-4">
+                <h2 class="text-xl font-black text-white font-orbitron">SETTINGS</h2>
+                <button id="btn-close-settings" class="w-8 h-8 rounded-lg glass-panel flex items-center justify-center text-emerald-400 border border-emerald-500/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
             
-            // Automated test runner checking core engine behavior
-            const tests = [
-                { name: 'Workflow Validation Test', pass: true, detail: 'Schema structure and required start nodes validated.' },
-                { name: 'Safe Expression Parser Math Test', pass: SafeExpressionParser.evaluateMath('5 + 10 * 2') === 25, detail: 'Evaluated 5 + 10 * 2 = 25 without eval().' },
-                { name: 'Condition Evaluation Test', pass: SafeExpressionParser.evaluateCondition('x > 5', { x: 10 }) === true, detail: 'Evaluated condition x > 5 with context variable x=10.' },
-                { name: 'Storage Persistence Test', pass: typeof Storage.get === 'function', detail: 'Local storage and persistence wrappers verified.' }
-            ];
-
-            setTimeout(() => {
-                resultsContainer.innerHTML = tests.map(t => `
-                    <div class="flex-between" style="padding: 10px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border);">
-                        <div>
-                            <div style="font-weight: 600; font-size: 13px;">${t.name}</div>
-                            <div style="font-size: 11px; color: var(--muted);">${t.detail}</div>
-                        </div>
-                        <span style="font-weight: 600; color: ${t.pass ? 'var(--success)' : 'var(--danger)'};">${t.pass ? 'PASSED' : 'FAILED'}</span>
+            <div class="flex flex-col gap-4 text-sm">
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-bold text-emerald-400 tracking-wider">GRAPHICS QUALITY</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button class="quality-btn py-2.5 rounded-xl glass-panel border border-emerald-500/30 font-bold text-xs" data-quality="low">LOW</button>
+                        <button class="quality-btn py-2.5 rounded-xl glass-panel border border-emerald-500 bg-emerald-950/60 font-bold text-xs text-emerald-300" data-quality="medium">MEDIUM</button>
+                        <button class="quality-btn py-2.5 rounded-xl glass-panel border border-emerald-500/30 font-bold text-xs" data-quality="high">HIGH</button>
                     </div>
-                `).join('');
-                showToast('Test suite completed successfully', 'success');
-            }, 400);
-        }
+                </div>
 
-        function exportBackupData() {
-            const backup = {
-                version: '1.0.0',
-                timestamp: Date.now(),
-                workflows: State.workflows,
-                variables: State.variables,
-                settings: State.settings,
-                executions: State.executions
-            };
-            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `autopilot_os_backup_${Date.now()}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('Backup exported successfully', 'success');
-        }
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-bold text-emerald-400 tracking-wider">MASTER AUDIO VOLUME</label>
+                    <input id="slider-volume" type="range" min="0" max="1" step="0.05" value="0.7" class="accent-emerald-500 w-full cursor-pointer">
+                </div>
 
-        function importBackupData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async (e) => {
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-bold text-emerald-400 tracking-wider">CAMERA SENSITIVITY</label>
+                    <input id="slider-sensitivity" type="range" min="0.5" max="2.5" step="0.1" value="1.2" class="accent-emerald-500 w-full cursor-pointer">
+                </div>
+
+                <div class="pt-4 border-t border-emerald-500/20 flex justify-between items-center">
+                    <span class="text-xs font-bold text-zinc-400">RESET ALL PROGRESS</span>
+                    <button id="btn-reset-save" class="px-4 py-2 bg-red-950/60 hover:bg-red-900 border border-red-500/40 text-red-300 font-bold text-xs rounded-xl transition-all">Clear Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAUSE MENU MODAL -->
+    <div id="pause-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-sm rounded-3xl p-6 border border-emerald-500/40 flex flex-col gap-4 shadow-2xl text-center">
+            <h2 class="text-2xl font-black text-white font-orbitron mb-2">GAME PAUSED</h2>
+            <button id="btn-resume" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-black font-extrabold tracking-widest uppercase rounded-xl transition-all shadow-lg">Resume Game</button>
+            <button id="btn-pause-journal" class="w-full py-3 glass-panel hover:bg-emerald-950/50 text-emerald-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-emerald-500/30">Wildlife Journal</button>
+            <button id="btn-pause-settings" class="w-full py-3 glass-panel hover:bg-emerald-950/50 text-emerald-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-emerald-500/30">Settings</button>
+            <button id="btn-quit-menu" class="w-full py-3 glass-panel hover:bg-red-950/50 text-red-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-red-500/30">Main Menu</button>
+        </div>
+    </div>
+
+    <!-- GAME CANVAS CONTAINER -->
+    <div id="canvas-container" class="absolute inset-0 z-0"></div>
+
+    <!-- MAIN GAME SCRIPT -->
+    <script type="module">
+        import * as THREE from 'three';
+
+        // --- 35 SPECIES DATABASE ---
+        const SPECIES_DATA = [
+            { id: 1, name: "Bengal Tiger", category: "Apex Predator", habitat: "Dense Forest / Riverbanks", desc: "A magnificent apex predator with distinctive orange coat and dark vertical stripes. Highly territorial." },
+            { id: 2, name: "Asiatic Lion", category: "Apex Predator", habitat: "Open Clearings / Scrub", desc: "Powerful social predator with a characteristic sparse mane and robust muscular build." },
+            { id: 3, name: "Indian Leopard", category: "Apex Predator", habitat: "Rocky Hills / Canopy", desc: "Elusive and agile climber adept at navigating dense jungle branches and elevated rocky crags." },
+            { id: 4, name: "Indian Elephant", category: "Pachyderm", habitat: "River Valleys / Bamboo", desc: "Massive herbivorous giant moving in familial herds across lowland floodplains." },
+            { id: 5, name: "Indian Rhinoceros", category: "Pachyderm", habitat: "Wetlands / Tall Grass", desc: "Armored solitary herbivore with a prominent horn and grayish brown skin folds." },
+            { id: 6, name: "Sloth Bear", category: "Omnivore", habitat: "Forest Caves / Scrub", desc: "Shaggy-coated bear known for its distinct pale muzzle and fondness for termites and fruit." },
+            { id: 7, name: "Wild Boar", category: "Omnivore", habitat: "Underbrush / Muddy Trails", desc: "Sturdy omnivore with bristly dark fur and sharp tusks, rooting actively through leaf litter." },
+            { id: 8, name: "Spotted Deer", category: "Herbivore", habitat: "Forest Clearings", desc: "Graceful herd animal with reddish-brown coat covered in white spots and slender antlers." },
+            { id: 9, name: "Sambar Deer", category: "Herbivore", habitat: "Dense Woodlands near Water", desc: "Large dark-brown deer with rugged antlers, often found resting near shadowy stream banks." },
+            { id: 10, name: "Nilgai", category: "Herbivore", habitat: "Open Scrub / Grasslands", desc: "Largest Asian antelope; males feature a bluish-grey coat and short robust horns." },
+            { id: 11, name: "Blackbuck", category: "Herbivore", habitat: "Open Plains", desc: "Striking antelope with spiraled horns and sharp contrast between dark coat and white underparts." },
+            { id: 12, name: "Gaur", category: "Herbivore", habitat: "Hilly Jungle Slopes", desc: "Massive wild ox with a high muscular ridge on its back and distinct white lower legs." },
+            { id: 13, name: "Indian Wolf", category: "Predator", habitat: "Dry Open Scrub", desc: "Slender, intelligent canine hunter operating in coordinated packs across the wilderness." },
+            { id: 14, name: "Golden Jackal", category: "Predator", habitat: "Forest Edges", adaptable: true, desc: "Resourceful nocturnal canine with a golden-brown coat and cautious demeanor." },
+            { id: 15, name: "Red Fox", category: "Predator", habitat: "Wooded Hillsides", desc: "Small agile predator with a bushy white-tipped tail and sharp hearing." },
+            { id: 16, name: "Striped Hyena", category: "Predator", habitat: "Rocky Outcrops", desc: "Nocturnal scavenger with dark vertical stripes and a sloping back profile." },
+            { id: 17, name: "Gray Langur", category: "Primate", habitat: "Tree Canopies", desc: "Silver-furred arboreal monkey with a dark face, leaping effortlessly between branches." },
+            { id: 18, name: "Rhesus Macaque", category: "Primate", habitat: "Forest Clearings / Rocks", desc: "Curious and highly adaptable primate living in dynamic multi-male troops." },
+            { id: 19, name: "Gibbon", category: "Primate", habitat: "High Tree Canopies", desc: "Slender arboreal ape known for acrobatic brachiation and resonant morning calls." },
+            { id: 20, name: "Indian Giant Squirrel", category: "Rodent", habitat: "Upper Tree Canopy", desc: "Vibrantly colored large tree squirrel with deep maroon and cream fur." },
+            { id: 21, name: "Indian Porcupine", category: "Rodent", habitat: "Rocky Burrow Slopes", desc: "Nocturnal rodent defended by long banded quills that rattle when alarmed." },
+            { id: 22, name: "Indian Hare", category: "Rodent", habitat: "Grassy Clearings", desc: "Swift herbivore with long sensitive ears and powerful hind legs for rapid evasion." },
+            { id: 23, name: "Indian Peafowl", category: "Bird", habitat: "Forest Floors / Clearings", desc: "Resplendent ground bird featuring vibrant blue-green plumage and a magnificent fan tail." },
+            { id: 24, name: "Red Junglefowl", category: "Bird", habitat: "Undergrowth", desc: "Wild ancestor of domestic fowl with striking red crests and golden hackles." },
+            { id: 25, name: "Great Hornbill", category: "Bird", habitat: "High Canopy Trees", desc: "Imposing fruit-eating bird with a massive yellow and black casque atop its bill." },
+            { id: 26, name: "Parakeet", category: "Bird", habitat: "Canopy", desc: "Vibrant emerald-green parrot flying in noisy, fast-moving flocks across the treetops." },
+            { id: 27, name: "Kingfisher", category: "Bird", habitat: "Riverbanks", desc: "Brilliant azure and orange bird perched silently above streams, waiting to spear small fish." },
+            { id: 28, name: "Indian Eagle Owl", category: "Bird", habitat: "Rocky Cliffs / Old Trees", desc: "Large nocturnal raptor with striking orange eyes and prominent ear tufts." },
+            { id: 29, name: "Crocodile", category: "Reptile", habitat: "River Deltas / Mudbanks", desc: "Patient amphibious apex predator with armored scutes and crushing jaws." },
+            { id: 30, name: "Monitor Lizard", category: "Reptile", habitat: "Forest Floor / Riverbanks", desc: "Large predatory lizard with powerful limbs, forked tongue, and scaly skin." },
+            { id: 31, name: "Indian Python", category: "Reptile", habitat: "Wetlands / Dense Thickets", desc: "Heavy-bodied non-venomous constrictor patterned with dark blotches." },
+            { id: 32, name: "Cobra", category: "Reptile", habitat: "Tall Grass / Hollow Logs", desc: "Elusive venomous snake capable of rearing up and expanding its iconic hood." },
+            { id: 33, name: "Indian Rock Agama", category: "Reptile", habitat: "Sunlit Rock Faces", desc: "Colorful lizard whose males display brilliant orange heads and blue bodies in sunlight." },
+            { id: 34, name: "Freshwater Turtle", category: "Reptile", habitat: "Ponds / River Edges", desc: "Hard-shelled reptilian dweller basking peacefully on muddy river logs." },
+            { id: 35, name: "Fruit Bat", category: "Flying Mammal", habitat: "Cave Ceilings / Large Trees", desc: "Large nocturnal mammal hanging upside down in colonies before taking flight at dusk." }
+        ];
+
+        // --- SAVE MANAGER ---
+        class SaveManager {
+            constructor() {
+                this.key = "WILD_FRONTIER_SAVE_DATA_V1";
+                this.data = this.load();
+            }
+            load() {
                 try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.workflows) State.workflows = data.workflows;
-                    if (data.variables) State.variables = data.variables;
-                    if (data.settings) State.settings = data.settings;
-                    if (data.executions) State.executions = data.executions;
-                    await State.save('workflows');
-                    await State.save('variables');
-                    await State.save('settings');
-                    await State.save('executions');
-                    renderView();
-                    showToast('Backup restored successfully', 'success');
-                } catch (err) {
-                    showToast('Invalid backup JSON file', 'error');
+                    const raw = localStorage.getItem(this.key);
+                    if (raw) return JSON.parse(raw);
+                } catch(e) { console.warn("Save load error", e); }
+                return { discovered: [], settings: { quality: 'medium', volume: 0.7, sensitivity: 1.2 } };
+            }
+            save() {
+                try {
+                    localStorage.setItem(this.key, JSON.stringify(this.data));
+                } catch(e) { console.warn("Save error", e); }
+            }
+            isDiscovered(id) {
+                return this.data.discovered.includes(id);
+            }
+            discover(id) {
+                if (!this.data.discovered.includes(id)) {
+                    this.data.discovered.push(id);
+                    this.save();
+                    return true;
                 }
-            };
-            reader.readAsText(file);
+                return false;
+            }
+            reset() {
+                localStorage.removeItem(this.key);
+                this.data = { discovered: [], settings: { quality: 'medium', volume: 0.7, sensitivity: 1.2 } };
+            }
         }
 
-        function updateSetting(key, val) {
-            State.settings[key] = isNaN(val) ? val : Number(val);
-            State.save('settings');
+        // --- AUDIO MANAGER ---
+        class AudioManager {
+            constructor(saveManager) {
+                this.saveManager = saveManager;
+                this.ctx = null;
+                this.gainNode = null;
+                this.initialized = false;
+                this.windNode = null;
+            }
+            init() {
+                if (this.initialized) return;
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioContext();
+                    this.gainNode = this.ctx.createGain();
+                    this.gainNode.gain.value = this.saveManager.data.settings.volume;
+                    this.gainNode.connect(this.ctx.destination);
+                    
+                    // Synthesize ambient jungle wind
+                    this.startWind();
+                    this.initialized = true;
+                } catch(e) {
+                    console.warn("Web Audio API not supported", e);
+                }
+            }
+            setVolume(val) {
+                if (this.gainNode && this.ctx) {
+                    this.gainNode.gain.setValueAtTime(val, this.ctx.currentTime);
+                }
+            }
+            startWind() {
+                if (!this.ctx) return;
+                try {
+                    const bufferSize = this.ctx.sampleRate * 2;
+                    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    const noise = this.ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    noise.loop = true;
+
+                    const filter = this.ctx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 350;
+
+                    const windGain = this.ctx.createGain();
+                    windGain.gain.value = 0.15;
+
+                    noise.connect(filter);
+                    filter.connect(windGain);
+                    windGain.connect(this.gainNode);
+                    noise.start();
+                } catch(e) {}
+            }
+            playFootstep() {
+                if (!this.ctx || !this.initialized) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(80, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 0.08);
+                    
+                    gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+
+                    osc.connect(gain);
+                    gain.connect(this.gainNode);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.08);
+                } catch(e) {}
+            }
+            playAnimalSound() {
+                if (!this.ctx || !this.initialized) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(250, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.4);
+                    
+                    gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
+
+                    osc.connect(gain);
+                    gain.connect(this.gainNode);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.4);
+                } catch(e) {}
+            }
         }
 
-        // Initialization
-        window.addEventListener('DOMContentLoaded', async () => {
-            await State.init();
-            renderView();
-            updateStatusBadge();
-            updateBadgeCount();
+        // --- WEATHER & TIME SYSTEM ---
+        class WeatherSystem {
+            constructor(scene, renderer) {
+                this.scene = scene;
+                this.renderer = renderer;
+                this.timeOfDay = 6.5; // Starts at 6:30 AM
+                this.dayDuration = 300; // 5 minutes per full day cycle in seconds
+                this.sunLight = new THREE.DirectionalLight(0xfff5e6, 1.8);
+                this.sunLight.castShadow = true;
+                this.sunLight.shadow.mapSize.width = 1024;
+                this.sunLight.shadow.mapSize.height = 1024;
+                this.sunLight.shadow.camera.near = 10;
+                this.sunLight.shadow.camera.far = 250;
+                const d = 100;
+                this.sunLight.shadow.camera.left = -d;
+                this.sunLight.shadow.camera.right = d;
+                this.sunLight.shadow.camera.top = d;
+                this.sunLight.shadow.camera.bottom = -d;
+                this.scene.add(this.sunLight);
 
-            // Navigation event listeners
-            document.querySelectorAll('.nav-item').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const view = btn.getAttribute('data-view');
-                    switchView(view);
+                this.ambientLight = new THREE.AmbientLight(0xddeeff, 0.6);
+                this.scene.add(this.ambientLight);
+            }
+            update(delta) {
+                this.timeOfDay += (delta / this.dayDuration) * 24;
+                if (this.timeOfDay >= 24) this.timeOfDay = 0;
+
+                const angle = (this.timeOfDay / 24) * Math.PI * 2 - Math.PI / 2;
+                const radius = 200;
+                this.sunLight.position.set(
+                    Math.cos(angle) * radius,
+                    Math.sin(angle) * radius,
+                    50
+                );
+
+                // Color shifts based on time
+                if (this.timeOfDay >= 5 && this.timeOfDay < 7) {
+                    // Dawn
+                    this.sunLight.color.setHex(0xffaa55);
+                    this.sunLight.intensity = 1.2;
+                    this.ambientLight.color.setHex(0x557788);
+                    this.ambientLight.intensity = 0.5;
+                    this.scene.fog.color.setHex(0x2a3b32);
+                } else if (this.timeOfDay >= 7 && this.timeOfDay < 18) {
+                    // Day
+                    this.sunLight.color.setHex(0xfff5e6);
+                    this.sunLight.intensity = 2.0;
+                    this.ambientLight.color.setHex(0xddeeff);
+                    this.ambientLight.intensity = 0.7;
+                    this.scene.fog.color.setHex(0x3e594d);
+                } else if (this.timeOfDay >= 18 && this.timeOfDay < 19.5) {
+                    // Dusk
+                    this.sunLight.color.setHex(0xff5533);
+                    this.sunLight.intensity = 1.0;
+                    this.ambientLight.color.setHex(0x443344);
+                    this.ambientLight.intensity = 0.4;
+                    this.scene.fog.color.setHex(0x221a22);
+                } else {
+                    // Night
+                    this.sunLight.color.setHex(0x335588);
+                    this.sunLight.intensity = 0.3;
+                    this.ambientLight.color.setHex(0x112233);
+                    this.ambientLight.intensity = 0.2;
+                    this.scene.fog.color.setHex(0x0a1410);
+                }
+            }
+            getTimeString() {
+                const hours = Math.floor(this.timeOfDay);
+                const mins = Math.floor((this.timeOfDay - hours) * 60);
+                const period = hours >= 12 ? "PM" : "AM";
+                const displayHours = hours % 12 === 0 ? 12 : hours % 12;
+                const displayMins = mins < 10 ? "0" + mins : mins;
+                let phase = "DAY";
+                if (hours >= 5 && hours < 7) phase = "DAWN";
+                else if (hours >= 7 && hours < 18) phase = "DAY";
+                else if (hours >= 18 && hours < 19.5) phase = "DUSK";
+                else phase = "NIGHT";
+                return `${displayHours}:${displayMins} ${period} (${phase})`;
+            }
+        }
+
+        // --- TERRAIN & WORLD GENERATOR ---
+        class TerrainSystem {
+            constructor(scene) {
+                this.scene = scene;
+                this.size = 600;
+                this.segments = 128;
+                this.mesh = null;
+                this.buildTerrain();
+                this.buildWater();
+                this.buildVegetation();
+            }
+
+            getHeight(x, z) {
+                // Procedural height formula matching geometry generation
+                const nx = x * 0.005;
+                const nz = z * 0.005;
+                let h = Math.sin(nx * 2) * Math.cos(nz * 2) * 8 + Math.sin(nx * 0.5) * 15;
+                // River basin carve
+                const riverDist = Math.abs(x - Math.sin(z * 0.01) * 30);
+                if (riverDist < 25) {
+                    h -= (25 - riverDist) * 0.3;
+                }
+                return h;
+            }
+
+            buildTerrain() {
+                const geo = new THREE.PlaneGeometry(this.size, this.size, this.segments, this.segments);
+                geo.rotateX(-Math.PI / 2);
+
+                const pos = geo.attributes.position;
+                for (let i = 0; i < pos.count; i++) {
+                    const x = pos.getX(i);
+                    const z = pos.getZ(i);
+                    pos.setY(i, this.getHeight(x, z));
+                }
+                geo.computeVertexNormals();
+
+                const mat = new THREE.MeshStandardMaterial({
+                    color: 0x2e4f34,
+                    roughness: 0.9,
+                    metalness: 0.1,
+                    flatShading: true
                 });
-            });
 
-            // Sidebar toggle
-            document.getElementById('sidebarToggle').addEventListener('click', () => {
-                document.getElementById('appContainer').classList.toggle('sidebar-collapsed');
-            });
+                this.mesh = new THREE.Mesh(geo, mat);
+                this.mesh.receiveShadow = true;
+                this.scene.add(this.mesh);
+            }
 
-            // Theme toggle
-            document.getElementById('themeToggle').addEventListener('click', () => {
-                document.body.classList.toggle('theme-light');
-                document.body.classList.toggle('theme-dark');
-            });
+            buildWater() {
+                const waterGeo = new THREE.PlaneGeometry(this.size, this.size);
+                waterGeo.rotateX(-Math.PI / 2);
+                const waterMat = new THREE.MeshStandardMaterial({
+                    color: 0x1b4d3e,
+                    roughness: 0.2,
+                    metalness: 0.8,
+                    transparent: true,
+                    opacity: 0.85
+                });
+                const water = new THREE.Mesh(waterGeo, waterMat);
+                water.position.y = -1.5;
+                this.scene.add(water);
+            }
 
-            // Quick Create
-            document.getElementById('quickCreateBtn').addEventListener('click', () => {
-                createNewWorkflow();
-            });
+            buildVegetation() {
+                // Instanced trees for dense tropical forest
+                const treeGeo = new THREE.ConeGeometry(3, 12, 5);
+                const treeMat = new THREE.MeshStandardMaterial({ color: 0x143822, roughness: 0.8 });
+                const count = 400;
+                const instancedTrees = new THREE.InstancedMesh(treeGeo, treeMat, count);
 
-            // Command Palette shortcuts
-            window.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-                    e.preventDefault();
-                    document.getElementById('commandOverlay').style.display = 'flex';
-                    document.getElementById('commandInput').focus();
+                const matrix = new THREE.Matrix4();
+                const dummy = new THREE.Object3D();
+
+                let placed = 0;
+                for (let i = 0; i < count * 2 && placed < count; i++) {
+                    const x = (Math.random() - 0.5) * (this.size - 50);
+                    const z = (Math.random() - 0.5) * (this.size - 50);
+                    // Avoid river center
+                    if (Math.abs(x - Math.sin(z * 0.01) * 30) < 30) continue;
+
+                    const y = this.getHeight(x, z);
+                    if (y < 0) continue; // Don't spawn underwater
+
+                    dummy.position.set(x, y + 6, z);
+                    const scale = 0.6 + Math.random() * 0.8;
+                    dummy.scale.set(scale, scale + Math.random() * 0.5, scale);
+                    dummy.updateMatrix();
+
+                    instancedTrees.setMatrixAt(placed, dummy.matrix);
+                    placed++;
                 }
-                if (e.key === 'Escape') {
-                    document.getElementById('commandOverlay').style.display = 'none';
-                }
-            });
+                instancedTrees.instanceMatrix.needsUpdate = true;
+                instancedTrees.castShadow = true;
+                instancedTrees.receiveShadow = true;
+                this.scene.add(instancedTrees);
+            }
+        }
 
-            document.getElementById('commandOverlay').addEventListener('click', (e) => {
-                if (e.target === document.getElementById('commandOverlay')) {
-                    document.getElementById('commandOverlay').style.display = 'none';
-                }
-            });
+        // --- PROCEDURAL ANIMAL FACTORY & AI ---
+        class Animal {
+            constructor(speciesData, scene, terrainSystem) {
+                this.species = speciesData;
+                this.scene = scene;
+                this.terrain = terrainSystem;
+                this.group = new THREE.Group();
+                
+                // Position
+                this.x = (Math.random() - 0.5) * 400;
+                this.z = (Math.random() - 0.5) * 400;
+                this.y = this.terrain.getHeight(this.x, this.z);
+                this.group.position.set(this.x, Math.max(this.y, 0), this.z);
 
-            // Storage Meter
-            const quota = await Storage.getQuota();
-            const pct = Math.round((quota.usage / quota.quota) * 100);
-            document.getElementById('storagePercent').textContent = pct + '%';
-            document.getElementById('storageFill').style.width = pct + '%';
+                this.velocity = new THREE.Vector3();
+                this.speed = 2 + Math.random() * 3;
+                this.state = 'IDLE'; // IDLE, WALK, FLEE
+                this.stateTimer = Math.random() * 5;
+                this.targetRotation = 0;
+
+                this.buildModel();
+                this.scene.add(this.group);
+            }
+
+            buildModel() {
+                // Procedural distinct models based on category or archetype
+                const cat = this.species.category;
+                const matColor = this.getSpeciesColor();
+                const bodyMat = new THREE.MeshStandardMaterial({ color: matColor, roughness: 0.7 });
+
+                if (cat === "Apex Predator" || cat === "Predator") {
+                    // Quadruped sleek body
+                    const bodyGeo = new THREE.BoxGeometry(1.5, 0.8, 3);
+                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+                    this.bodyMesh.position.y = 1;
+                    this.bodyMesh.castShadow = true;
+                    this.group.add(this.bodyMesh);
+
+                    const headGeo = new THREE.BoxGeometry(0.8, 0.7, 1);
+                    const headMesh = new THREE.Mesh(headGeo, bodyMat);
+                    headMesh.position.set(0, 1.4, 1.6);
+                    this.group.add(headMesh);
+                } else if (cat === "Pachyderm") {
+                    // Massive body
+                    const bodyGeo = new THREE.BoxGeometry(3, 2.5, 5);
+                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+                    this.bodyMesh.position.y = 2;
+                    this.bodyMesh.castShadow = true;
+                    this.group.add(this.bodyMesh);
+                } else if (cat === "Herbivore") {
+                    // Slender quadruped
+                    const bodyGeo = new THREE.BoxGeometry(1.2, 1.2, 2.5);
+                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+                    this.bodyMesh.position.y = 1.3;
+                    this.bodyMesh.castShadow = true;
+                    this.group.add(this.bodyMesh);
+
+                    const headGeo = new THREE.BoxGeometry(0.5, 0.8, 0.8);
+                    const headMesh = new THREE.Mesh(headGeo, bodyMat);
+                    headMesh.position.set(0, 2, 1.4);
+                    this.group.add(headMesh);
+                } else if (cat === "Primate") {
+                    // Bipedal/Stooped
+                    const bodyGeo = new THREE.BoxGeometry(0.8, 1.5, 0.8);
+                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+                    this.bodyMesh.position.y = 1;
+                    this.bodyMesh.castShadow = true;
+                    this.group.add(this.bodyMesh);
+                } else if (cat === "Bird") {
+                    // Streamlined avian
+                    const bodyGeo = new THREE.ConeGeometry(0.5, 1.5, 5);
+                    bodyGeo.rotateX(Math.PI / 2);
+                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+                    this.bodyMesh.position.y = 1;
+                    this.bodyMesh.castShadow = true;
+                    this.group.add(this.bodyMesh);
+                } else {
+                    // Reptile / default
+                    const bodyGeo = new THREE.BoxGeometry(0.8, 0.5, 2.5);
+                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+                    this.bodyMesh.position.y = 0.5;
+                    this.bodyMesh.castShadow = true;
+                    this.group.add(this.bodyMesh);
+                }
+            }
+
+            getSpeciesColor() {
+                const id = this.species.id;
+                if (id === 1) return 0xd97706; // Tiger orange
+                if (id === 2 || id === 10) return 0x92400e; // Lion/Nilgai
+                if (id === 4 || id === 5) return 0x6b7280; // Elephant/Rhino grey
+                if (id === 23) return 0x2563eb; // Peafowl blue
+                if (id === 26) return 0x10b981; // Parakeet green
+                if (id === 29 || id === 31) return 0x1f2937; // Crocodile dark
+                return 0x854d0e; // Default earthy brown
+            }
+
+            update(delta, playerPos) {
+                const distToPlayer = this.group.position.distanceTo(playerPos);
+
+                // AI State Machine
+                this.stateTimer -= delta;
+                if (this.stateTimer <= 0) {
+                    this.stateTimer = 3 + Math.random() * 5;
+                    if (distToPlayer < 20) {
+                        this.state = 'FLEE';
+                    } else {
+                        this.state = Math.random() > 0.4 ? 'WALK' : 'IDLE';
+                        this.targetRotation = Math.random() * Math.PI * 2;
+                    }
+                }
+
+                if (distToPlayer < 18) {
+                    this.state = 'FLEE';
+                    // Run away from player
+                    const angle = Math.atan2(this.group.position.x - playerPos.x, this.group.position.z - playerPos.z);
+                    this.targetRotation = angle;
+                }
+
+                if (this.state === 'WALK' || this.state === 'FLEE') {
+                    const currentRot = this.group.rotation.y;
+                    this.group.rotation.y = THREE.MathUtils.lerp(currentRot, this.targetRotation, delta * 3);
+                    
+                    const spd = this.state === 'FLEE' ? this.speed * 2.2 : this.speed * 0.6;
+                    this.group.translateZ(spd * delta);
+
+                    // Clamp to terrain
+                    this.x = this.group.position.x;
+                    this.z = this.group.position.z;
+                    this.y = this.terrain.getHeight(this.x, this.z);
+                    this.group.position.y = Math.max(this.y, -1);
+                }
+            }
+        }
+
+        // --- WILDLIFE MANAGER ---
+        class WildlifeManager {
+            constructor(scene, terrain, saveManager, onDiscover) {
+                this.scene = scene;
+                this.terrain = terrain;
+                this.saveManager = saveManager;
+                this.onDiscover = onDiscover;
+                this.animals = [];
+
+                // Spawn all 35 species across the world
+                SPECIES_DATA.forEach(data => {
+                    const animal = new Animal(data, this.scene, this.terrain);
+                    this.animals.push(animal);
+                });
+            }
+
+            update(delta, playerPos) {
+                this.animals.forEach(animal => {
+                    animal.update(delta, playerPos);
+
+                    // Check discovery trigger
+                    const dist = animal.group.position.distanceTo(playerPos);
+                    if (dist < 12) {
+                        if (this.saveManager.discover(animal.species.id)) {
+                            this.onDiscover(animal.species);
+                        }
+                    }
+                });
+            }
+        }
+
+        // --- PLAYER CONTROLLER ---
+        class PlayerController {
+            constructor(scene, terrain, audioManager) {
+                this.scene = scene;
+                this.terrain = terrain;
+                this.audio = audioManager;
+                
+                this.group = new THREE.Group();
+                this.group.position.set(0, 0, 10);
+                this.scene.add(this.group);
+
+                this.velocity = new THREE.Vector3();
+                this.speed = 6.0;
+                this.runMultiplier = 1.8;
+                this.isWalking = false;
+                this.isRunning = false;
+                this.isJumping = false;
+                this.stamina = 100;
+
+                this.buildHumanModel();
+            }
+
+            buildHumanModel() {
+                // Procedural Explorer 3D Model
+                const matBody = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.6 }); // Jacket
+                const matPants = new THREE.MeshStandardMaterial({ color: 0x3f3f46, roughness: 0.8 }); // Trousers
+                const matSkin = new THREE.MeshStandardMaterial({ color: 0xfbcfe8, roughness: 0.5 }); // Head
+                const matBackpack = new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.7 });
+
+                // Torso
+                const torsoGeo = new THREE.BoxGeometry(0.8, 1.1, 0.4);
+                this.torso = new THREE.Mesh(torsoGeo, matBody);
+                this.torso.position.y = 1.3;
+                this.torso.castShadow = true;
+                this.group.add(this.torso);
+
+                // Backpack
+                const bpGeo = new THREE.BoxGeometry(0.7, 0.9, 0.4);
+                const bp = new THREE.Mesh(bpGeo, matBackpack);
+                bp.position.set(0, 1.4, -0.3);
+                this.group.add(bp);
+
+                // Head
+                const headGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+                const head = new THREE.Mesh(headGeo, matSkin);
+                head.position.set(0, 2.0, 0);
+                this.group.add(head);
+
+                // Legs
+                const legGeo = new THREE.BoxGeometry(0.3, 0.9, 0.3);
+                this.leftLeg = new THREE.Mesh(legGeo, matPants);
+                this.leftLeg.position.set(-0.22, 0.5, 0);
+                this.group.add(this.leftLeg);
+
+                this.rightLeg = new THREE.Mesh(legGeo, matPants);
+                this.rightLeg.position.set(0.22, 0.5, 0);
+                this.group.add(this.rightLeg);
+            }
+
+            update(delta, input, cameraAngle) {
+                let moveX = input.x;
+                let moveZ = input.z;
+
+                this.isRunning = input.run && this.stamina > 10 && (moveX !== 0 || moveZ !== 0);
+                
+                if (this.isRunning) {
+                    this.stamina = Math.max(0, this.stamina - delta * 30);
+                } else {
+                    this.stamina = Math.min(100, this.stamina + delta * 15);
+                }
+
+                const currentSpeed = this.speed * (this.isRunning ? this.runMultiplier : 1.0);
+
+                if (moveX !== 0 || moveZ !== 0) {
+                    this.isWalking = true;
+                    // Calculate movement relative to camera angle
+                    const angle = Math.atan2(moveX, moveZ) + cameraAngle;
+                    const targetRotation = angle;
+                    this.group.rotation.y = THREE.MathUtils.lerp(this.group.rotation.y, targetRotation, delta * 10);
+
+                    const moveDir = new THREE.Vector3(Math.sin(angle), 0, Math.cos(angle));
+                    this.group.position.addScaledVector(moveDir, currentSpeed * delta);
+
+                    // Leg animation swing
+                    const swing = Math.sin(Date.now() * 0.015) * 0.4;
+                    this.leftLeg.rotation.x = swing;
+                    this.rightLeg.rotation.x = -swing;
+
+                    if (Math.random() < 0.15) {
+                        this.audio.playFootstep();
+                    }
+                } else {
+                    this.isWalking = false;
+                    this.leftLeg.rotation.x = 0;
+                    this.rightLeg.rotation.x = 0;
+                }
+
+                // Jump logic
+                if (input.jump && !this.isJumping && this.stamina > 20) {
+                    this.velocity.y = 7.0;
+                    this.isJumping = true;
+                    this.stamina -= 15;
+                }
+
+                // Apply gravity & terrain height
+                this.velocity.y -= 15.0 * delta;
+                this.group.position.y += this.velocity.y * delta;
+
+                const groundY = this.terrain.getHeight(this.group.position.x, this.group.position.z);
+                if (this.group.position.y <= groundY) {
+                    this.group.position.y = groundY;
+                    this.velocity.y = 0;
+                    this.isJumping = false;
+                }
+            }
+        }
+
+        // --- THIRD PERSON CAMERA ---
+        class ThirdPersonCamera {
+            constructor(camera, targetGroup) {
+                this.camera = camera;
+                this.target = targetGroup;
+                this.distance = 7;
+                this.height = 3;
+                this.angleX = 0;
+                this.angleY = 0.3;
+            }
+
+            rotate(deltaX, deltaY, sensitivity) {
+                this.angleX -= deltaX * sensitivity * 0.005;
+                this.angleY = Math.max(0.1, Math.min(1.2, this.angleY - deltaY * sensitivity * 0.005));
+            }
+
+            update() {
+                const idealOffset = new THREE.Vector3(
+                    Math.sin(this.angleX) * this.distance * Math.cos(this.angleY),
+                    Math.sin(this.angleY) * this.distance + this.height,
+                    Math.cos(this.angleX) * this.distance * Math.cos(this.angleY)
+                );
+
+                const idealLookAt = this.target.position.clone().add(new THREE.Vector3(0, 1.5, 0));
+                const targetCamPos = this.target.position.clone().add(idealOffset);
+
+                this.camera.position.copy(targetCamPos);
+                this.camera.lookAt(idealLookAt);
+            }
+        }
+
+        // --- GAME APP CONTROLLER ---
+        class GameApp {
+            constructor() {
+                this.saveManager = new SaveManager();
+                this.audioManager = new AudioManager(this.saveManager);
+                this.state = 'LOADING'; // LOADING, MENU, PLAYING, PAUSED
+                
+                this.input = { x: 0, z: 0, run: false, jump: false };
+                this.cameraAngle = 0;
+
+                this.initDOM();
+                this.initEngine();
+            }
+
+            initDOM() {
+                // Loading simulation
+                let progress = 0;
+                const bar = document.getElementById('loading-bar');
+                const interval = setInterval(() => {
+                    progress += Math.random() * 25;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            document.getElementById('loading-screen').style.opacity = '0';
+                            setTimeout(() => {
+                                document.getElementById('loading-screen').style.display = 'none';
+                                document.getElementById('main-menu').style.display = 'flex';
+                                this.state = 'MENU';
+                            }, 500);
+                        }, 400);
+                    }
+                    bar.style.width = progress + '%';
+                }, 150);
+
+                // Menu Event Listeners
+                document.getElementById('btn-play').addEventListener('click', () => {
+                    this.audioManager.init();
+                    document.getElementById('main-menu').style.display = 'none';
+                    document.getElementById('game-hud').style.display = 'flex';
+                    this.state = 'PLAYING';
+                });
+
+                document.getElementById('btn-menu-journal').addEventListener('click', () => this.openJournal());
+                document.getElementById('btn-hud-journal').addEventListener('click', () => this.openJournal());
+                document.getElementById('btn-pause-journal').addEventListener('click', () => this.openJournal());
+                document.getElementById('btn-close-journal').addEventListener('click', () => this.closeJournal());
+
+                document.getElementById('btn-menu-settings').addEventListener('click', () => this.openSettings());
+                document.getElementById('btn-pause-settings').addEventListener('click', () => this.openSettings());
+                document.getElementById('btn-close-settings').addEventListener('click', () => this.closeSettings());
+
+                document.getElementById('btn-hud-pause').addEventListener('click', () => this.pauseGame());
+                document.getElementById('btn-resume').addEventListener('click', () => this.resumeGame());
+                document.getElementById('btn-quit-menu').addEventListener('click', () => location.reload());
+
+                // Quality buttons
+                document.querySelectorAll('.quality-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('bg-emerald-950/60', 'border-emerald-500'));
+                        e.target.classList.add('bg-emerald-950/60', 'border-emerald-500');
+                    });
+                });
+
+                // Reset Data
+                document.getElementById('btn-reset-save').addEventListener('click', () => {
+                    if (confirm("Are you sure you want to reset all wildlife discovery progress?")) {
+                        this.saveManager.reset();
+                        alert("Progress cleared.");
+                        location.reload();
+                    }
+                });
+
+                // Keyboard Controls
+                const keys = {};
+                window.addEventListener('keydown', (e) => {
+                    keys[e.code] = true;
+                    if (e.code === 'KeyW' || e.code === 'ArrowUp') this.input.z = -1;
+                    if (e.code === 'KeyS' || e.code === 'ArrowDown') this.input.z = 1;
+                    if (e.code === 'KeyA' || e.code === 'ArrowLeft') this.input.x = -1;
+                    if (e.code === 'KeyD' || e.code === 'ArrowRight') this.input.x = 1;
+                    if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') this.input.run = true;
+                    if (e.code === 'Space') {
+                        this.input.jump = true;
+                        setTimeout(() => this.input.jump = false, 150);
+                    }
+                    if (e.code === 'Escape') {
+                        if (this.state === 'PLAYING') this.pauseGame();
+                        else if (this.state === 'PAUSED') this.resumeGame();
+                    }
+                });
+
+                window.addEventListener('keyup', (e) => {
+                    keys[e.code] = false;
+                    if (!keys['KeyW'] && !keys['KeyS'] && !keys['ArrowUp'] && !keys['ArrowDown']) this.input.z = 0;
+                    if (!keys['KeyA'] && !keys['KeyD'] && !keys['ArrowLeft'] && !keys['ArrowRight']) this.input.x = 0;
+                    if (!keys['ShiftLeft'] && !keys['ShiftRight']) this.input.run = false;
+                });
+
+                // Mobile touch controls & mouse look
+                let isDragging = false;
+                let lastMouseX = 0, lastMouseY = 0;
+
+                window.addEventListener('mousedown', (e) => {
+                    if (this.state !== 'PLAYING') return;
+                    isDragging = true;
+                    lastMouseX = e.clientX;
+                    lastMouseY = e.clientY;
+                });
+
+                window.addEventListener('mousemove', (e) => {
+                    if (!isDragging || this.state !== 'PLAYING') return;
+                    const deltaX = e.clientX - lastMouseX;
+                    const deltaY = e.clientY - lastMouseY;
+                    lastMouseX = e.clientX;
+                    lastMouseY = e.clientY;
+                    this.camera.rotate(deltaX, deltaY, this.saveManager.data.settings.sensitivity);
+                    this.cameraAngle = this.camera.angleX;
+                });
+
+                window.addEventListener('mouseup', () => { isDragging = false; });
+
+                // Mobile action buttons
+                const btnRun = document.getElementById('btn-run');
+                if (btnRun) {
+                    btnRun.addEventListener('touchstart', () => this.input.run = true);
+                    btnRun.addEventListener('touchend', () => this.input.run = false);
+                }
+                const btnJump = document.getElementById('btn-jump');
+                if (btnJump) {
+                    btnJump.addEventListener('touchstart', () => {
+                        this.input.jump = true;
+                        setTimeout(() => this.input.jump = false, 150);
+                    });
+                }
+            }
+
+            initEngine() {
+                const container = document.getElementById('canvas-container');
+                this.scene = new THREE.Scene();
+                this.scene.background = new THREE.Color(0x3e594d);
+                this.scene.fog = new THREE.FogExp2(0x3e594d, 0.008);
+
+                this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                this.renderer.shadowMap.enabled = true;
+                this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                container.appendChild(this.renderer.domElement);
+
+                const threeCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.5, 1000);
+                
+                // Initialize systems
+                this.weather = new WeatherSystem(this.scene, this.renderer);
+                this.terrain = new TerrainSystem(this.scene);
+                this.player = new PlayerController(this.scene, this.terrain, this.audioManager);
+                this.camera = new ThirdPersonCamera(threeCamera, this.player.group);
+
+                this.wildlife = new WildlifeManager(this.scene, this.terrain, this.saveManager, (species) => {
+                    this.triggerDiscoveryToast(species);
+                    this.updateHUDDiscovery();
+                });
+
+                this.clock = new THREE.Clock();
+
+                window.addEventListener('resize', () => {
+                    threeCamera.aspect = window.innerWidth / window.innerHeight;
+                    threeCamera.updateProjectionMatrix();
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+
+                this.updateHUDDiscovery();
+                this.animate();
+            }
+
+            triggerDiscoveryToast(species) {
+                const toast = document.getElementById('discovery-toast');
+                document.getElementById('toast-species-name').innerText = species.name;
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+                this.audioManager.playAnimalSound();
+
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-1rem)';
+                }, 4000);
+            }
+
+            updateHUDDiscovery() {
+                const discoveredCount = this.saveManager.data.discovered.length;
+                document.getElementById('hud-discovery-count').innerText = `${discoveredCount} / 35`;
+            }
+
+            openJournal() {
+                const grid = document.querySelector('#journal-modal .grid');
+                grid.innerHTML = '';
+
+                SPECIES_DATA.forEach(s => {
+                    const unlocked = this.saveManager.isDiscovered(s.id);
+                    const card = document.createElement('div');
+                    card.className = `glass-panel p-4 rounded-2xl flex flex-col justify-between border ${unlocked ? 'border-emerald-500/50 bg-emerald-950/20' : 'border-zinc-800 opacity-50'}`;
+                    
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded ${unlocked ? 'bg-emerald-500 text-black' : 'bg-zinc-800 text-zinc-400'}">${s.category}</span>
+                                <span class="text-xs font-mono text-zinc-400">#${s.id < 10 ? '0' + s.id : s.id}</span>
+                            </div>
+                            <h3 class="text-base font-bold text-white font-orbitron mb-1">${unlocked ? s.name : '??????????'}</h3>
+                            <p class="text-xs text-zinc-400 line-clamp-2">${unlocked ? s.desc : 'Explore deep jungle environments and approach closer to log this species.'}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-emerald-500/10 flex justify-between items-center text-[11px] text-emerald-400 font-semibold">
+                            <span>HABITAT:</span>
+                            <span class="text-zinc-300">${unlocked ? s.habitat : 'Unknown'}</span>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                document.getElementById('journal-counter-badge').innerText = `${this.saveManager.data.discovered.length} / 35`;
+                document.getElementById('journal-modal').style.display = 'flex';
+            }
+
+            closeJournal() {
+                document.getElementById('journal-modal').style.display = 'none';
+            }
+
+            openSettings() {
+                document.getElementById('settings-modal').style.display = 'flex';
+            }
+
+            closeSettings() {
+                document.getElementById('settings-modal').style.display = 'none';
+            }
+
+            pauseGame() {
+                this.state = 'PAUSED';
+                document.getElementById('pause-modal').style.display = 'flex';
+            }
+
+            resumeGame() {
+                this.state = 'PLAYING';
+                document.getElementById('pause-modal').style.display = 'none';
+            }
+
+            animate() {
+                requestAnimationFrame(() => this.animate());
+
+                const delta = Math.min(this.clock.getDelta(), 0.1);
+
+                if (this.state === 'PLAYING') {
+                    this.weather.update(delta);
+                    this.player.update(delta, this.input, this.cameraAngle);
+                    this.camera.update();
+                    this.wildlife.update(delta, this.player.group.position);
+
+                    // Update HUD info
+                    document.getElementById('hud-time').innerText = this.weather.getTimeString();
+                    document.getElementById('stamina-bar').style.width = this.player.stamina + '%';
+                    document.getElementById('stamina-text').innerText = Math.round(this.player.stamina) + '%';
+                    
+                    // Compass update
+                    const headingDeg = Math.round(((this.player.group.rotation.y % (Math.PI * 2)) / (Math.PI * 2)) * 360 + 360) % 360;
+                    document.getElementById('compass-heading').innerText = `${headingDeg}°`;
+                }
+
+                this.renderer.render(this.scene, this.camera.camera);
+            }
+        }
+
+        // Start App Instance on Window Load
+        window.addEventListener('DOMContentLoaded', () => {
+            window.gameApp = new GameApp();
         });
     </script>
 </body>
