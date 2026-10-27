@@ -13,10 +13,10 @@ canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 #msg{position:fixed;top:112px;left:50%;transform:translateX(-50%);background:var(--rd);padding:6px 12px;border-radius:8px;opacity:0;transition:opacity .25s;pointer-events:none;text-align:center;max-width:90%}
 .k{position:fixed;display:flex;align-items:center;justify-content:center;background:var(--pn);border:2px solid #555;border-radius:14px;color:var(--tx);font-weight:700;font-size:12px;text-align:center;touch-action:none;line-height:1.1}
 .k.on{background:var(--ac);color:#111;border-color:#fff}
-#steer{left:10px;bottom:14px;display:flex;gap:10px}#steer .k{position:static;width:74px;height:74px;font-size:26px}
-#ped{left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:10px}#ped .k{position:static;width:64px;height:104px}
-#gears{right:10px;bottom:12px;display:grid;grid-template-columns:repeat(4,52px);gap:7px}#gears .k{position:static;height:52px;font-size:16px}
-#top{right:6px;top:100px;display:grid;grid-template-columns:repeat(2,70px);gap:6px}#top .k{position:static;height:40px}
+#steer{position:fixed;z-index:5;left:10px;bottom:14px;display:flex;gap:10px}#steer .k{position:static;width:74px;height:74px;font-size:26px}
+#ped{position:fixed;z-index:5;left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:10px}#ped .k{position:relative;overflow:hidden;width:70px;height:110px}.k i{position:absolute;left:0;right:0;bottom:0;height:0;background:rgba(227,167,47,.55);pointer-events:none}
+#gears{position:fixed;z-index:5;right:10px;bottom:12px;display:grid;grid-template-columns:repeat(4,52px);gap:7px}#gears .k{position:static;height:52px;font-size:16px}
+#top{position:fixed;z-index:5;right:6px;top:100px;display:grid;grid-template-columns:repeat(3,60px);gap:5px}#top .k{position:static;height:34px;font-size:10px}
 #ov{position:fixed;inset:0;background:rgba(14,17,12,.93);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;text-align:center;padding:14px;overflow:auto;z-index:9;touch-action:auto}
 #ov h1{margin:0;font-size:34px;letter-spacing:1px}#ov small{opacity:.8;max-width:620px;line-height:1.5;font-weight:500}
 button.b{background:var(--ac);color:#111;border:0;border-radius:10px;padding:12px 26px;font:800 16px system-ui;cursor:pointer}
@@ -28,17 +28,17 @@ button.b.s{background:#3a4036;color:var(--tx);padding:8px 14px;font-size:13px}bu
 <div id="msg"></div>
 <div id="steer"><div class="k" data-k="L">◀</div><div class="k" data-k="Rt">▶</div></div>
 <div id="ped"><div class="k" data-k="clutch">CLUTCH<br>क्लच</div><div class="k" data-k="brake">BRAKE<br>ब्रेक</div><div class="k" data-k="gas">GAS<br>रेस</div></div>
-<div id="gears" class="k" style="background:none;border:0"></div>
+<div id="gears"></div>
 <div id="top">
 <div class="k" data-a="start">START<br>/STOP</div><div class="k" data-a="park">PARK<br>BRAKE</div>
 <div class="k" data-k="horn">HORN</div><div class="k" data-a="cam">CAM</div>
 <div class="k" data-a="light">LIGHT</div><div class="k" data-a="haz">HAZARD</div>
 <div class="k" data-a="trl">TRAILER</div><div class="k" data-a="pause">PAUSE</div>
-<div class="k" data-a="env">DIN/RAAT</div><div class="k" data-a="reset">RESET</div></div>
+<div class="k" data-a="diff">DIFF<br>LOCK</div><div class="k" data-a="lift">LIFT</div><div class="k" data-k="bl">L BRAKE</div><div class="k" data-k="bR">R BRAKE</div><div class="k" data-a="env">DIN/RAAT</div><div class="k" data-a="reset">RESET</div></div>
 <div id="ov"><h1>REAL TRACTOR SIMULATOR</h1><div style="color:var(--ac)">Drive. Control. Experience Reality.</div>
 <div id="tsel"></div><div><button class="b s" id="qb">Graphics: MEDIUM</button></div>
 <small><b>Kaise chalayein:</b> 1) START dabao (neutral + clutch dabaa ke) 2) CLUTCH dabaye rakho, gear 1 chuno 3) GAS thodi do, CLUTCH dheere chhodo. Jaldi chhodoge to engine band (stall) ho jayega. Gear badalne ke liye hamesha clutch dabao.<br>
-<b>Keyboard:</b> W gas · S brake · A/D steer · Space clutch · Shift parking brake · E start/stop · 1-5 gear · G/F gear up/down · N neutral · R reverse · H horn · L light · C camera · Q/X indicator · O hazard · T trailer · P pause · V reset to road · B env<br>
+<b>Keyboard:</b> W gas · S brake · A/D steer · Space clutch · Shift parking brake · E start/stop · 1-5 gear · G/F gear up/down · N neutral · R reverse · H horn · L light · C camera · Q/X indicator · O hazard · T trailer · P pause · V reset to road · B env · J/K left/right brake · U diff lock · Y hydraulic lift<br>
 Free-look camera: drag / scroll. Reverse, trailer-jackknife aur hill-start sab practise karo.</small>
 <button class="b" id="go">START DRIVING</button><div id="err" style="color:#f88"></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -51,9 +51,9 @@ const CF=[{n:'A · 35 HP',tq:150,m:1800,rw:.62,g:[88,54,35,24,16.5],r:75,mu:.8,s
 {n:'C · 75 HP',tq:320,m:3200,rw:.74,g:[105,64,42,28,19],r:90,mu:1,st:.45}];
 let cf=CF[1],q=1;
 // ---------- UI state
-const I={gas:0,brake:0,clutch:0,L:0,Rt:0,horn:0};
+const I={gas:0,brake:0,clutch:0,L:0,Rt:0,horn:0,bl:0,bR:0};
 const keys={};let paused=true,cam=0,env=0,started=false;
-const S={x:0,z:0,psi:0,v:0,y:0,wr:0,steer:0,we:0,on:0,crank:0,g:0,gas:0,cl:0,br:0,park:1,temp:60,fuel:40,trip:0,tot:0,time:0,eng:0,light:0,haz:0,ind:0,trl:1,pitch:0,roll:0,load:0,tp:0,slip:0};
+const S={x:0,z:0,psi:0,v:0,y:0,wr:0,steer:0,we:0,on:0,crank:0,g:0,gas:0,cl:0,br:0,park:1,temp:60,fuel:40,trip:0,tot:0,time:0,eng:0,light:0,haz:0,ind:0,trl:1,pitch:0,roll:0,load:0,tp:0,slip:0,diff:0,lift:0,lh:0};
 let msgT=0;function msg(t){const m=$('#msg');m.textContent=t;m.style.opacity=1;clearTimeout(msgT);msgT=setTimeout(()=>m.style.opacity=0,2200)}
 // ---------- audio
 let AC,eo,eo2,eg,lp,hornG,ng,ready=0;
@@ -120,12 +120,13 @@ const t=new T.Mesh(new T.BoxGeometry(.2,.1,.05),new T.MeshStandardMaterial({colo
 const n=new T.Mesh(new T.BoxGeometry(.14,.1,.05),new T.MeshStandardMaterial({color:0x432,emissive:0xff9000,emissiveIntensity:0}));n.position.set(s*.62,1.75,1.6);tractor.add(n);ind.push(n)}
 const spot=new T.SpotLight(0xfff2d0,0,70,.6,.5,1);spot.position.set(0,1.5,-2.2);spot.target.position.set(0,0,-20);tractor.add(spot,spot.target);
 box(.5,.14,.02,mat(0xeeeeee),0,.75,1.7);
+const la=new T.Group();la.position.set(0,1.05,1.5);tractor.add(la);box(.06,.06,1.3,metal,.35,0,.6,la);box(.06,.06,1.3,metal,-.35,0,.6,la);box(.8,.06,.06,metal,0,0,1.25,la);
 // cockpit
 box(.5,.1,.5,dark,0,1.45,.65);box(.5,.55,.1,dark,0,1.75,.9);
 const swg=new T.Group();swg.position.set(0,1.95,-.15);swg.rotation.x=-.9;tractor.add(swg);swg.add(new T.Mesh(new T.TorusGeometry(.2,.025,8,20),dark));cyl(.02,.2,dark,0,0,0,'z',swg,6);
 cyl(.03,.55,dark,0,1.72,-.28,'z').rotation.x=-.9+Math.PI/2*0;box(.55,.22,.12,dark,0,1.78,-.65);
 const gl=cyl(.015,.5,metal,.28,1.35,.2,'y');gl.rotation.z=0;const knob=new T.Mesh(new T.SphereGeometry(.04),dark);knob.position.y=.26;gl.add(knob);
-const pedals={};['clutch','brake','gas'].forEach((k,i)=>{const p=box(.14,.04,.2,dark,-.22+i*.18,1.0,-.25);p.geometry.translate(0,0,-.1);p.position.z=-.15;pedals[k]=p});
+const pedals={};['clutch','brake','gas'].forEach((k,i)=>{const p=box(.15,.05,.26,mat([0x555555,0xaa2222,0x333333][i],.7),0,0,0);p.position.set(-.22+i*.22,1.42,-.45);pedals[k]=p});
 // driver
 const dr=new T.Group();tractor.add(dr);
 const torso=box(.46,.62,.26,cloth,0,2.05,.6,dr);torso.rotation.x=-.12;box(.14,.12,.14,skin,0,2.43,.55,dr);const head=new T.Mesh(new T.SphereGeometry(.15,14,12),skin);head.position.set(0,2.6,.52);dr.add(head);
@@ -148,15 +149,15 @@ const gb=$('#gears');[['R',-1],['N',0],[1,1],[2,2],[3,3],[4,4],[5,5]].forEach(([
 function updG(){gb.querySelectorAll('[data-g]').forEach(e=>e.classList.toggle('on',+e.dataset.g===S.g))}
 function startStop(){audio();if(AC&&AC.state==='suspended')AC.resume();if(S.on){S.on=0;msg('Engine band');beep(150,.4,'sawtooth');return}
 if(S.crank)return;if(S.fuel<=0){msg('Diesel khatam!');return}if(S.g!==0&&S.cl<.7&&I.clutch<.7){msg('Neutral karo ya CLUTCH dabao, phir START');return}S.crank=1.3}
-const act={start:startStop,park(){S.park^=1;msg(S.park?'Parking brake LAGA':'Parking brake CHHODA')},cam(){cam=(cam+1)%4;msg(['Third-person','Cockpit','Free look (drag/scroll)','Close-up'][cam])},light(){S.light^=1},haz(){S.haz^=1},trl(){if(S.trl){if(Math.abs(S.v)>.3)return msg('Pehle rukiye');S.trl=0;trl.visible=false;msg('Trailer nikala')}else{if(Math.abs(S.v)>.3)return msg('Pehle rukiye');S.trl=1;S.tp=S.psi;trl.visible=true;msg('Trailer jora')}},pause(){setPause(!paused)},env(){setEnv(env+1)},reset(){const p=P(tk);S.x=p.x;S.z=p.z;S.psi=p.p;S.v=0;S.tp=S.psi;S.steer=0;msg('Road par reset')},ind(){S.ind=S.ind===1?0:1},ind2(){S.ind=S.ind===2?0:2}};
+const act={start:startStop,park(){S.park^=1;msg(S.park?'Parking brake LAGA':'Parking brake CHHODA')},cam(){cam=(cam+1)%4;msg(['Third-person','Cockpit','Free look (drag/scroll)','Close-up'][cam])},light(){S.light^=1},haz(){S.haz^=1},trl(){if(S.trl){if(Math.abs(S.v)>.3)return msg('Pehle rukiye');S.trl=0;trl.visible=false;msg('Trailer nikala')}else{if(Math.abs(S.v)>.3)return msg('Pehle rukiye');S.trl=1;S.tp=S.psi;trl.visible=true;msg('Trailer jora')}},pause(){setPause(!paused)},env(){setEnv(env+1)},reset(){const p=P(tk);S.x=p.x;S.z=p.z;S.psi=p.p;S.v=0;S.tp=S.psi;S.steer=0;msg('Road par reset')},ind(){S.ind=S.ind===1?0:1},ind2(){S.ind=S.ind===2?0:2},diff(){S.diff^=1;msg(S.diff?'Differential lock ON (dheemi speed par)':'Differential lock OFF')},lift(){S.lift^=1;msg(S.lift?'Hydraulic upar':'Hydraulic neeche')}};
 function setPause(p){paused=p;$('#ov').style.display=p?'flex':'none';if(p)$('#go').textContent=started?'RESUME':'START DRIVING'}
 // ---------- input
 document.querySelectorAll('.k').forEach(e=>{const k=e.dataset.k,a=e.dataset.a,g=e.dataset.g;
 e.addEventListener('pointerdown',ev=>{ev.preventDefault();audio();try{e.setPointerCapture(ev.pointerId)}catch(_){}e.classList.add('on');if(k)I[k]=1;else if(a)act[a]();else if(g!=null)setGear(+g)});
 const up=()=>{if(k){I[k]=0;e.classList.remove('on')}else if(!g)e.classList.remove('on')};['pointerup','pointercancel','lostpointercapture'].forEach(t=>e.addEventListener(t,up))});
-const KM={KeyW:'gas',ArrowUp:'gas',KeyS:'brake',ArrowDown:'brake',KeyA:'L',ArrowLeft:'L',KeyD:'Rt',ArrowRight:'Rt',Space:'clutch',KeyH:'horn'};
+const KM={KeyW:'gas',ArrowUp:'gas',KeyS:'brake',ArrowDown:'brake',KeyA:'L',ArrowLeft:'L',KeyD:'Rt',ArrowRight:'Rt',Space:'clutch',KeyH:'horn',KeyJ:'bl',KeyK:'bR'};
 addEventListener('keydown',e=>{if(e.repeat)return;const c=e.code;if(KM[c]){I[KM[c]]=1;e.preventDefault()}audio();
-const m={ShiftLeft:'park',ShiftRight:'park',KeyE:'start',KeyL:'light',KeyC:'cam',KeyO:'haz',KeyT:'trl',KeyP:'pause',KeyB:'env',KeyV:'reset',KeyQ:'ind',KeyX:'ind2'}[c];if(m)act[m]();
+const m={ShiftLeft:'park',ShiftRight:'park',KeyE:'start',KeyL:'light',KeyC:'cam',KeyO:'haz',KeyT:'trl',KeyP:'pause',KeyB:'env',KeyV:'reset',KeyQ:'ind',KeyX:'ind2',KeyU:'diff',KeyY:'lift'}[c];if(m)act[m]();
 if(c==='KeyN')setGear(0);else if(c==='KeyR')setGear(-1);else if(/^Digit[1-5]$/.test(c))setGear(+c[5]);else if(c==='KeyG')setGear(Math.min(5,Math.max(1,S.g+1)));else if(c==='KeyF')setGear(S.g>1?S.g-1:S.g===1?0:S.g)});
 addEventListener('keyup',e=>{if(KM[e.code])I[KM[e.code]]=0});
 const clr=()=>{for(const k in I)I[k]=0;document.querySelectorAll('.k.on').forEach(e=>{if(!e.dataset.g)e.classList.remove('on')})};addEventListener('blur',clr);document.addEventListener('visibilitychange',()=>{if(document.hidden){clr();if(started)setPause(true)}});
@@ -180,7 +181,7 @@ S.we=Math.max(0,S.we+(Te-Tcl)/1.3*dt);if(S.on&&RPM(S.we)<330&&!S.crank){S.on=0;S
 if(!S.on&&!S.crank&&!g)S.we*=1-dt*2;
 const m=cf.m+(S.trl?2600:0);let F=g?Tcl*g/cf.rw*.88:0;
 const rel=Math.max(-1,Math.min(1,((S.x-P(tk).x)*Math.cos(P(tk).p)+(S.z-P(tk).z)*Math.sin(P(tk).p))));const lat=(S.x-P(tk).x)*Math.cos(P(tk).p)+(S.z-P(tk).z)*Math.sin(P(tk).p);const offr=Math.abs(lat)>3.5;
-const mu=cf.mu*(offr?.55:1)*(env===3?.9:1);const fmax=mu*m*G*.6;S.slip=Math.abs(F)>fmax?1:0;F=Math.max(-fmax,Math.min(fmax,F));
+const mu=cf.mu*(S.diff&&sp<3?1.25:1)*(offr?.55:1)*(env===3?.9:1);const fmax=mu*m*G*.6;S.slip=Math.abs(F)>fmax?1:0;F=Math.max(-fmax,Math.min(fmax,F));
 const p0=P(tk),p1=P(tk+1),sl=(p1.y-p0.y)/SP,al=Math.cos(S.psi-p0.p),sin_=Math.sin(Math.atan(sl*al))*1;
 let Fr=m*G*(offr?.1:.03)*Math.tanh(sp*3)*Math.sign(S.v)+.5*1.2*3*S.v*sp+m*G*sin_;
 let Fb=(S.br*5.5+(S.park?7:0))*m*Math.min(1,.4+sp*2)*(sp<.05?1:1);
@@ -188,8 +189,8 @@ let a=(F-Fr)/m;let v2=S.v+a*dt;const bd=Fb/m*dt;if(Math.abs(v2)<=bd)v2=(S.park||
 if(S.park&&Math.abs(F)<m*G*.7&&Math.abs(v2)<.3)v2=0;
 S.v=Math.max(-8,Math.min(14,v2));S.load=Math.min(1,Math.abs(Tcl)/cf.tq);
 // steer
-const tgt=(I.Rt-I.L)*cf.st/(1+sp*.22);S.steer+=(tgt-S.steer)*Math.min(1,dt*5);
-S.psi+=S.v/2.3*Math.tan(S.steer)*dt;S.x+=Math.sin(S.psi)*S.v*dt;S.z-=Math.cos(S.psi)*S.v*dt;
+const tgt=(I.Rt-I.L)*cf.st/(1+sp*.22)*(S.diff?.6:1);S.steer+=(tgt-S.steer)*Math.min(1,dt*5);
+S.psi+=S.v/2.3*Math.tan(S.steer)*dt+(I.bR-I.bl)*Math.min(1,sp)*.3*dt*(sp<4?1:0);S.v-=Math.sign(S.v)*Math.min(Math.abs(S.v),(I.bl+I.bR)*1.5*dt);S.x+=Math.sin(S.psi)*S.v*dt;S.z-=Math.cos(S.psi)*S.v*dt;
 // trailer
 if(S.trl){let d=S.psi-S.tp;d=Math.atan2(Math.sin(d),Math.cos(d));S.tp+=S.v*Math.sin(d)/TL*dt;d=Math.atan2(Math.sin(S.psi-S.tp),Math.cos(S.psi-S.tp));if(Math.abs(d)>1.3)S.tp=S.psi-Math.sign(d)*1.3}
 S.wr+=S.v/cf.rw*dt;
@@ -202,9 +203,10 @@ const gc=$('#g').getContext('2d');
 function gauge(cx,r,val,max,label,warn){gc.save();gc.translate(cx,96);gc.fillStyle='rgba(20,24,18,.85)';gc.beginPath();gc.arc(0,0,r,0,7);gc.fill();gc.strokeStyle='#666';gc.lineWidth=3;gc.stroke();gc.font='11px system-ui';gc.fillStyle='#ccc';gc.textAlign='center';
 for(let i=0;i<=10;i++){const a=2.35+i/10*4.7;gc.strokeStyle=i>8&&label==='RPM x100'?'#e55':'#aaa';gc.lineWidth=2;gc.beginPath();gc.moveTo(Math.cos(a)*(r-10),Math.sin(a)*(r-10));gc.lineTo(Math.cos(a)*(r-3),Math.sin(a)*(r-3));gc.stroke();if(i%2==0)gc.fillText(Math.round(i*max/10),Math.cos(a)*(r-22),Math.sin(a)*(r-22)+4)}
 const a=2.35+Math.min(1,val/max)*4.7;gc.strokeStyle=warn?'#f55':'#e3a72f';gc.lineWidth=3;gc.beginPath();gc.moveTo(0,0);gc.lineTo(Math.cos(a)*(r-8),Math.sin(a)*(r-8));gc.stroke();gc.fillStyle='#ddd';gc.fillText(label,0,r-14);gc.restore()}
-function hud(rpm){gc.clearRect(0,0,380,192);gauge(95,88,rpm/100,30,'RPM x100',rpm>2400);gauge(285,88,Math.abs(S.v)*3.6,40,'km/h');
+const PE={};document.querySelectorAll('#ped .k').forEach(e=>{const i=document.createElement('i');e.appendChild(i);PE[e.dataset.k]=i});
+function hud(rpm){PE.clutch.style.height=S.cl*100+'%';PE.brake.style.height=S.br*100+'%';PE.gas.style.height=S.gas*100+'%';gc.clearRect(0,0,380,192);gauge(95,88,rpm/100,30,'RPM x100',rpm>2400);gauge(285,88,Math.abs(S.v)*3.6,40,'km/h');
 const gl=S.g<0?'R':S.g===0?'N':S.g;$('#t1').innerHTML=`Gear <b style="font-size:20px">${gl}</b> &nbsp; Clutch ${Math.round((1-S.cl)*100)}%<br>Load ${Math.round(S.load*100)}% · Temp ${S.temp|0}°C${S.temp>108?' ⚠':''}<br>Diesel ${S.fuel.toFixed(1)} L${S.fuel<6?' ⚠':''}`;
-$('#t2').innerHTML=`${S.on?'ENGINE ON':S.crank?'CRANKING…':'ENGINE OFF'}${S.park?' · 🅿':''}${S.light?' · 💡':''}<br>Trip ${S.trip.toFixed(2)} km · Total ${S.tot.toFixed(1)}<br>${(S.time/60|0)}m ${(S.time%60|0)}s · ${cf.n}`}
+$('#t2').innerHTML=`${S.on?'ENGINE ON':S.crank?'CRANKING…':'ENGINE OFF'}${S.park?' · 🅿':''}${S.diff?' · DIFF':''}${S.lift?' · LIFT':''}${S.light?' · 💡':''}<br>Trip ${S.trip.toFixed(2)} km · Total ${S.tot.toFixed(1)}<br>${(S.time/60|0)}m ${(S.time%60|0)}s · ${cf.n}`}
 const tmp=new T.Vector3(),eye=new T.Vector3();let last=performance.now(),acc=0,blink=0,sm={x:0,y:0,z:0};
 function loop(now){requestAnimationFrame(loop);if(!started){R.render(sc,camr);return}if(paused){sound(0);last=now;return}
 let dt=Math.min(.1,(now-last)/1000);last=now;acc+=dt;let n=0;while(acc>=DT&&n++<24){step(DT);acc-=DT}if(n>=24)acc=0;
@@ -212,14 +214,14 @@ let dt=Math.min(.1,(now-last)/1000);last=now;acc+=dt;let n=0;while(acc>=DT&&n++<
 let d0=1e9;for(;;){const a=P(tk),b=P(tk+1),da=(S.x-a.x)**2+(S.z-a.z)**2,db=(S.x-b.x)**2+(S.z-b.z)**2;if(db<da)tk++;else break}
 for(;;){if(tk<=off+2)break;const a=P(tk),b=P(tk-1);if((S.x-b.x)**2+(S.z-b.z)**2<(S.x-a.x)**2+(S.z-a.z)**2)tk--;else break}
 if(tk-off>60){const c=30;pts.splice(0,c);off+=c;lastBase=-1}
-const base=tk-12;if(base!==lastBase){lastBase=base;rebuild(base);scenery(base)}
+const base=Math.max(off,tk-12);if(base!==lastBase){lastBase=base;rebuild(base);scenery(base)}
 const a=P(tk),b=P(tk+1),f=Math.max(0,Math.min(1,((S.x-a.x)*(b.x-a.x)+(S.z-a.z)*(b.z-a.z))/(SP*SP)));S.y=a.y+(b.y-a.y)*f;
 const rpm=RPM(S.we),t=now/1000,vib=S.on?Math.sin(t*rpm*.1)*.004*(1+S.gas):0,rough=(Math.abs((S.x-a.x)*Math.cos(a.p)+(S.z-a.z)*Math.sin(a.p))>3.5?.03:.006)*Math.min(1,Math.abs(S.v)*.3);
 const slope=Math.atan2(b.y-a.y,SP)*Math.cos(S.psi-a.p);S.pitch+=(slope+(-S.gas*.01*(S.v<5?1:0))-S.pitch)*Math.min(1,dt*4);
 tractor.position.set(S.x,S.y+vib+Math.sin(S.x*1.7+S.z*2.3)*rough,S.z);tractor.rotation.set(S.pitch+Math.sin(t*2.1)*rough*.3,-S.psi,Math.sin(S.x*.9+S.z)*rough,'YXZ');
 fW.forEach(w=>{w.g.rotation.y=-S.steer;w.spin.rotation.x=-S.wr*cf.rw/.42});rW.forEach(w=>w.spin.rotation.x=-S.wr*cf.rw/.75*1);rW.forEach(w=>w.spin.rotation.x=S.wr*cf.rw/.75);fW.forEach(w=>w.spin.rotation.x=S.wr*cf.rw/.42);
 swg.rotation.z=S.steer*-3;arms.forEach((m,i)=>m.rotation.y=-S.steer*.5);head.rotation.z=S.steer*.1;head.position.x=Math.sin(t*3)*vib*6;
-pedals.clutch.rotation.x=S.cl*.5;pedals.brake.rotation.x=S.br*.5;pedals.gas.rotation.x=S.gas*.5;gl.rotation.z=S.g?-.22+S.g*.08:0;
+S.lh+=((S.lift?1:0)-S.lh)*Math.min(1,dt*1.5);la.rotation.x=-S.lh*.7;pedals.clutch.rotation.x=S.cl*.5;pedals.brake.rotation.x=S.br*.5;pedals.gas.rotation.x=S.gas*.5;gl.rotation.z=S.g?-.22+S.g*.08:0;
 if(S.trl){const hx=S.x-Math.sin(S.psi)*0,hz=S.z;const L=2.0;const hp=tmp.set(S.x-Math.sin(S.psi)*-0,0,0);const px=S.x+Math.sin(S.psi)*-L*-1*-1,pz=S.z-Math.cos(S.psi)*-L*-1*-1;
 trl.position.set(S.x-Math.sin(S.psi)*(-0)+(-Math.sin(S.psi))*L*-1*-1,S.y,S.z+Math.cos(S.psi)*L*-1*-1);trl.position.set(S.x-Math.sin(S.psi)*L,S.y,S.z+Math.cos(S.psi)*L);trl.rotation.set(S.pitch*.5,-S.tp,0,'YXZ');trl.userData.w.forEach(w=>w.spin.rotation.x=S.wr*cf.rw/.62)}
 // lights
@@ -231,7 +233,7 @@ if((Math.abs(S.v)>1.5&&(S.slip||Math.abs((S.x-a.x)*Math.cos(a.p)+(S.z-a.z)*Math.
 for(let i=0;i<ND;i++){const p=dv[i];if(p.l>0){p.l-=dt;p.y+=dt*.8;dpos.set([p.x,p.y,p.z],i*3)}else dpos.set([0,-999,0],i*3)}dg.attributes.position.needsUpdate=true;
 // camera
 const sy=Math.sin(S.psi),cy=Math.cos(S.psi);
-if(cam===1){eye.set(S.x-sy*-.0+ -sy*.25,S.y+2.9,S.z+cy*.25);tractor.localToWorld(tmp.set(0,2.95,.3));camr.position.lerp(tmp,.5);camr.position.copy(tmp);tractor.localToWorld(eye.set(0,2.55,-6));camr.lookAt(eye);camr.fov=72;head.visible=false}
+if(cam===1){eye.set(S.x-sy*-.0+ -sy*.25,S.y+2.9,S.z+cy*.25);tractor.updateMatrixWorld(true);tractor.localToWorld(tmp.set(0,2.75,.4));camr.position.copy(tmp);tractor.localToWorld(eye.set(0,1.6,-4));camr.lookAt(eye);camr.fov=85;head.visible=false}
 else{head.visible=true;camr.fov=62;let tg;if(cam===0){tg=tmp.set(S.x+sy*-8.5*-1*-1+(-sy)*8.5*-1*-1,S.y+4.2,S.z-cy*-8.5*-1*-1*-1);tg.set(S.x-sy*8.5*-1*-1+0,S.y+4.2,S.z)}
 if(cam===0){tg=tmp.set(S.x+sy*-9,S.y+4.3,S.z+cy*9);camr.position.lerp(tg,Math.min(1,dt*3));}
 else{const dd=cam===3?5.5:fl.d,yy=fl.y+(cam===3?t*.15:0);camr.position.set(S.x+Math.sin(yy)*Math.cos(fl.p)*dd,S.y+1.2+Math.sin(fl.p)*dd,S.z+Math.cos(yy)*Math.cos(fl.p)*dd)}
@@ -245,7 +247,7 @@ const ts=$('#tsel');CF.forEach((c,i)=>{const b=document.createElement('button');
 $('#qb').onclick=()=>setQ((q+1)%3);
 const mob=/Android|iPhone|iPad/i.test(navigator.userAgent);
 setQ(mob?0:1);rs();setEnv(0);updG();
-$('#go').onclick=()=>{audio();if(AC&&AC.state==='suspended')AC.resume();if(!started){started=true;const p=P(2);Object.assign(S,{x:p.x,z:p.z,psi:p.p,tp:p.p,v:0,g:0});tk=2;lastBase=-1;act.reset();updG();msg('START dabao — engine chalu karne ke liye')}setPause(false);last=performance.now()};
+$('#go').onclick=()=>{audio();if(AC&&AC.state==='suspended')AC.resume();if(!started){started=true;const p=P(2);Object.assign(S,{x:p.x,z:p.z,psi:p.p,tp:p.p,v:0,g:0});tk=2;lastBase=-1;act.reset();updG();cam=1;msg('PARK BRAKE chhodo, phir START dabao')}setPause(false);last=performance.now()};
 try{gen(N+20);rebuild(-0>0?0:off);scenery(0);tractor.position.set(0,P(2).y,0);camr.position.set(0,6,9);camr.lookAt(0,1,0)}catch(e){$('#err').textContent='Init error: '+e.message}
 requestAnimationFrame(loop);
 })();
