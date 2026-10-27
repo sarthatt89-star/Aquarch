@@ -1,1386 +1,252 @@
-🚜 PROJECT: ULTRA REALISTIC TRACTOR DRIVING SIMULATOR
-
-EXTREME AAA QUALITY — SINGLE HTML FILE — REAL-WORLD TRACTOR PHYSICS
-
-Act as a world-class AAA game developer, senior Three.js/WebGL engineer, vehicle physics engineer, realistic tractor simulation specialist, 3D environment artist, and professional game UI/UX designer.
-
-Your mission is to build an incredibly immersive, highly realistic 3D TRACTOR DRIVING SIMULATOR that runs directly in a web browser.
-
-This must NOT look or feel like a simple arcade game.
-
-The goal is to create the feeling that the player is sitting inside a real tractor, driving it on an endless real-world road with realistic terrain, trees, buildings, hills, villages, lighting, shadows, vehicle controls, and mechanical behavior.
-
-Use your strongest coding and game-development capabilities. Make intelligent design decisions yourself and implement additional realistic features wherever possible.
-
-Do not ask me questions. Make the best technical decisions independently.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. STRICT TECHNICAL REQUIREMENTS
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Create the COMPLETE GAME in ONE FILE ONLY:
-
-index.html
-
-All HTML, CSS, and JavaScript must be contained in this single file.
-
-Requirements:
-
-- Use Three.js through a browser-compatible CDN.
-- Use WebGL rendering.
-- Use procedural 3D modeling wherever possible.
-- Generate the road, environment, tractor, wheels, dashboard, and controls programmatically.
-- Use procedural textures and physically based materials where practical.
-- Do not require a build system, Node.js, a backend, or additional local files.
-- Do not create additional project files.
-- Make the game compatible with modern Android browsers and desktop browsers.
-- Make the game deployable on GitHub Pages or Vercel as a single HTML file.
-- Provide a complete, runnable implementation, not pseudocode.
-- Do not leave TODO comments or nonfunctional placeholder buttons.
-- If a feature cannot be fully simulated, implement the closest practical working approximation.
-
-External libraries and assets may be loaded over the internet, but the game must not depend on unavailable or imaginary URLs.
-
-If an external asset fails to load, the game must still work using procedural alternatives.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-2. CORE GAME CONCEPT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Create a realistic human-operated tractor simulator.
-
-The player drives a tractor along an endless road through a beautiful, believable countryside.
-
-The road must never reach a visible end.
-
-Generate the world dynamically as the tractor moves forward.
-
-As the player travels, continuously create new road sections and remove or recycle distant sections to control memory usage.
-
-The environment must include:
-
-- Long countryside roads.
-- Indian village roads.
-- Beautiful green agricultural fields.
-- Trees of different sizes and shapes.
-- Mountain ranges.
-- Hills and valleys.
-- Small villages.
-- Houses and farm buildings.
-- Electric poles and wires.
-- Roadside grass and bushes.
-- Stone walls.
-- Dirt tracks.
-- Small bridges.
-- Roadside shops.
-- Occasional parked vehicles.
-- Drainage channels.
-- Realistic road markings.
-- Road signs.
-- Patches, cracks, and repairs in the asphalt.
-- Natural terrain elevation changes.
-
-Build an endless procedural road system with smooth transitions between road sections.
-
-The road should support:
-
-- Straight roads.
-- Gentle curves.
-- Sharp but safe curves.
-- Uphill sections.
-- Downhill sections.
-- Mountain roads.
-- Rural roads.
-- Different road widths.
-- Variable roadside terrain.
-
-Never create obvious repeating patterns. Randomize trees, terrain, buildings, road details, and scenery while maintaining a coherent landscape.
-
-The world must feel continuous rather than like disconnected game levels.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-3. REALISTIC HUMAN DRIVER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The tractor must have a visible human driver.
-
-The character should look like a believable adult human rather than a cartoon.
-
-Create a realistic-looking driver using procedural geometry if no suitable model is available.
-
-Include:
-
-- Head and neck.
-- Torso.
-- Arms.
-- Hands.
-- Legs.
-- Clothing.
-- Shoes.
-- Natural body proportions.
-
-The driver should sit in a believable tractor-driving posture.
-
-Add simple animated movements:
-
-- Hands positioned around the steering wheel.
-- Arms moving slightly when steering.
-- Foot movement when using the clutch, brake, and accelerator.
-- Hand movement when shifting gears.
-- Head movement over rough terrain.
-- Subtle body movement from engine vibration.
-
-The character must remain correctly seated and aligned with the tractor.
-
-IMPORTANT:
-The driver should be visible in external cameras. In cockpit mode, the player should see the dashboard, steering wheel, hands, and appropriate parts of the driver's body.
-
-If detailed character animation is too expensive for mobile hardware, prioritize correct posture and convincing basic animations over unrealistic movements.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-4. EXTREMELY DETAILED TRACTOR MODEL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Build a recognizable, realistic agricultural tractor using detailed procedural 3D geometry.
-
-Do not use a simple box as the tractor.
-
-Create:
-
-- Tractor chassis.
-- Engine hood.
-- Front grille.
-- Headlights.
-- Front and rear fenders.
-- Large rear agricultural tires.
-- Smaller front tires.
-- Detailed tire treads.
-- Wheel hubs.
-- Axles.
-- Steering linkage.
-- Exhaust pipe.
-- Engine components.
-- Fuel tank.
-- Seat.
-- Steering wheel.
-- Dashboard.
-- Mirrors.
-- Mudguards.
-- Footboards.
-- Pedals.
-- Gear levers.
-- Hydraulic lift arms.
-- Three-point hitch.
-- Rear linkage.
-- Tow hitch.
-- Brake lights.
-- Indicators.
-- Number plate.
-- Realistic glass and metal surfaces.
-
-Use appropriate proportions for a conventional Indian agricultural tractor.
-
-Make the rear tires substantially larger than the front tires.
-
-The wheels must rotate according to vehicle speed.
-
-The front wheels must change steering angle when the player steers.
-
-The tractor body must react naturally to bumps, acceleration, braking, and uneven terrain.
-
-Use realistic materials:
-
-- Painted metal.
-- Rubber.
-- Glass.
-- Dark plastic.
-- Slightly worn metal.
-- Dust-covered surfaces.
-
-Include subtle imperfections rather than making every surface perfectly clean.
-
-Allow the player to select from at least three fictional tractor configurations with different power levels, gearing, tire sizes, and handling characteristics.
-
-Do not copy proprietary tractor branding or trademarks without permission.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-5. REALISTIC MANUAL TRANSMISSION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-This is one of the MOST IMPORTANT features.
-
-Implement a functional manual transmission system.
-
-The tractor must NOT automatically change gears like a basic arcade vehicle.
-
-Include:
-
-A. CLUTCH PEDAL
-
-- A dedicated clutch pedal.
-- Visible pedal movement.
-- A clutch engagement value from 0% to 100%.
-- Smooth clutch engagement and disengagement.
-- Engine RPM must respond to clutch operation.
-- The tractor should lose drive torque when the clutch is fully disengaged.
-- Gear changes should be performed through the clutch.
-
-B. MANUAL GEARBOX
-Include:
-
-- Neutral.
-- First gear.
-- Second gear.
-- Third gear.
-- Fourth gear.
-- Fifth gear.
-- Reverse.
-- Optional high/low range.
-- Optional additional gears if the selected tractor configuration supports them.
-
-Create a visible gear selector.
-
-The player must deliberately select a gear.
-
-When the clutch is disengaged, allow gear changes.
-
-When the player tries to change gears without properly disengaging the clutch, simulate gear resistance, grinding sounds, or an unsuccessful shift.
-
-Do not allow unrealistic instant changes between forward and reverse while moving.
-
-C. REALISTIC GEAR BEHAVIOR
-Each gear must have a different speed and torque range.
-
-First gear:
-
-- High wheel torque.
-- Low maximum speed.
-- Best for pulling heavy loads.
-
-Higher gears:
-
-- Progressively higher speed.
-- Reduced wheel torque.
-
-Reverse:
-
-- Lower maximum speed.
-- Reversed wheel rotation.
-
-Neutral:
-
-- No engine drive torque transmitted to the wheels.
-
-The transmission must influence actual tractor acceleration.
-
-D. RPM AND ENGINE LOAD
-Display:
-
-- Engine RPM.
-- Idle RPM.
-- Maximum RPM.
-- Current gear.
-- Vehicle speed.
-- Engine load.
-
-If the player releases the clutch too quickly at low RPM, the engine should be capable of stalling.
-
-Implement an engine restart procedure.
-
-E. TRANSMISSION OPTIONS
-Where appropriate, simulate:
-
-- Clutch slipping.
-- Gear ratios.
-- Final-drive reduction.
-- Engine braking.
-- Differential behavior.
-- Wheel traction.
-- Optional differential lock.
-
-The result should be a convincing, playable approximation of a real manual tractor transmission rather than a decorative gear selector.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-6. FULL TRACTOR PEDAL SYSTEM
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Implement separate working controls for:
-
-1. Clutch.
-2. Accelerator.
-3. Service brake.
-4. Left brake.
-5. Right brake.
-6. Parking brake.
-7. Differential lock.
-8. Optional throttle setting.
-
-Each control must influence the simulated tractor.
-
-ACCELERATOR:
-
-- Changes engine throttle.
-- Increases engine RPM.
-- Affects engine torque.
-- Produces realistic acceleration.
-
-CLUTCH:
-
-- Disconnects and reconnects engine drive.
-- Enables realistic gear shifting.
-- Can cause engine stalling if mishandled.
-
-SERVICE BRAKE:
-
-- Reduces wheel speed.
-- Produces believable braking behavior.
-- Stops the tractor without instantaneously freezing it.
-
-PARKING BRAKE:
-
-- Holds the tractor stationary when engaged.
-- Prevents normal driving while engaged.
-
-LEFT AND RIGHT BRAKES:
-
-- Independently influence the corresponding wheel brakes.
-- Can help the tractor turn more tightly at low speeds.
-- Must not behave like ordinary steering buttons.
-
-DIFFERENTIAL LOCK:
-
-- Improves traction in suitable low-speed situations.
-- Should be used carefully when turning.
-- Must not produce an unrealistic permanent speed boost.
-
-Make the physical pedal positions visible in cockpit mode.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-7. REALISTIC ENGINE SYSTEM
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Simulate a diesel tractor engine.
-
-Include:
-
-- Engine start.
-- Engine stop.
-- Idle RPM.
-- Throttle response.
-- Engine torque curve.
-- Engine load.
-- Engine vibration.
-- Exhaust smoke.
-- Cooling behavior.
-- Engine temperature.
-- Fuel consumption.
-- Fuel level.
-- Low-fuel warning.
-- Engine stall.
-- Engine restart.
-
-STARTING PROCEDURE:
-
-The player should be able to:
-
-1. Enter the tractor cockpit.
-2. Check that the gearbox is in neutral.
-3. Apply the appropriate starting conditions.
-4. Turn the ignition on.
-5. Operate the starter.
-6. Hear the engine start.
-7. Observe RPM rising and settling at idle.
-
-Do not make every tractor start instantly with one movement.
-
-Simulate engine-starting delay and a believable startup sound sequence.
-
-Use a procedural audio fallback if real sound assets are unavailable.
-
-Engine sound should change with:
-
-- RPM.
-- Throttle.
-- Load.
-- Gear.
-- Vehicle speed.
-
-Include:
-
-- Diesel idle sound.
-- Engine revving.
-- Gear shifting.
-- Clutch or transmission sounds.
-- Brake sounds.
-- Tire sounds.
-- Road vibration.
-- Horn.
-- Starter motor.
-- Engine shutdown.
-
-Use Web Audio API for procedural sound synthesis if necessary.
-
-Audio must start only after the player interacts with the page, in accordance with browser autoplay restrictions.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-8. REALISTIC STEERING AND VEHICLE PHYSICS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Implement a vehicle dynamics system.
-
-Do not simply move the tractor forward at a fixed speed.
-
-Include:
-
-- Vehicle mass.
-- Engine torque.
-- Gear ratios.
-- Wheel radius.
-- Wheel rotation.
-- Rolling resistance.
-- Aerodynamic drag where relevant.
-- Tire grip.
-- Braking force.
-- Steering angle.
-- Steering sensitivity.
-- Acceleration.
-- Deceleration.
-- Reverse motion.
-- Slope resistance.
-- Suspension response.
-- Chassis movement.
-- Wheel slip.
-- Basic traction loss.
-
-The tractor should accelerate slowly in higher gears.
-
-It should struggle when climbing a steep hill in an unsuitable gear.
-
-When towing a heavy trailer, acceleration and hill climbing should become harder.
-
-When descending a hill, gravity should influence speed.
-
-Braking distance should depend on speed, slope, and braking force.
-
-Do not let the tractor turn instantly at high speed.
-
-Use a fixed physics timestep or another stable integration method.
-
-Clamp unstable values and handle extreme situations gracefully.
-
-Prevent the tractor from falling through the road.
-
-Prevent wheels from rotating independently of vehicle movement unless wheel slip is being simulated.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-9. REALISTIC ROAD AND TERRAIN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Build an endless road that looks like a real Indian countryside road.
-
-Road materials must include:
-
-- Asphalt.
-- Fine surface grain.
-- Slight discoloration.
-- Road-edge wear.
-- Small patches.
-- Occasional cracks.
-- Dirt near the edges.
-- Realistic road markings.
-
-Create roadside environments with:
-
-- Grass.
-- Soil.
-- Gravel.
-- Trees.
-- Rocks.
-- Fences.
-- Fields.
-- Hills.
-- Small bridges.
-
-Use procedural terrain generation.
-
-Implement smooth elevation transitions.
-
-The road must follow the terrain without floating above it or cutting through the ground.
-
-The tractor must stay aligned with the road surface.
-
-When traveling uphill or downhill, the tractor's pitch must respond naturally.
-
-When turning, the vehicle should follow the road curvature.
-
-Include gentle road banking where appropriate.
-
-Do not generate impossible road geometry or sudden vertical road segments.
-
-The road should remain endless for as long as the player continues driving.
-
-If the tractor stops, the environment must stop advancing relative to the tractor.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-10. HIMACHAL-STYLE MOUNTAIN ENVIRONMENT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Create a beautiful environment inspired by the countryside and mountainous regions of Himachal Pradesh, India.
-
-Include:
-
-- Pine forests.
-- Deodar-like conifer trees.
-- Green mountain slopes.
-- Terraced agricultural fields.
-- Stone retaining walls.
-- Small hillside villages.
-- Traditional rural buildings.
-- Mountain roads.
-- Natural rock formations.
-- Distant layered mountains.
-- Narrow bridges.
-- Roadside vegetation.
-- Occasional streams.
-- Realistic roadside barriers on dangerous turns.
-
-Add flatter rural areas as well, so the player can experience different driving conditions.
-
-Create convincing transitions between:
-
-- Plains.
-- Village countryside.
-- Foothills.
-- Mountain roads.
-
-The environment should feel geographically believable.
-
-Do not place objects directly in the road unless they are intentional, visible obstacles.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-11. EXTREME VISUAL QUALITY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Target the highest practical browser-based visual quality.
-
-Use:
-
-- Physically based materials.
-- Realistic lighting.
-- Directional sunlight.
-- Ambient lighting.
-- Soft shadows where supported.
-- Ambient occlusion approximation.
-- Fog.
-- Atmospheric perspective.
-- Realistic sky.
-- Dynamic clouds where practical.
-- Reflections where practical.
-- Natural terrain colors.
-- High-quality road materials.
-- Detailed tire geometry.
-- Smooth antialiasing where supported.
-- Realistic depth and scale.
-
-Create a convincing sense of distance.
-
-Use a color palette inspired by real outdoor photography.
-
-Avoid:
-
-- Neon colors.
-- Cartoon materials.
-- Oversaturated grass.
-- Plastic-looking roads.
-- Extremely shiny tires.
-- Unrealistically bright shadows.
-- Excessive bloom.
-- Artificial-looking fog.
-
-Support:
-
-- Morning lighting.
-- Noon lighting.
-- Evening lighting.
-- Optional sunset mode.
-
-Use an adjustable graphics quality setting.
-
-ULTRA mode should prioritize shadows, terrain details, and lighting.
-
-MEDIUM mode should maintain attractive visuals with fewer expensive effects.
-
-LOW mode should reduce draw calls, shadows, and object density for mobile devices.
-
-Do not sacrifice the core driving simulation to add unnecessary visual effects.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-12. THREE CAMERA MODES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Implement at least these camera modes:
-
-CAMERA 1 — COCKPIT:
-The player sits inside the tractor.
-
-Display:
-
-- Steering wheel.
-- Dashboard.
-- Gear lever.
-- Pedals.
-- Driver's hands.
-- Hood visible through the front.
-- Road ahead.
-
-CAMERA 2 — THIRD-PERSON:
-The camera follows behind the tractor.
-
-Show the complete tractor and surrounding scenery.
-
-Implement smooth camera movement.
-
-CAMERA 3 — EXTERNAL FREE LOOK:
-Allow the player to look around the tractor.
-
-Add camera rotation and a controlled zoom feature.
-
-Also provide a close-up camera option for inspecting the tractor from outside.
-
-Camera transitions must be smooth.
-
-Do not allow the camera to pass through terrain or the tractor body unnecessarily.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-13. REALISTIC COCKPIT DASHBOARD
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Create a detailed tractor dashboard.
-
-Display analog-style or digital instruments:
-
-- Engine RPM.
-- Vehicle speed in km/h.
-- Gear position.
-- Fuel level.
-- Engine temperature.
-- Battery voltage.
-- Engine warning.
-- Oil-pressure warning.
-- Parking-brake indicator.
-- Headlight indicator.
-- Left and right indicators.
-- Differential-lock indicator.
-- Engine status.
-
-Make the instruments respond to actual simulated vehicle state.
-
-If the engine is off, the RPM gauge must read zero.
-
-If fuel is low, show a warning.
-
-If the engine overheats, show a temperature warning.
-
-If the engine stalls, show the corresponding state.
-
-Dashboard values must not be random decorations.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-14. REAL TRACTOR LIGHTING
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Implement:
-
-- Headlights.
-- Rear lights.
-- Brake lights.
-- Left indicator.
-- Right indicator.
-- Hazard lights.
-- Optional work lights.
-- Dashboard illumination.
-
-Lights must be functional.
-
-Headlights should illuminate nearby surfaces when technically practical.
-
-Brake lights should activate when braking.
-
-Indicators must blink.
-
-Hazard lights must activate both indicators.
-
-Support nighttime driving with an appropriately dark environment and useful road illumination.
-
-Maintain reasonable performance on mobile hardware.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-15. TRACTOR HYDRAULICS AND IMPLEMENTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Include working representations of agricultural equipment.
-
-At minimum, implement:
-
-- Rear three-point hitch.
-- Hydraulic lift arms.
-- Trailer attachment point.
-- A basic agricultural trailer.
-- Optional plough.
-- Optional cultivator.
-
-Hydraulic controls should raise and lower the rear linkage.
-
-The attached equipment should move with the tractor.
-
-The trailer should follow the tractor using an articulated hitch.
-
-Trailer movement should respond to turns and braking.
-
-When towing a trailer:
-
-- Increase effective load.
-- Reduce acceleration.
-- Increase uphill difficulty.
-- Change braking behavior.
-- Make reversing more challenging.
-
-If a full agricultural simulation is too complex for a single-file browser game, prioritize a functional trailer and hydraulic lift over decorative but nonfunctional equipment.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-16. REALISTIC TRACTOR INTERACTION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Create a usable in-game interaction system.
-
-The player should be able to:
-
-- Enter the tractor.
-- Exit the tractor.
-- Start the engine.
-- Stop the engine.
-- Change gears.
-- Operate the clutch.
-- Use the accelerator.
-- Apply brakes.
-- Operate lights.
-- Sound the horn.
-- Attach a trailer.
-- Detach a trailer.
-- Raise and lower the hydraulic linkage.
-- Change camera.
-- Adjust mirrors or camera views where practical.
-
-The player character should not disappear or teleport unpredictably.
-
-If walking outside the tractor is implemented, use basic third-person movement with collision detection and an interact button near the tractor.
-
-When outside the tractor, show the character standing beside it.
-
-Keep the first-person driving experience the highest priority.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-17. MOBILE TOUCH CONTROL SYSTEM
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The game must work extremely well on Android touchscreen devices.
-
-Create a professional, modern, responsive touch interface.
-
-Include large, clearly labeled controls:
-
-LEFT SIDE:
-
-- Steering left.
-- Steering right.
-- Optional steering wheel interface.
-
-LOWER CENTER:
-
-- Clutch pedal.
-- Brake pedal.
-- Accelerator pedal.
-
-RIGHT SIDE:
-
-- Gear selector.
-- Reverse.
-- Parking brake.
-- Horn.
-- Camera change.
-
-ADDITIONAL CONTROLS:
-
-- Engine start/stop.
-- Lights.
-- Indicators.
-- Differential lock.
-- Hydraulic lift.
-- Attach/detach trailer.
-
-Use proper touch handling.
-
-Requirements:
-
-- Support touchstart, touchend, and pointer events appropriately.
-- Prevent stuck buttons when a finger leaves the control.
-- Prevent the browser from scrolling while the player is actively driving.
-- Use pointer capture where appropriate.
-- Allow multiple simultaneous touches.
-
-IMPORTANT:
-The player must be able to press the clutch with one finger and select a gear with another finger.
-
-The player must be able to hold the accelerator while steering.
-
-The player must be able to operate multiple pedals simultaneously.
-
-Use proper pointer and touch state management rather than relying only on click events.
-
-Make the controls comfortable on smaller phone screens.
-
-Allow the control layout to adapt to portrait and landscape orientations, but optimize the driving experience for landscape mode.
-
-Add a pause button that remains accessible.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-18. DESKTOP CONTROLS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Implement keyboard controls:
-
-W:
-Accelerator.
-
-S:
-Brake.
-
-A / D:
-Steering.
-
-SPACE:
-Clutch.
-
-SHIFT:
-Parking brake or another clearly explained function.
-
-E:
-Engine interaction or start/stop.
-
-G:
-Gear interaction or next gear when clutch conditions permit.
-
-R:
-Reverse gear selection when safely stopped and clutch is disengaged.
-
-H:
-Horn.
-
-L:
-Headlights.
-
-C:
-Camera change.
-
-Q:
-Left indicator.
-
-E:
-Right indicator, if E is not being used for another function; otherwise choose a conflict-free alternative and document it.
-
-P:
-Pause.
-
-N:
-Neutral.
-
-Use a clear and consistent key mapping.
-
-For desktop users with a gamepad, support standard gamepad axes and buttons if practical.
-
-Never allow keyboard input to become stuck after a tab loses focus.
-
-Display the control instructions in a help menu.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-19. MANUAL GEAR SELECTOR UI
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Design a beautiful gear selector that visually resembles a real tractor transmission control.
-
-Show:
-
-- Current gear.
-- Neutral.
-- Forward gears.
-- Reverse.
-- Optional range selection.
-
-The player should intentionally choose a gear.
-
-Do not change gears automatically.
-
-When the clutch is not sufficiently disengaged, display a helpful warning such as:
-
-"CLUTCH DABAO — GEAR SHIFT KARNE KE LIYE"
-
-When the tractor is moving too quickly to safely select reverse, prevent the shift and explain why.
-
-Use clear Hindi/Hinglish labels.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-20. PHYSICS-BASED DRIVING CHALLENGES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The player must experience meaningful differences between driving situations.
-
-Examples:
-
-SITUATION A:
-Starting on flat ground.
-
-SITUATION B:
-Starting uphill.
-
-SITUATION C:
-Driving downhill.
-
-SITUATION D:
-Pulling a heavy trailer.
-
-SITUATION E:
-Turning on a narrow mountain road.
-
-SITUATION F:
-Driving on a rough road.
-
-SITUATION G:
-Driving on a muddy roadside.
-
-SITUATION H:
-Reversing with a trailer.
-
-SITUATION I:
-Stopping at a roadside location.
-
-SITUATION J:
-Starting again after stalling the engine.
-
-The tractor should respond differently in each situation.
-
-Avoid unrealistic instant acceleration and instant stopping.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-21. WEATHER AND DAY-NIGHT SYSTEM
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Add an optional dynamic environment system.
-
-Include:
-
-- Clear weather.
-- Cloudy weather.
-- Light rain.
-- Fog.
-- Morning.
-- Afternoon.
-- Sunset.
-- Night.
-
-Weather changes must affect the visuals.
-
-Rain should make the road appear wet.
-
-Fog should reduce visibility.
-
-Night should require appropriate use of headlights.
-
-If weather affects traction, make the effect modest and consistent with the simulation.
-
-Do not let weather updates suddenly change the vehicle's position or velocity.
-
-Provide a simple weather selection menu.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-22. REALISTIC PARTICLE EFFECTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Create subtle particle effects:
-
-- Dust behind the tires on dry dirt.
-- Small dust clouds on unpaved surfaces.
-- Tire spray during rain.
-- Exhaust particles.
-- Occasional leaves moving in the wind.
-
-Particles must respond to vehicle speed and terrain.
-
-Avoid excessive smoke or oversized particle clouds.
-
-Use pooling and reuse particles to prevent performance problems.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-23. IMMERSIVE AUDIO SYSTEM
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Implement an immersive soundscape.
-
-Include:
-
-- Diesel engine idle.
-- Engine revving.
-- Acceleration.
-- Engine braking.
-- Gear shifting.
-- Clutch engagement.
-- Horn.
-- Tire noise.
-- Road noise.
-- Gravel noise.
-- Wind.
-- Rain.
-- Birds.
-- Rural ambience.
-- Brake sounds.
-- Trailer movement.
-- Engine startup.
-- Engine shutdown.
-
-Engine audio should respond to actual engine RPM and throttle.
-
-Use procedural sounds or reliable optional audio assets.
-
-Include:
-
-- Master volume.
-- Engine volume.
-- Environment volume.
-- Mute button.
-
-The game must continue functioning when audio is unavailable.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-24. GAME MODES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Add the following modes:
-
-MODE 1 — FREE DRIVE:
-Drive endlessly without a destination.
-
-MODE 2 — MOUNTAIN DRIVE:
-Experience winding mountain roads and changing elevation.
-
-MODE 3 — VILLAGE DRIVE:
-Drive through rural roads, fields, and village surroundings.
-
-MODE 4 — TRAILER TEST:
-Practice attaching, towing, turning, and reversing with a trailer.
-
-MODE 5 — TRACTOR TRAINING:
-Learn clutch control, gear selection, braking, and hill starts.
-
-MODE 6 — NIGHT DRIVE:
-Drive at night using headlights and dashboard instruments.
-
-Keep the endless free-drive mode available at all times.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-25. REALISTIC SPEED AND DISTANCE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Display:
-
-- Speed in km/h.
-- Trip distance.
-- Total distance.
-- Travel time.
-- Engine operating time.
-- Fuel consumed.
-
-Calculate distance using actual simulated vehicle movement.
-
-Do not increase the trip distance while the tractor is stationary.
-
-Allow the player to reset the trip meter.
-
-Use consistent units throughout the game.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-26. GRAPHICS SETTINGS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Provide:
-
-- LOW.
-- MEDIUM.
-- HIGH.
-- ULTRA.
-
-Allow adjustments for:
-
-- Shadow quality.
-- Environment density.
-- Render resolution.
-- View distance.
-- Antialiasing where supported.
-- Particle density.
-
-Automatically choose sensible defaults based on device capability.
-
-Do not force expensive effects on low-end Android devices.
-
-Use device pixel ratio limits to avoid excessive GPU workload.
-
-Reduce rendering workload when the game is paused or the tab is hidden.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-27. PERFORMANCE AND STABILITY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The game must be optimized for browser execution.
-
-Use:
-
-- Geometry reuse.
-- Material reuse.
-- InstancedMesh for repeated vegetation where appropriate.
-- Object pooling.
-- Limited active terrain segments.
-- Efficient shadow settings.
-- Stable physics updates.
-- Delta-time management.
-- Visibility-based rendering optimizations where useful.
-
-Avoid:
-
-- Unbounded arrays.
-- Unlimited terrain creation.
-- Creating new geometry every frame.
-- Creating new materials every frame.
-- Excessive draw calls.
-- Excessive DOM updates.
-- Repeated event listener registration.
-- Memory leaks.
-- Unnecessary full-screen post-processing.
-
-Ensure the tractor remains controllable during long driving sessions.
-
-Do not let the environment grow endlessly in memory even though the road is endless.
-
-Implement a proper loading screen and a visible error message if initialization fails.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-28. USER INTERFACE DESIGN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Create a professional simulation-game interface.
-
-The UI should feel premium, modern, and functional.
-
-Use:
-
-- Dark dashboard panels.
-- Clean typography.
-- High-contrast indicators.
-- Readable instrument labels.
-- Responsive layouts.
-- Smooth but restrained animations.
-- Clear active states.
-- Realistic analog gauges where appropriate.
-- Minimal obstruction of the road view.
-
-The game title should be:
-
-REAL TRACTOR SIMULATOR
-
-Subtitle:
-
-"Drive. Control. Experience Reality."
-
-Include a start screen with:
-
-- Start Driving.
-- Select Tractor.
-- Select Environment.
-- Settings.
-- Controls.
-- Resume.
-- Restart Trip.
-
-During driving, show only essential HUD elements.
-
-Allow the player to hide unnecessary interface elements.
-
-All buttons must perform meaningful actions.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-29. REALISTIC TRACTOR CONFIGURATION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Include three original fictional tractor configurations.
-
-Example configurations:
-
-TRACTOR A:
-
-- Approximately 35 HP.
-- Lightweight.
-- Easier handling.
-- Lower pulling capability.
-
-TRACTOR B:
-
-- Approximately 50 HP.
-- Balanced performance.
-- Moderate trailer capability.
-
-TRACTOR C:
-
-- Approximately 75 HP.
-- Higher torque.
-- Heavier chassis.
-- Better heavy-load performance.
-
-These are illustrative game configurations, not verified specifications for real-world tractor models.
-
-Each configuration must have different simulated:
-
-- Engine torque.
-- Engine RPM range.
-- Mass.
-- Wheel radius.
-- Gear ratios.
-- Maximum speed.
-- Fuel consumption.
-- Steering response.
-- Traction.
-
-Make the differences meaningful in actual gameplay.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-30. REALISTIC DAMAGE AND RECOVERY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Add an optional non-destructive vehicle condition system.
-
-Include:
-
-- Engine temperature.
-- Fuel level.
-- Tire traction.
-- Basic engine condition.
-- Optional collision damage.
-- Recovery or reset option.
-
-Do not allow a small collision to permanently break the entire game.
-
-If the tractor leaves the road:
-
-- Allow it to move onto suitable terrain where possible.
-- Reduce traction on unsuitable surfaces.
-- Provide a recovery button if it becomes stuck.
-
-If the tractor flips or falls into invalid terrain, offer a reset-to-road function.
-
-The reset should restore the tractor to a safe position without resetting all game progress unless requested.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-31. ACCESSIBILITY AND USABILITY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Include:
-
-- Hindi/Hinglish control labels.
-- English control labels where useful.
-- Adjustable UI scale.
-- Adjustable audio.
-- Pause/resume.
-- Restart trip.
-- Confirmation for resetting progress.
-- Clear warning messages.
-- Touch-friendly buttons.
-- Keyboard focus support.
-- Safe error recovery.
-
-The game should be understandable even to someone who has never played a tractor simulator.
-
-Add a short interactive driving tutorial.
-
-Teach the player:
-
-1. Starting the engine.
-2. Selecting neutral.
-3. Pressing the clutch.
-4. Selecting first gear.
-5. Applying gentle throttle.
-6. Releasing the clutch gradually.
-7. Steering.
-8. Braking.
-9. Shifting to a higher gear.
-10. Stopping safely.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-32. FINAL IMPLEMENTATION REQUIREMENTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Before finishing, carefully inspect the complete implementation.
-
-Check the following:
-
-- The page loads without syntax errors.
-- Three.js initializes correctly.
-- The tractor is visible.
-- The road is visible.
-- The road continues generating.
-- The tractor can move forward.
-- The tractor can reverse.
-- Steering works.
-- The wheels rotate.
-- The clutch affects drivetrain power.
-- Manual gear selection works.
-- Neutral works.
-- Engine RPM changes with throttle.
-- The engine can stall and restart.
-- Brakes work.
-- Parking brake works.
-- The dashboard reflects the actual simulated state.
-- The lights work.
-- The camera modes work.
-- The trailer can attach and detach.
-- The trailer follows the tractor.
-- The mobile touch controls work.
-- Multiple touch controls can be held simultaneously.
-- Keyboard controls work.
-- The game pauses correctly.
-- The game does not leak memory continuously.
-- The game can run for an extended driving session.
-- Missing optional audio or textures do not crash the game.
-- The player can recover if the tractor becomes stuck.
-
-Do not claim that the game has been tested unless you actually execute it and verify the relevant behaviors.
-
-Prioritize a fully functioning, coherent driving simulator over a large number of fake features.
-
-If the complete requested feature set is too large for a single implementation pass, implement the core driving simulation first and then add the remaining systems without breaking the existing mechanics.
-
-Do not respond with a tutorial about how I could make the game.
-
-Generate the complete, polished, self-contained index.html file.
-
-OUTPUT REQUIREMENTS:
-
-Return the entire index.html source code in one complete deliverable.
-
-Do not omit sections.
-
-Do not replace implementation with descriptions.
-
-Do not use pseudocode.
-
-Do not leave unfinished placeholders.
-
-The finished result should be an immersive, realistic, playable browser-based tractor simulator with an endless road, believable countryside, a visible human driver, manual clutch-and-gear operation, realistic vehicle behavior, and comprehensive tractor controls.
-
-MAKE THE BEST POSSIBLE GAME WITHIN THE TECHNICAL LIMITS OF A SINGLE HTML FILE.
+<!DOCTYPE html>
+<html lang="hi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>REAL TRACTOR SIMULATOR</title>
+<style>
+:root{--bg:#1b1f1a;--pn:rgba(22,26,20,.82);--ac:#e3a72f;--tx:#eee9dc;--rd:#c8452f}
+*{box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#111;color:var(--tx);font:600 13px system-ui,sans-serif;touch-action:none;overscroll-behavior:none}
+canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+#hud{position:fixed;top:6px;left:6px;right:6px;display:flex;justify-content:space-between;pointer-events:none;gap:6px}
+.box{background:var(--pn);border-radius:10px;padding:6px 9px;line-height:1.5}
+#g{width:190px;height:96px}
+#msg{position:fixed;top:112px;left:50%;transform:translateX(-50%);background:var(--rd);padding:6px 12px;border-radius:8px;opacity:0;transition:opacity .25s;pointer-events:none;text-align:center;max-width:90%}
+.k{position:fixed;display:flex;align-items:center;justify-content:center;background:var(--pn);border:2px solid #555;border-radius:14px;color:var(--tx);font-weight:700;font-size:12px;text-align:center;touch-action:none;line-height:1.1}
+.k.on{background:var(--ac);color:#111;border-color:#fff}
+#steer{left:10px;bottom:14px;display:flex;gap:10px}#steer .k{position:static;width:74px;height:74px;font-size:26px}
+#ped{left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:10px}#ped .k{position:static;width:64px;height:104px}
+#gears{right:10px;bottom:12px;display:grid;grid-template-columns:repeat(4,52px);gap:7px}#gears .k{position:static;height:52px;font-size:16px}
+#top{right:6px;top:100px;display:grid;grid-template-columns:repeat(2,70px);gap:6px}#top .k{position:static;height:40px}
+#ov{position:fixed;inset:0;background:rgba(14,17,12,.93);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;text-align:center;padding:14px;overflow:auto;z-index:9;touch-action:auto}
+#ov h1{margin:0;font-size:34px;letter-spacing:1px}#ov small{opacity:.8;max-width:620px;line-height:1.5;font-weight:500}
+button.b{background:var(--ac);color:#111;border:0;border-radius:10px;padding:12px 26px;font:800 16px system-ui;cursor:pointer}
+button.b.s{background:#3a4036;color:var(--tx);padding:8px 14px;font-size:13px}button.sel{outline:3px solid var(--ac)}
+@media(max-height:420px){#ped .k{width:56px;height:84px}#gears{grid-template-columns:repeat(4,44px)}#gears .k{height:44px}#steer .k{width:62px;height:62px}}
+</style></head><body>
+<canvas id="c"></canvas>
+<div id="hud"><div class="box" id="t1"></div><canvas id="g" width="380" height="192"></canvas><div class="box" id="t2" style="text-align:right"></div></div>
+<div id="msg"></div>
+<div id="steer"><div class="k" data-k="L">◀</div><div class="k" data-k="Rt">▶</div></div>
+<div id="ped"><div class="k" data-k="clutch">CLUTCH<br>क्लच</div><div class="k" data-k="brake">BRAKE<br>ब्रेक</div><div class="k" data-k="gas">GAS<br>रेस</div></div>
+<div id="gears" class="k" style="background:none;border:0"></div>
+<div id="top">
+<div class="k" data-a="start">START<br>/STOP</div><div class="k" data-a="park">PARK<br>BRAKE</div>
+<div class="k" data-k="horn">HORN</div><div class="k" data-a="cam">CAM</div>
+<div class="k" data-a="light">LIGHT</div><div class="k" data-a="haz">HAZARD</div>
+<div class="k" data-a="trl">TRAILER</div><div class="k" data-a="pause">PAUSE</div>
+<div class="k" data-a="env">DIN/RAAT</div><div class="k" data-a="reset">RESET</div></div>
+<div id="ov"><h1>REAL TRACTOR SIMULATOR</h1><div style="color:var(--ac)">Drive. Control. Experience Reality.</div>
+<div id="tsel"></div><div><button class="b s" id="qb">Graphics: MEDIUM</button></div>
+<small><b>Kaise chalayein:</b> 1) START dabao (neutral + clutch dabaa ke) 2) CLUTCH dabaye rakho, gear 1 chuno 3) GAS thodi do, CLUTCH dheere chhodo. Jaldi chhodoge to engine band (stall) ho jayega. Gear badalne ke liye hamesha clutch dabao.<br>
+<b>Keyboard:</b> W gas · S brake · A/D steer · Space clutch · Shift parking brake · E start/stop · 1-5 gear · G/F gear up/down · N neutral · R reverse · H horn · L light · C camera · Q/X indicator · O hazard · T trailer · P pause · V reset to road · B env<br>
+Free-look camera: drag / scroll. Reverse, trailer-jackknife aur hill-start sab practise karo.</small>
+<button class="b" id="go">START DRIVING</button><div id="err" style="color:#f88"></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(()=>{'use strict';
+const $=s=>document.querySelector(s),T=window.THREE;
+if(!T){$('#err').textContent='Three.js load nahi hua — internet check karo.';return}
+const CF=[{n:'A · 35 HP',tq:150,m:1800,rw:.62,g:[88,54,35,24,16.5],r:75,mu:.8,st:.55},
+{n:'B · 50 HP',tq:210,m:2400,rw:.68,g:[95,58,38,26,17.5],r:82,mu:.9,st:.5},
+{n:'C · 75 HP',tq:320,m:3200,rw:.74,g:[105,64,42,28,19],r:90,mu:1,st:.45}];
+let cf=CF[1],q=1;
+// ---------- UI state
+const I={gas:0,brake:0,clutch:0,L:0,Rt:0,horn:0};
+const keys={};let paused=true,cam=0,env=0,started=false;
+const S={x:0,z:0,psi:0,v:0,y:0,wr:0,steer:0,we:0,on:0,crank:0,g:0,gas:0,cl:0,br:0,park:1,temp:60,fuel:40,trip:0,tot:0,time:0,eng:0,light:0,haz:0,ind:0,trl:1,pitch:0,roll:0,load:0,tp:0,slip:0};
+let msgT=0;function msg(t){const m=$('#msg');m.textContent=t;m.style.opacity=1;clearTimeout(msgT);msgT=setTimeout(()=>m.style.opacity=0,2200)}
+// ---------- audio
+let AC,eo,eo2,eg,lp,hornG,ng,ready=0;
+function audio(){if(AC)return;try{AC=new(window.AudioContext||window.webkitAudioContext)();lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=600;eg=AC.createGain();eg.gain.value=0;
+eo=AC.createOscillator();eo.type='sawtooth';eo2=AC.createOscillator();eo2.type='square';const g2=AC.createGain();g2.gain.value=.4;eo.connect(lp);eo2.connect(g2);g2.connect(lp);lp.connect(eg);eg.connect(AC.destination);eo.start();eo2.start();
+hornG=AC.createGain();hornG.gain.value=0;[311,392].forEach(f=>{const o=AC.createOscillator();o.type='square';o.frequency.value=f;o.connect(hornG);o.start()});hornG.connect(AC.destination);
+const b=AC.createBuffer(1,AC.sampleRate,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const ns=AC.createBufferSource();ns.buffer=b;ns.loop=true;const nf=AC.createBiquadFilter();nf.type='bandpass';nf.frequency.value=500;ng=AC.createGain();ng.gain.value=0;ns.connect(nf);nf.connect(ng);ng.connect(AC.destination);ns.start();ready=1}catch(e){ready=0}}
+function beep(f,d,ty){if(!ready)return;const o=AC.createOscillator(),g=AC.createGain();o.type=ty||'square';o.frequency.value=f;g.gain.value=.12;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d)}
+function sound(rpm){if(!ready)return;const t=AC.currentTime,on=S.on||S.crank;const f=(S.crank?220:rpm)/30;eo.frequency.setTargetAtTime(f,t,.05);eo2.frequency.setTargetAtTime(f*2,t,.05);lp.frequency.setTargetAtTime(350+rpm*.5+S.gas*500,t,.08);
+eg.gain.setTargetAtTime(on&&!paused?.12+.1*S.gas+.05*S.load:0,t,.08);hornG.gain.setTargetAtTime(I.horn&&!paused?.12:0,t,.02);ng.gain.setTargetAtTime(paused?0:Math.min(.18,Math.abs(S.v)*.012+S.slip*.1),t,.1)}
+// ---------- renderer / scene
+const cv=$('#c');let R;try{R=new T.WebGLRenderer({canvas:cv,antialias:true,powerPreference:'high-performance'})}catch(e){$('#err').textContent='WebGL support nahi mila.';return}
+const sc=new T.Scene(),camr=new T.PerspectiveCamera(65,1,.1,1500);
+const hemi=new T.HemisphereLight(0xcfe3ff,0x4a5a2f,.9),sun=new T.DirectionalLight(0xfff0d0,1.1);sun.position.set(80,120,40);sc.add(hemi,sun);
+const ENV=[{n:'Subah',sky:0xa9c8e6,fog:.0016,hi:.9,su:1.1,sc:0xfff0d0},{n:'Shaam',sky:0xe09a63,fog:.0022,hi:.55,su:.8,sc:0xff9a50},{n:'Raat',sky:0x070b14,fog:.004,hi:.12,su:.05,sc:0x6070a0},{n:'Dhund',sky:0xb8bcc0,fog:.011,hi:.8,su:.5,sc:0xffffff}];
+function setEnv(i){env=i%4;const e=ENV[env];sc.background=new T.Color(e.sky);sc.fog=new T.FogExp2(e.sky,e.fog);hemi.intensity=e.hi;sun.intensity=e.su;sun.color.setHex(e.sc);if(started)msg('Mausam: '+e.n)}
+function setQ(n){q=n;$('#qb').textContent='Graphics: '+['LOW','MEDIUM','HIGH'][n];R.setPixelRatio(Math.min(devicePixelRatio||1,[1,1.5,2][n]));rs()}
+function rs(){R.setSize(innerWidth,innerHeight,false);camr.aspect=innerWidth/innerHeight;camr.updateProjectionMatrix()}
+addEventListener('resize',rs);
+// ---------- road
+const SP=4,N=110,pts=[];let off=0,tk=0,lastBase=-1;
+function gen(k){while(off+pts.length<=k){const i=off+pts.length,p=pts[pts.length-1];const psi=.55*Math.sin(i*.021)+.32*Math.sin(i*.053+2)+.15*Math.sin(i*.11+1);
+const y=7*Math.sin(i*.02)+3.5*Math.sin(i*.057)+1.5*Math.sin(i*.13);
+pts.push(p?{x:p.x+Math.sin(psi)*SP,z:p.z-Math.cos(psi)*SP,y,p:psi}:{x:0,z:0,y,p:0})}}
+const P=k=>{gen(k);return pts[k-off]};
+function ribbon(w,dy,color,rough){const pos=new Float32Array(N*2*3),nor=new Float32Array(N*2*3),idx=[];for(let i=0;i<N*2;i++)nor[i*3+1]=1;
+for(let i=0;i<N-1;i++){const a=i*2;idx.push(a,a+1,a+2,a+1,a+3,a+2)}
+const g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(pos,3));g.setAttribute('normal',new T.BufferAttribute(nor,3));g.setIndex(idx);
+const m=new T.Mesh(g,new T.MeshStandardMaterial({color,roughness:rough,metalness:0,polygonOffset:true,polygonOffsetFactor:-dy*4}));m.frustumCulled=false;m.userData={w,dy};sc.add(m);return m}
+const gnd=ribbon(260,-.12,0x4d6b34,1),dirt=ribbon(12,-.06,0x7a6a4a,1),road=ribbon(6.4,0,0x3b3d40,.92),line=ribbon(.16,.02,0xe8e2c8,.8);
+const rib=[gnd,dirt,road,line];
+function rebuild(base){for(const m of rib){const a=m.geometry.attributes.position.array,w=m.userData.w/2,dy=m.userData.dy;for(let i=0;i<N;i++){const p=P(base+i),c=Math.cos(p.p),s=Math.sin(p.p);
+a.set([p.x-c*w,p.y+dy,p.z-s*w,p.x+c*w,p.y+dy,p.z+s*w],i*6)}m.geometry.attributes.position.needsUpdate=true}}
+// scenery
+const NT=170,tr=new T.InstancedMesh(new T.ConeGeometry(2,8,7),new T.MeshStandardMaterial({color:0x2c4a2a,roughness:1}),NT),tk2=new T.InstancedMesh(new T.CylinderGeometry(.25,.35,1.5,6),new T.MeshStandardMaterial({color:0x4a3524}),NT);
+const NH=14,hs=new T.InstancedMesh(new T.BoxGeometry(6,3.6,5),new T.MeshStandardMaterial({color:0xffffff,roughness:.9}),NH),NP=30,pl=new T.InstancedMesh(new T.CylinderGeometry(.1,.14,8,5),new T.MeshStandardMaterial({color:0x5a5a5a}),NP);
+sc.add(tr,tk2,hs,pl);[tr,tk2,hs,pl].forEach(o=>o.frustumCulled=false);
+const hash=(a,b)=>{const x=Math.sin(a*12.9898+b*78.233)*43758.5453;return x-Math.floor(x)},M4=new T.Matrix4(),Q=new T.Quaternion(),V=new T.Vector3(),SC=new T.Vector3(),CO=new T.Color();
+function scenery(base){const nt=[1,.6,1][q]*NT|0;for(let i=0;i<NT;i++){const k=base+(i>>1)*(N/(NT/2))|0,p=P(k+0),side=i&1?1:-1,r=hash(k,i),d=side*(7+r*70+(hash(k,i+9)>.8?0:0)),c=Math.cos(p.p),s=Math.sin(p.p),sc2=.6+hash(i,k)*1.2;
+const x=p.x+c*d,z=p.z+s*d;V.set(x,p.y+4*sc2-.2,z);SC.set(sc2,sc2,sc2);M4.compose(i<nt?V:V.set(0,-99,0),Q,SC);tr.setMatrixAt(i,M4);V.set(x,p.y+.7*sc2,z);M4.compose(i<nt?V:V.set(0,-99,0),Q,SC);tk2.setMatrixAt(i,M4)}
+for(let i=0;i<NH;i++){const k=base+i*8+((hash(base>>4,i)*5)|0),p=P(k),side=i&1?1:-1,d=side*(14+hash(k,3)*10),c=Math.cos(p.p),s=Math.sin(p.p);V.set(p.x+c*d,p.y+1.7,p.z+s*d);Q.setFromAxisAngle(new T.Vector3(0,1,0),-p.p);SC.set(.8+hash(k,5),1,.8+hash(k,6));M4.compose(V,Q,SC);hs.setMatrixAt(i,M4);hs.setColorAt(i,CO.setHSL(.08+hash(k,7)*.1,.3,.7))}
+Q.identity();SC.set(1,1,1);for(let i=0;i<NP;i++){const k=base+i*4,p=P(k),c=Math.cos(p.p),s=Math.sin(p.p);V.set(p.x+c*4.6,p.y+4,p.z+s*4.6);M4.compose(V,Q,SC);pl.setMatrixAt(i,M4)}
+for(const o of[tr,tk2,hs,pl]){o.instanceMatrix.needsUpdate=true}if(hs.instanceColor)hs.instanceColor.needsUpdate=true}
+const mts=new T.Group();for(let i=0;i<14;i++){const h=120+hash(i,1)*160,m=new T.Mesh(new T.ConeGeometry(110+hash(i,2)*90,h,6),new T.MeshStandardMaterial({color:0x5d6e82,roughness:1,flatShading:true}));const a=i/14*6.283;m.position.set(Math.cos(a)*700,h/2-10,Math.sin(a)*700);mts.add(m)}sc.add(mts);
+// ---------- tractor model
+const mat=(c,r,m)=>new T.MeshStandardMaterial({color:c,roughness:r==null?.6:r,metalness:m||0});
+const paint=mat(0xb8321f,.45,.3),dark=mat(0x1b1b1d,.8),rub=mat(0x151515,.95),metal=mat(0x8a8d90,.4,.8),glass=mat(0x9ec5d8,.1,.1),skin=mat(0xb07a52,.8),cloth=mat(0x2f4f6f,.9),pant=mat(0x3d3a33,.9);
+const tractor=new T.Group();
+function box(w,h,d,m,x,y,z,p){const o=new T.Mesh(new T.BoxGeometry(w,h,d),m);o.position.set(x,y,z);(p||tractor).add(o);return o}
+function cyl(r,h,m,x,y,z,ax,p,seg){const o=new T.Mesh(new T.CylinderGeometry(r,r,h,seg||16),m);o.position.set(x,y,z);if(ax==='x')o.rotation.z=Math.PI/2;if(ax==='z')o.rotation.x=Math.PI/2;(p||tractor).add(o);return o}
+box(.9,.5,3.2,dark,0,.9,-.1);box(1,.85,1.9,paint,0,1.35,-1.25);box(.7,.12,.5,metal,0,1.45,-2.25);box(.8,.5,.1,dark,0,1.3,-2.22);
+box(.5,.4,.8,paint,0,1.55,.1);cyl(.07,1.1,metal,.36,2.2,-.9,'y');cyl(.09,.12,dark,.36,2.78,-.9);
+cyl(.28,.7,mat(0xc8c1a0,.5),-.65,1.25,.3,'x');
+const fW=[],rW=[],fPiv=[];
+function wheel(r,wd,x,y,z,ground){const g=new T.Group(),spin=new T.Group();spin.add(new T.Mesh(new T.CylinderGeometry(r,r,wd,24).rotateZ(Math.PI/2),rub));
+const lugs=new T.Mesh(new T.CylinderGeometry(r*1.04,r*1.04,wd*.96,12,1,true).rotateZ(Math.PI/2),mat(0x262626,1));spin.add(lugs);for(let i=0;i<14;i++){const l=new T.Mesh(new T.BoxGeometry(wd*.95,r*.1,r*.14),rub),a=i/14*6.283;l.position.set(0,Math.cos(a)*r*1.02,Math.sin(a)*r*1.02);l.rotation.x=-a;spin.add(l)}
+const h=new T.Mesh(new T.CylinderGeometry(r*.42,r*.42,wd*1.05,14).rotateZ(Math.PI/2),paint);spin.add(h);g.add(spin);g.position.set(x,y,z);tractor.add(g);return{g,spin}}
+for(const s of[-1,1]){rW.push(wheel(.75,.52,s*1.02,.75,.95));const f=wheel(.42,.26,s*.82,.42,-1.4);fW.push(f);
+box(.6,.06,1.3,paint,s*1.02,1.62,.95);box(.25,.06,.5,dark,s*.92,.3,-1.4)}
+cyl(.05,1.9,metal,0,.5,-1.4,'x');cyl(.07,2,metal,0,.75,.95,'x');
+// lights
+const hl=[],tl=[],ind=[];for(const s of[-1,1]){const h=new T.Mesh(new T.SphereGeometry(.13,10,8),new T.MeshStandardMaterial({color:0x333,emissive:0xfff2c0,emissiveIntensity:0}));h.position.set(s*.38,1.4,-2.25);tractor.add(h);hl.push(h);
+const t=new T.Mesh(new T.BoxGeometry(.2,.1,.05),new T.MeshStandardMaterial({color:0x400,emissive:0xff0000,emissiveIntensity:0}));t.position.set(s*.9,1.75,1.6);tractor.add(t);tl.push(t);
+const n=new T.Mesh(new T.BoxGeometry(.14,.1,.05),new T.MeshStandardMaterial({color:0x432,emissive:0xff9000,emissiveIntensity:0}));n.position.set(s*.62,1.75,1.6);tractor.add(n);ind.push(n)}
+const spot=new T.SpotLight(0xfff2d0,0,70,.6,.5,1);spot.position.set(0,1.5,-2.2);spot.target.position.set(0,0,-20);tractor.add(spot,spot.target);
+box(.5,.14,.02,mat(0xeeeeee),0,.75,1.7);
+// cockpit
+box(.5,.1,.5,dark,0,1.45,.65);box(.5,.55,.1,dark,0,1.75,.9);
+const swg=new T.Group();swg.position.set(0,1.95,-.15);swg.rotation.x=-.9;tractor.add(swg);swg.add(new T.Mesh(new T.TorusGeometry(.2,.025,8,20),dark));cyl(.02,.2,dark,0,0,0,'z',swg,6);
+cyl(.03,.55,dark,0,1.72,-.28,'z').rotation.x=-.9+Math.PI/2*0;box(.55,.22,.12,dark,0,1.78,-.65);
+const gl=cyl(.015,.5,metal,.28,1.35,.2,'y');gl.rotation.z=0;const knob=new T.Mesh(new T.SphereGeometry(.04),dark);knob.position.y=.26;gl.add(knob);
+const pedals={};['clutch','brake','gas'].forEach((k,i)=>{const p=box(.14,.04,.2,dark,-.22+i*.18,1.0,-.25);p.geometry.translate(0,0,-.1);p.position.z=-.15;pedals[k]=p});
+// driver
+const dr=new T.Group();tractor.add(dr);
+const torso=box(.46,.62,.26,cloth,0,2.05,.6,dr);torso.rotation.x=-.12;box(.14,.12,.14,skin,0,2.43,.55,dr);const head=new T.Mesh(new T.SphereGeometry(.15,14,12),skin);head.position.set(0,2.6,.52);dr.add(head);
+box(.32,.07,.17,mat(0x111),0,2.74,.5,dr).visible=false;
+const arms=[];for(const s of[-1,1]){const a=new T.Group();a.position.set(s*.27,2.25,.55);dr.add(a);const u=new T.Mesh(new T.BoxGeometry(.1,.1,.52),cloth);u.position.set(0,-.05,-.28);u.rotation.x=.38;a.add(u);const f=new T.Mesh(new T.SphereGeometry(.06),skin);f.position.set(0,-.2,-.62);a.add(f);arms.push(a);
+const th=box(.16,.16,.5,pant,s*.14,1.6,.38,dr);th.rotation.x=.1;box(.15,.15,.5,pant,s*.14,1.28,.05,dr).rotation.x=-.5;box(.14,.08,.26,mat(0x222),s*.14,.98,-.1,dr)}
+sc.add(tractor);
+// hitch/trailer
+box(.12,.12,.35,metal,0,.7,1.9);box(.8,.08,.1,metal,0,.9,1.4);
+const trl=new T.Group(),TL=3.4;sc.add(trl);
+box(2.2,.15,4.6,mat(0x8a5a2b,.9),0,1.0,TL+.7,trl);[-1,1].forEach(s=>{box(.08,.7,4.6,mat(0x6d4521,.9),s*1.1,1.35,TL+.7,trl);const w=wheel(.62,.4,s*1.12,.62,TL+.8);trl.add(w.g);trl.userData.w=trl.userData.w||[];trl.userData.w.push(w)});
+box(.1,.1,TL,metal,0,.8,TL/2,trl);box(2.2,.7,.08,mat(0x6d4521,.9),0,1.35,TL+3,trl);box(2.2,.7,.08,mat(0x6d4521,.9),0,1.35,TL-1.6,trl);
+// dust
+const ND=50,dg=new T.BufferGeometry(),dpos=new Float32Array(ND*3).fill(-999),dp=new T.Points(dg,new T.PointsMaterial({color:0xbba98a,size:.7,transparent:true,opacity:.35,depthWrite:false}));dg.setAttribute('position',new T.BufferAttribute(dpos,3));dp.frustumCulled=false;sc.add(dp);let di=0;const dv=[];for(let i=0;i<ND;i++)dv.push({x:0,y:0,z:0,l:0});
+// ---------- gears / actions
+function setGear(g){if(g===S.g)return;if(g!==0){if(!(I.clutch>.6||S.cl>.6)){msg('CLUTCH DABAO — GEAR SHIFT KARNE KE LIYE');beep(120,.3,'sawtooth');return}
+if((g<0)!==(S.g<0)&&S.g!==0&&Math.abs(S.v)>.6){msg('Pehle tractor rokein, phir reverse/forward badlein');return}if(g<0&&Math.abs(S.v)>.6&&S.g>0){msg('Tractor chal raha hai — reverse nahi');return}}
+S.g=g;beep(300,.07);updG()}
+const gb=$('#gears');[['R',-1],['N',0],[1,1],[2,2],[3,3],[4,4],[5,5]].forEach(([l,g])=>{const d=document.createElement('div');d.className='k';d.textContent=l;d.dataset.g=g;gb.appendChild(d)});
+function updG(){gb.querySelectorAll('[data-g]').forEach(e=>e.classList.toggle('on',+e.dataset.g===S.g))}
+function startStop(){audio();if(AC&&AC.state==='suspended')AC.resume();if(S.on){S.on=0;msg('Engine band');beep(150,.4,'sawtooth');return}
+if(S.crank)return;if(S.fuel<=0){msg('Diesel khatam!');return}if(S.g!==0&&S.cl<.7&&I.clutch<.7){msg('Neutral karo ya CLUTCH dabao, phir START');return}S.crank=1.3}
+const act={start:startStop,park(){S.park^=1;msg(S.park?'Parking brake LAGA':'Parking brake CHHODA')},cam(){cam=(cam+1)%4;msg(['Third-person','Cockpit','Free look (drag/scroll)','Close-up'][cam])},light(){S.light^=1},haz(){S.haz^=1},trl(){if(S.trl){if(Math.abs(S.v)>.3)return msg('Pehle rukiye');S.trl=0;trl.visible=false;msg('Trailer nikala')}else{if(Math.abs(S.v)>.3)return msg('Pehle rukiye');S.trl=1;S.tp=S.psi;trl.visible=true;msg('Trailer jora')}},pause(){setPause(!paused)},env(){setEnv(env+1)},reset(){const p=P(tk);S.x=p.x;S.z=p.z;S.psi=p.p;S.v=0;S.tp=S.psi;S.steer=0;msg('Road par reset')},ind(){S.ind=S.ind===1?0:1},ind2(){S.ind=S.ind===2?0:2}};
+function setPause(p){paused=p;$('#ov').style.display=p?'flex':'none';if(p)$('#go').textContent=started?'RESUME':'START DRIVING'}
+// ---------- input
+document.querySelectorAll('.k').forEach(e=>{const k=e.dataset.k,a=e.dataset.a,g=e.dataset.g;
+e.addEventListener('pointerdown',ev=>{ev.preventDefault();audio();try{e.setPointerCapture(ev.pointerId)}catch(_){}e.classList.add('on');if(k)I[k]=1;else if(a)act[a]();else if(g!=null)setGear(+g)});
+const up=()=>{if(k){I[k]=0;e.classList.remove('on')}else if(!g)e.classList.remove('on')};['pointerup','pointercancel','lostpointercapture'].forEach(t=>e.addEventListener(t,up))});
+const KM={KeyW:'gas',ArrowUp:'gas',KeyS:'brake',ArrowDown:'brake',KeyA:'L',ArrowLeft:'L',KeyD:'Rt',ArrowRight:'Rt',Space:'clutch',KeyH:'horn'};
+addEventListener('keydown',e=>{if(e.repeat)return;const c=e.code;if(KM[c]){I[KM[c]]=1;e.preventDefault()}audio();
+const m={ShiftLeft:'park',ShiftRight:'park',KeyE:'start',KeyL:'light',KeyC:'cam',KeyO:'haz',KeyT:'trl',KeyP:'pause',KeyB:'env',KeyV:'reset',KeyQ:'ind',KeyX:'ind2'}[c];if(m)act[m]();
+if(c==='KeyN')setGear(0);else if(c==='KeyR')setGear(-1);else if(/^Digit[1-5]$/.test(c))setGear(+c[5]);else if(c==='KeyG')setGear(Math.min(5,Math.max(1,S.g+1)));else if(c==='KeyF')setGear(S.g>1?S.g-1:S.g===1?0:S.g)});
+addEventListener('keyup',e=>{if(KM[e.code])I[KM[e.code]]=0});
+const clr=()=>{for(const k in I)I[k]=0;document.querySelectorAll('.k.on').forEach(e=>{if(!e.dataset.g)e.classList.remove('on')})};addEventListener('blur',clr);document.addEventListener('visibilitychange',()=>{if(document.hidden){clr();if(started)setPause(true)}});
+let fl={y:0,p:.3,d:9},drag=null;cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};cam===0&&0});cv.addEventListener('pointermove',e=>{if(!drag||cam<2)return;fl.y-=(e.clientX-drag.x)*.006;fl.p=Math.max(.05,Math.min(1.4,fl.p+(e.clientY-drag.y)*.005));drag={x:e.clientX,y:e.clientY}});addEventListener('pointerup',()=>drag=null);cv.addEventListener('wheel',e=>{fl.d=Math.max(4,Math.min(25,fl.d+e.deltaY*.01))},{passive:true});
+document.addEventListener('touchmove',e=>{if(started&&!paused)e.preventDefault()},{passive:false});
+// ---------- physics
+const RPM=w=>w*60/6.2832,G=9.81,DT=1/240;
+function gr(){return S.g<0?-cf.r:S.g>0?cf.g[S.g-1]:0}
+function step(dt){
+const sp=Math.abs(S.v);
+S.gas+=(I.gas-S.gas)*Math.min(1,dt*(I.gas?6:10));S.cl+=(I.clutch-S.cl)*Math.min(1,dt*(I.clutch?9:3.2));S.br+=(I.brake-S.br)*Math.min(1,dt*10);
+const eng=1-S.cl,rpm=RPM(S.we);
+// engine
+let Te=0;if(S.crank>0){S.crank-=dt;S.we+=(26-S.we)*Math.min(1,dt*6);if(S.crank<=0){S.crank=0;S.on=1;S.we=Math.max(S.we,30);beep(90,.5,'sawtooth')}}
+else{if(S.on){const idle=1-Math.min(1,Math.max(0,(rpm-880)/150));let th=Math.max(S.gas,idle*.3);th*=Math.min(1,Math.max(0,(2500-rpm)/200));const cv_=Math.max(.15,1-Math.pow((rpm-1600)/2300,2)*.65);Te=cf.tq*th*cv_;S.fuel-=(th*rpm*.0000011*cf.tq/150+.00002)*dt;if(S.fuel<=0){S.fuel=0;S.on=0;msg('Diesel khatam!')}}
+const fr=8+rpm*.008+(S.gas<.05?rpm*.01:0);Te-=Math.min(fr,Math.max(0,S.we*10))*(S.we>0?1:0)}
+// clutch + vehicle
+const g=gr();let Tcl=0;const ww=g?S.v*g/cf.rw:0;
+if(g&&!S.crank){const cap=1.7*cf.tq*Math.pow(eng,1.5);Tcl=Math.max(-cap,Math.min(cap,(S.we-ww)*15))}
+S.we=Math.max(0,S.we+(Te-Tcl)/1.3*dt);if(S.on&&RPM(S.we)<330&&!S.crank){S.on=0;S.we=0;msg('ENGINE STALL! Neutral karke START dabao');beep(80,.6,'sawtooth')}
+if(!S.on&&!S.crank&&!g)S.we*=1-dt*2;
+const m=cf.m+(S.trl?2600:0);let F=g?Tcl*g/cf.rw*.88:0;
+const rel=Math.max(-1,Math.min(1,((S.x-P(tk).x)*Math.cos(P(tk).p)+(S.z-P(tk).z)*Math.sin(P(tk).p))));const lat=(S.x-P(tk).x)*Math.cos(P(tk).p)+(S.z-P(tk).z)*Math.sin(P(tk).p);const offr=Math.abs(lat)>3.5;
+const mu=cf.mu*(offr?.55:1)*(env===3?.9:1);const fmax=mu*m*G*.6;S.slip=Math.abs(F)>fmax?1:0;F=Math.max(-fmax,Math.min(fmax,F));
+const p0=P(tk),p1=P(tk+1),sl=(p1.y-p0.y)/SP,al=Math.cos(S.psi-p0.p),sin_=Math.sin(Math.atan(sl*al))*1;
+let Fr=m*G*(offr?.1:.03)*Math.tanh(sp*3)*Math.sign(S.v)+.5*1.2*3*S.v*sp+m*G*sin_;
+let Fb=(S.br*5.5+(S.park?7:0))*m*Math.min(1,.4+sp*2)*(sp<.05?1:1);
+let a=(F-Fr)/m;let v2=S.v+a*dt;const bd=Fb/m*dt;if(Math.abs(v2)<=bd)v2=(S.park||S.br>.5)?0:v2-Math.sign(v2)*Math.min(Math.abs(v2),bd*.2);else v2-=Math.sign(v2)*bd;
+if(S.park&&Math.abs(F)<m*G*.7&&Math.abs(v2)<.3)v2=0;
+S.v=Math.max(-8,Math.min(14,v2));S.load=Math.min(1,Math.abs(Tcl)/cf.tq);
+// steer
+const tgt=(I.Rt-I.L)*cf.st/(1+sp*.22);S.steer+=(tgt-S.steer)*Math.min(1,dt*5);
+S.psi+=S.v/2.3*Math.tan(S.steer)*dt;S.x+=Math.sin(S.psi)*S.v*dt;S.z-=Math.cos(S.psi)*S.v*dt;
+// trailer
+if(S.trl){let d=S.psi-S.tp;d=Math.atan2(Math.sin(d),Math.cos(d));S.tp+=S.v*Math.sin(d)/TL*dt;d=Math.atan2(Math.sin(S.psi-S.tp),Math.cos(S.psi-S.tp));if(Math.abs(d)>1.3)S.tp=S.psi-Math.sign(d)*1.3}
+S.wr+=S.v/cf.rw*dt;
+// misc
+S.trip+=sp*dt/1000;S.tot+=sp*dt/1000;S.time+=dt;if(S.on)S.eng+=dt;
+S.temp+=((S.on?60+S.load*40+RPM(S.we)*.006:25)-S.temp)*dt*(sp*.01+.02)*(S.on?1:.4)+((S.on?S.load*.06:0))*dt;S.temp=Math.min(125,S.temp);
+}
+// ---------- main loop
+const gc=$('#g').getContext('2d');
+function gauge(cx,r,val,max,label,warn){gc.save();gc.translate(cx,96);gc.fillStyle='rgba(20,24,18,.85)';gc.beginPath();gc.arc(0,0,r,0,7);gc.fill();gc.strokeStyle='#666';gc.lineWidth=3;gc.stroke();gc.font='11px system-ui';gc.fillStyle='#ccc';gc.textAlign='center';
+for(let i=0;i<=10;i++){const a=2.35+i/10*4.7;gc.strokeStyle=i>8&&label==='RPM x100'?'#e55':'#aaa';gc.lineWidth=2;gc.beginPath();gc.moveTo(Math.cos(a)*(r-10),Math.sin(a)*(r-10));gc.lineTo(Math.cos(a)*(r-3),Math.sin(a)*(r-3));gc.stroke();if(i%2==0)gc.fillText(Math.round(i*max/10),Math.cos(a)*(r-22),Math.sin(a)*(r-22)+4)}
+const a=2.35+Math.min(1,val/max)*4.7;gc.strokeStyle=warn?'#f55':'#e3a72f';gc.lineWidth=3;gc.beginPath();gc.moveTo(0,0);gc.lineTo(Math.cos(a)*(r-8),Math.sin(a)*(r-8));gc.stroke();gc.fillStyle='#ddd';gc.fillText(label,0,r-14);gc.restore()}
+function hud(rpm){gc.clearRect(0,0,380,192);gauge(95,88,rpm/100,30,'RPM x100',rpm>2400);gauge(285,88,Math.abs(S.v)*3.6,40,'km/h');
+const gl=S.g<0?'R':S.g===0?'N':S.g;$('#t1').innerHTML=`Gear <b style="font-size:20px">${gl}</b> &nbsp; Clutch ${Math.round((1-S.cl)*100)}%<br>Load ${Math.round(S.load*100)}% · Temp ${S.temp|0}°C${S.temp>108?' ⚠':''}<br>Diesel ${S.fuel.toFixed(1)} L${S.fuel<6?' ⚠':''}`;
+$('#t2').innerHTML=`${S.on?'ENGINE ON':S.crank?'CRANKING…':'ENGINE OFF'}${S.park?' · 🅿':''}${S.light?' · 💡':''}<br>Trip ${S.trip.toFixed(2)} km · Total ${S.tot.toFixed(1)}<br>${(S.time/60|0)}m ${(S.time%60|0)}s · ${cf.n}`}
+const tmp=new T.Vector3(),eye=new T.Vector3();let last=performance.now(),acc=0,blink=0,sm={x:0,y:0,z:0};
+function loop(now){requestAnimationFrame(loop);if(!started){R.render(sc,camr);return}if(paused){sound(0);last=now;return}
+let dt=Math.min(.1,(now-last)/1000);last=now;acc+=dt;let n=0;while(acc>=DT&&n++<24){step(DT);acc-=DT}if(n>=24)acc=0;
+// road tracking
+let d0=1e9;for(;;){const a=P(tk),b=P(tk+1),da=(S.x-a.x)**2+(S.z-a.z)**2,db=(S.x-b.x)**2+(S.z-b.z)**2;if(db<da)tk++;else break}
+for(;;){if(tk<=off+2)break;const a=P(tk),b=P(tk-1);if((S.x-b.x)**2+(S.z-b.z)**2<(S.x-a.x)**2+(S.z-a.z)**2)tk--;else break}
+if(tk-off>60){const c=30;pts.splice(0,c);off+=c;lastBase=-1}
+const base=tk-12;if(base!==lastBase){lastBase=base;rebuild(base);scenery(base)}
+const a=P(tk),b=P(tk+1),f=Math.max(0,Math.min(1,((S.x-a.x)*(b.x-a.x)+(S.z-a.z)*(b.z-a.z))/(SP*SP)));S.y=a.y+(b.y-a.y)*f;
+const rpm=RPM(S.we),t=now/1000,vib=S.on?Math.sin(t*rpm*.1)*.004*(1+S.gas):0,rough=(Math.abs((S.x-a.x)*Math.cos(a.p)+(S.z-a.z)*Math.sin(a.p))>3.5?.03:.006)*Math.min(1,Math.abs(S.v)*.3);
+const slope=Math.atan2(b.y-a.y,SP)*Math.cos(S.psi-a.p);S.pitch+=(slope+(-S.gas*.01*(S.v<5?1:0))-S.pitch)*Math.min(1,dt*4);
+tractor.position.set(S.x,S.y+vib+Math.sin(S.x*1.7+S.z*2.3)*rough,S.z);tractor.rotation.set(S.pitch+Math.sin(t*2.1)*rough*.3,-S.psi,Math.sin(S.x*.9+S.z)*rough,'YXZ');
+fW.forEach(w=>{w.g.rotation.y=-S.steer;w.spin.rotation.x=-S.wr*cf.rw/.42});rW.forEach(w=>w.spin.rotation.x=-S.wr*cf.rw/.75*1);rW.forEach(w=>w.spin.rotation.x=S.wr*cf.rw/.75);fW.forEach(w=>w.spin.rotation.x=S.wr*cf.rw/.42);
+swg.rotation.z=S.steer*-3;arms.forEach((m,i)=>m.rotation.y=-S.steer*.5);head.rotation.z=S.steer*.1;head.position.x=Math.sin(t*3)*vib*6;
+pedals.clutch.rotation.x=S.cl*.5;pedals.brake.rotation.x=S.br*.5;pedals.gas.rotation.x=S.gas*.5;gl.rotation.z=S.g?-.22+S.g*.08:0;
+if(S.trl){const hx=S.x-Math.sin(S.psi)*0,hz=S.z;const L=2.0;const hp=tmp.set(S.x-Math.sin(S.psi)*-0,0,0);const px=S.x+Math.sin(S.psi)*-L*-1*-1,pz=S.z-Math.cos(S.psi)*-L*-1*-1;
+trl.position.set(S.x-Math.sin(S.psi)*(-0)+(-Math.sin(S.psi))*L*-1*-1,S.y,S.z+Math.cos(S.psi)*L*-1*-1);trl.position.set(S.x-Math.sin(S.psi)*L,S.y,S.z+Math.cos(S.psi)*L);trl.rotation.set(S.pitch*.5,-S.tp,0,'YXZ');trl.userData.w.forEach(w=>w.spin.rotation.x=S.wr*cf.rw/.62)}
+// lights
+blink+=dt;const bl=(blink%.7)<.35,bk=S.br>.1||I.brake;
+hl.forEach(h=>h.material.emissiveIntensity=S.light?2:0);spot.intensity=S.light?2.2:0;tl.forEach(l=>l.material.emissiveIntensity=bk?2.5:S.light?.7:0);
+ind.forEach((l,i)=>l.material.emissiveIntensity=bl&&(S.haz||(S.ind===1&&i===0)||(S.ind===2&&i===1))?3:0);
+// dust
+if((Math.abs(S.v)>1.5&&(S.slip||Math.abs((S.x-a.x)*Math.cos(a.p)+(S.z-a.z)*Math.sin(a.p))>3.5))||(S.on&&S.gas>.5&&Math.random()<.2)){const p=dv[di=(di+1)%ND];p.x=S.x-Math.sin(S.psi)*1.5+(Math.random()-.5);p.y=S.y+.3;p.z=S.z+Math.cos(S.psi)*1.5;p.l=1}
+for(let i=0;i<ND;i++){const p=dv[i];if(p.l>0){p.l-=dt;p.y+=dt*.8;dpos.set([p.x,p.y,p.z],i*3)}else dpos.set([0,-999,0],i*3)}dg.attributes.position.needsUpdate=true;
+// camera
+const sy=Math.sin(S.psi),cy=Math.cos(S.psi);
+if(cam===1){eye.set(S.x-sy*-.0+ -sy*.25,S.y+2.9,S.z+cy*.25);tractor.localToWorld(tmp.set(0,2.95,.3));camr.position.lerp(tmp,.5);camr.position.copy(tmp);tractor.localToWorld(eye.set(0,2.55,-6));camr.lookAt(eye);camr.fov=72;head.visible=false}
+else{head.visible=true;camr.fov=62;let tg;if(cam===0){tg=tmp.set(S.x+sy*-8.5*-1*-1+(-sy)*8.5*-1*-1,S.y+4.2,S.z-cy*-8.5*-1*-1*-1);tg.set(S.x-sy*8.5*-1*-1+0,S.y+4.2,S.z)}
+if(cam===0){tg=tmp.set(S.x+sy*-9,S.y+4.3,S.z+cy*9);camr.position.lerp(tg,Math.min(1,dt*3));}
+else{const dd=cam===3?5.5:fl.d,yy=fl.y+(cam===3?t*.15:0);camr.position.set(S.x+Math.sin(yy)*Math.cos(fl.p)*dd,S.y+1.2+Math.sin(fl.p)*dd,S.z+Math.cos(yy)*Math.cos(fl.p)*dd)}
+camr.lookAt(S.x+sy*3*(cam===0),S.y+1.8,S.z-cy*3*(cam===0))}
+const ph=P(tk+2);camr.position.y=Math.max(camr.position.y,S.y-.5+(cam===1?1.5:.9));camr.updateProjectionMatrix();
+mts.position.set(S.x,S.y,S.z);
+sun.position.set(S.x+80,S.y+120,S.z+40);sun.target.position.set(S.x,S.y,S.z);sun.target.updateMatrixWorld();
+sound(rpm);hud(rpm);R.render(sc,camr)}
+// ---------- boot
+const ts=$('#tsel');CF.forEach((c,i)=>{const b=document.createElement('button');b.className='b s'+(i===1?' sel':'');b.textContent='Tractor '+c.n;b.onclick=()=>{cf=CF[i];ts.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')};ts.appendChild(b);ts.append(' ')});
+$('#qb').onclick=()=>setQ((q+1)%3);
+const mob=/Android|iPhone|iPad/i.test(navigator.userAgent);
+setQ(mob?0:1);rs();setEnv(0);updG();
+$('#go').onclick=()=>{audio();if(AC&&AC.state==='suspended')AC.resume();if(!started){started=true;const p=P(2);Object.assign(S,{x:p.x,z:p.z,psi:p.p,tp:p.p,v:0,g:0});tk=2;lastBase=-1;act.reset();updG();msg('START dabao — engine chalu karne ke liye')}setPause(false);last=performance.now()};
+try{gen(N+20);rebuild(-0>0?0:off);scenery(0);tractor.position.set(0,P(2).y,0);camr.position.set(0,6,9);camr.lookAt(0,1,0)}catch(e){$('#err').textContent='Init error: '+e.message}
+requestAnimationFrame(loop);
+})();
+</script></body></html>
