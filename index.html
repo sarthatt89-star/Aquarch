@@ -1,1226 +1,1386 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WILD FRONTIER: JUNGLE SURVIVAL</title>
-    <!-- Tailwind CSS for modern UI -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            background-color: #050b08;
-            font-family: 'Rajdhani', sans-serif;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: none;
-        }
-        h1, h2, h3, .font-orbitron {
-            font-family: 'Orbitron', sans-serif;
-        }
-        /* Custom Scrollbar for Journal */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.5);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #10b981;
-            border-radius: 3px;
-        }
-        .glass-panel {
-            background: rgba(10, 25, 18, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        .glow-text {
-            text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
-        }
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-        .animate-pulse-slow {
-            animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-    </style>
-    <!-- Three.js Import Map -->
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-        }
-      }
-    </script>
-</head>
-<body class="text-white">
-
-    <!-- LOADING SCREEN -->
-    <div id="loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-zinc-950 transition-opacity duration-1000">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-950/40 via-zinc-950 to-zinc-950"></div>
-        <div class="relative z-10 flex flex-col items-center max-w-lg px-6 text-center">
-            <div class="w-20 h-20 mb-6 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-            <h1 class="text-3xl md:text-5xl font-black tracking-wider text-emerald-400 glow-text mb-2">WILD FRONTIER</h1>
-            <p class="text-sm tracking-widest text-emerald-600 uppercase mb-8 font-semibold">Jungle Survival & Exploration 3D</p>
-            <div class="w-full bg-zinc-800 h-2 rounded-full overflow-hidden mb-4 border border-emerald-900">
-                <div id="loading-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
-            </div>
-            <p id="loading-status" class="text-xs text-zinc-400 tracking-wider">Initializing ecosystem...</p>
-            <div class="mt-8 p-4 glass-panel rounded-xl text-xs text-zinc-300 border border-emerald-500/20">
-                <span class="text-emerald-400 font-bold">TIP:</span> Explore deep river valleys and dense bamboo thickets to discover rare apex predators and elusive canopy species.
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN MENU -->
-    <div id="main-menu" class="fixed inset-0 z-40 hidden flex flex-col items-center justify-between p-6 md:p-12 bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(5,11,8,0.8), rgba(5,11,8,0.95))">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-        
-        <!-- Header -->
-        <div class="relative z-10 text-center mt-6">
-            <h2 class="text-emerald-500 tracking-widest text-sm uppercase font-semibold mb-1">AAA Open-World Simulation</h2>
-            <h1 class="text-4xl md:text-7xl font-black tracking-wider text-white glow-text">WILD FRONTIER</h1>
-            <p class="text-zinc-400 text-sm md:text-base mt-2 max-w-xl mx-auto">Immersive wilderness exploration featuring 35 unique wildlife species, dynamic weather, and procedural tropical ecosystems.</p>
-        </div>
-
-        <!-- Menu Actions -->
-        <div class="relative z-10 flex flex-col gap-4 w-full max-w-sm mb-8">
-            <button id="btn-play" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-black font-extrabold tracking-widest uppercase rounded-xl transition-all shadow-lg shadow-emerald-900/50 flex items-center justify-center gap-2 group text-lg">
-                <span>Start Expedition</span>
-                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-            </button>
-            <button id="btn-menu-journal" class="w-full py-3 glass-panel hover:bg-emerald-950/50 text-emerald-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-emerald-500/30">
-                Wildlife Journal (0/35)
-            </button>
-            <button id="btn-menu-settings" class="w-full py-3 glass-panel hover:bg-emerald-950/50 text-emerald-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-emerald-500/30">
-                Settings
-            </button>
-        </div>
-
-        <!-- Footer Credits -->
-        <div class="relative z-10 text-xs text-zinc-500 text-center">
-            Three.js WebGL Engine &bull; Optimized for Mobile & Desktop
-        </div>
-    </div>
-
-    <!-- IN-GAME HUD -->
-    <div id="game-hud" class="fixed inset-0 z-20 pointer-events-none hidden flex flex-col justify-between p-4 md:p-6">
-        <!-- Top Bar -->
-        <div class="flex justify-between items-start">
-            <!-- Stats & Discovery -->
-            <div class="flex flex-col gap-2">
-                <div class="glass-panel px-4 py-2 rounded-xl flex items-center gap-3 pointer-events-auto">
-                    <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
-                    <span class="text-xs tracking-widest text-emerald-300 font-bold">SPECIES DISCOVERED:</span>
-                    <span id="hud-discovery-count" class="text-sm font-extrabold text-white">0 / 35</span>
-                </div>
-                <div class="glass-panel px-4 py-2 rounded-xl flex items-center gap-3 pointer-events-auto">
-                    <span class="text-xs tracking-widest text-zinc-400 font-bold">TIME:</span>
-                    <span id="hud-time" class="text-xs font-bold text-emerald-400">06:30 AM (DAWN)</span>
-                </div>
-            </div>
-
-            <!-- Top Right Controls -->
-            <div class="flex items-center gap-3 pointer-events-auto">
-                <button id="btn-hud-journal" class="glass-panel px-4 py-2.5 rounded-xl text-xs font-bold text-emerald-300 hover:bg-emerald-900/40 transition-all flex items-center gap-2 border border-emerald-500/30">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    <span>Journal</span>
-                </button>
-                <button id="btn-hud-pause" class="glass-panel p-2.5 rounded-xl text-emerald-300 hover:bg-emerald-900/40 transition-all border border-emerald-500/30">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Center Notification Toast -->
-        <div id="discovery-toast" class="self-center mb-auto mt-4 transition-all duration-500 opacity-0 transform -translate-y-4 pointer-events-none">
-            <div class="glass-panel px-6 py-3 rounded-2xl border border-emerald-500/50 bg-emerald-950/80 shadow-2xl flex items-center gap-4">
-                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                </div>
-                <div>
-                    <p class="text-[10px] tracking-widest text-emerald-400 font-extrabold uppercase">New Species Logged</p>
-                    <p id="toast-species-name" class="text-base font-bold text-white font-orbitron">Bengal Tiger</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Interaction Prompt -->
-        <div id="interaction-prompt" class="self-center mb-24 opacity-0 transition-opacity duration-200 pointer-events-none">
-            <div class="glass-panel px-5 py-2.5 rounded-xl border border-emerald-400/40 bg-black/60 flex items-center gap-3">
-                <span class="px-2 py-0.5 bg-emerald-500 text-black font-bold text-xs rounded">E</span>
-                <span id="interaction-text" class="text-sm font-semibold tracking-wider text-emerald-200">Examine Campfire</span>
-            </div>
-        </div>
-
-        <!-- Bottom HUD: Compass & Stamina & Mobile Controls -->
-        <div class="flex justify-between items-end w-full">
-            <!-- Left: Stamina & Minimap Compass -->
-            <div class="flex flex-col gap-3 pointer-events-auto">
-                <div class="glass-panel p-3 rounded-2xl w-48 border border-emerald-500/20">
-                    <div class="flex justify-between items-center mb-1 text-[10px] tracking-wider text-zinc-400 font-bold">
-                        <span>STAMINA</span>
-                        <span id="stamina-text" class="text-emerald-400">100%</span>
-                    </div>
-                    <div class="w-full bg-zinc-900 h-2 rounded-full overflow-hidden border border-emerald-900/50">
-                        <div id="stamina-bar" class="bg-emerald-500 h-full w-full transition-all duration-150"></div>
-                    </div>
-                </div>
-                <div class="glass-panel px-4 py-2 rounded-xl flex items-center justify-between w-48 border border-emerald-500/20 text-xs font-bold text-emerald-300">
-                    <span class="text-zinc-500">HEADING</span>
-                    <span id="compass-heading" class="font-orbitron">NORTH (0°)</span>
-                </div>
-            </div>
-
-            <!-- Right: Action Buttons (Jump, Run, Interact) -->
-            <div id="mobile-action-buttons" class="hidden md:flex flex-col gap-3 pointer-events-auto">
-                <div class="flex gap-3">
-                    <button id="btn-run" class="w-16 h-16 glass-panel rounded-2xl flex flex-col items-center justify-center text-emerald-300 border border-emerald-500/40 active:bg-emerald-500 active:text-black transition-colors">
-                        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        <span class="text-[9px] font-bold">RUN</span>
-                    </button>
-                    <button id="btn-jump" class="w-16 h-16 glass-panel rounded-2xl flex flex-col items-center justify-center text-emerald-300 border border-emerald-500/40 active:bg-emerald-500 active:text-black transition-colors">
-                        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
-                        <span class="text-[9px] font-bold">JUMP</span>
-                    </button>
-                </div>
-                <button id="btn-interact" class="w-full py-3 glass-panel rounded-2xl flex items-center justify-center gap-2 text-emerald-300 border border-emerald-500/40 active:bg-emerald-500 active:text-black transition-colors font-bold text-xs uppercase tracking-wider">
-                    <span>Interact</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Virtual Joystick Area (Left Side) -->
-        <div id="joystick-zone" class="absolute bottom-6 left-6 w-36 h-36 rounded-full border-2 border-emerald-500/20 bg-emerald-950/10 backdrop-blur-sm pointer-events-auto hidden md:hidden items-center justify-center">
-            <div id="joystick-thumb" class="w-14 h-14 rounded-full bg-emerald-500/50 border border-emerald-400 absolute transition-transform duration-75"></div>
-        </div>
-    </div>
-
-    <!-- WILDLIFE JOURNAL MODAL -->
-    <div id="journal-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-        <div class="glass-panel w-full max-w-4xl h-[85vh] rounded-3xl flex flex-col border border-emerald-500/40 overflow-hidden shadow-2xl">
-            <!-- Modal Header -->
-            <div class="px-6 py-5 border-b border-emerald-500/20 flex justify-between items-center bg-emerald-950/40">
-                <div>
-                    <h2 class="text-xl md:text-2xl font-black text-white font-orbitron flex items-center gap-3">
-                        <span>WILDLIFE FIELD JOURNAL</span>
-                        <span id="journal-counter-badge" class="text-xs px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 font-semibold">0 / 35</span>
-                    </h2>
-                    <p class="text-xs text-zinc-400 mt-0.5">Catalog of native fauna discovered across the jungle ecosystem.</p>
-                </div>
-                <button id="btn-close-journal" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-emerald-400 hover:bg-emerald-900/50 border border-emerald-500/30">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-
-            <!-- Modal Content Grid -->
-            <div class="flex-1 overflow-y-auto p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <!-- Dynamically populated via JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- SETTINGS MODAL -->
-    <div id="settings-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-        <div class="glass-panel w-full max-w-md rounded-3xl p-6 border border-emerald-500/40 flex flex-col gap-6 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-emerald-500/20 pb-4">
-                <h2 class="text-xl font-black text-white font-orbitron">SETTINGS</h2>
-                <button id="btn-close-settings" class="w-8 h-8 rounded-lg glass-panel flex items-center justify-center text-emerald-400 border border-emerald-500/30">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            
-            <div class="flex flex-col gap-4 text-sm">
-                <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-emerald-400 tracking-wider">GRAPHICS QUALITY</label>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button class="quality-btn py-2.5 rounded-xl glass-panel border border-emerald-500/30 font-bold text-xs" data-quality="low">LOW</button>
-                        <button class="quality-btn py-2.5 rounded-xl glass-panel border border-emerald-500 bg-emerald-950/60 font-bold text-xs text-emerald-300" data-quality="medium">MEDIUM</button>
-                        <button class="quality-btn py-2.5 rounded-xl glass-panel border border-emerald-500/30 font-bold text-xs" data-quality="high">HIGH</button>
-                    </div>
-                </div>
-
-                <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-emerald-400 tracking-wider">MASTER AUDIO VOLUME</label>
-                    <input id="slider-volume" type="range" min="0" max="1" step="0.05" value="0.7" class="accent-emerald-500 w-full cursor-pointer">
-                </div>
-
-                <div class="flex flex-col gap-2">
-                    <label class="text-xs font-bold text-emerald-400 tracking-wider">CAMERA SENSITIVITY</label>
-                    <input id="slider-sensitivity" type="range" min="0.5" max="2.5" step="0.1" value="1.2" class="accent-emerald-500 w-full cursor-pointer">
-                </div>
-
-                <div class="pt-4 border-t border-emerald-500/20 flex justify-between items-center">
-                    <span class="text-xs font-bold text-zinc-400">RESET ALL PROGRESS</span>
-                    <button id="btn-reset-save" class="px-4 py-2 bg-red-950/60 hover:bg-red-900 border border-red-500/40 text-red-300 font-bold text-xs rounded-xl transition-all">Clear Data</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAUSE MENU MODAL -->
-    <div id="pause-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-        <div class="glass-panel w-full max-w-sm rounded-3xl p-6 border border-emerald-500/40 flex flex-col gap-4 shadow-2xl text-center">
-            <h2 class="text-2xl font-black text-white font-orbitron mb-2">GAME PAUSED</h2>
-            <button id="btn-resume" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-black font-extrabold tracking-widest uppercase rounded-xl transition-all shadow-lg">Resume Game</button>
-            <button id="btn-pause-journal" class="w-full py-3 glass-panel hover:bg-emerald-950/50 text-emerald-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-emerald-500/30">Wildlife Journal</button>
-            <button id="btn-pause-settings" class="w-full py-3 glass-panel hover:bg-emerald-950/50 text-emerald-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-emerald-500/30">Settings</button>
-            <button id="btn-quit-menu" class="w-full py-3 glass-panel hover:bg-red-950/50 text-red-300 font-bold tracking-wider uppercase rounded-xl transition-all border border-red-500/30">Main Menu</button>
-        </div>
-    </div>
-
-    <!-- GAME CANVAS CONTAINER -->
-    <div id="canvas-container" class="absolute inset-0 z-0"></div>
-
-    <!-- MAIN GAME SCRIPT -->
-    <script type="module">
-        import * as THREE from 'three';
-
-        // --- 35 SPECIES DATABASE ---
-        const SPECIES_DATA = [
-            { id: 1, name: "Bengal Tiger", category: "Apex Predator", habitat: "Dense Forest / Riverbanks", desc: "A magnificent apex predator with distinctive orange coat and dark vertical stripes. Highly territorial." },
-            { id: 2, name: "Asiatic Lion", category: "Apex Predator", habitat: "Open Clearings / Scrub", desc: "Powerful social predator with a characteristic sparse mane and robust muscular build." },
-            { id: 3, name: "Indian Leopard", category: "Apex Predator", habitat: "Rocky Hills / Canopy", desc: "Elusive and agile climber adept at navigating dense jungle branches and elevated rocky crags." },
-            { id: 4, name: "Indian Elephant", category: "Pachyderm", habitat: "River Valleys / Bamboo", desc: "Massive herbivorous giant moving in familial herds across lowland floodplains." },
-            { id: 5, name: "Indian Rhinoceros", category: "Pachyderm", habitat: "Wetlands / Tall Grass", desc: "Armored solitary herbivore with a prominent horn and grayish brown skin folds." },
-            { id: 6, name: "Sloth Bear", category: "Omnivore", habitat: "Forest Caves / Scrub", desc: "Shaggy-coated bear known for its distinct pale muzzle and fondness for termites and fruit." },
-            { id: 7, name: "Wild Boar", category: "Omnivore", habitat: "Underbrush / Muddy Trails", desc: "Sturdy omnivore with bristly dark fur and sharp tusks, rooting actively through leaf litter." },
-            { id: 8, name: "Spotted Deer", category: "Herbivore", habitat: "Forest Clearings", desc: "Graceful herd animal with reddish-brown coat covered in white spots and slender antlers." },
-            { id: 9, name: "Sambar Deer", category: "Herbivore", habitat: "Dense Woodlands near Water", desc: "Large dark-brown deer with rugged antlers, often found resting near shadowy stream banks." },
-            { id: 10, name: "Nilgai", category: "Herbivore", habitat: "Open Scrub / Grasslands", desc: "Largest Asian antelope; males feature a bluish-grey coat and short robust horns." },
-            { id: 11, name: "Blackbuck", category: "Herbivore", habitat: "Open Plains", desc: "Striking antelope with spiraled horns and sharp contrast between dark coat and white underparts." },
-            { id: 12, name: "Gaur", category: "Herbivore", habitat: "Hilly Jungle Slopes", desc: "Massive wild ox with a high muscular ridge on its back and distinct white lower legs." },
-            { id: 13, name: "Indian Wolf", category: "Predator", habitat: "Dry Open Scrub", desc: "Slender, intelligent canine hunter operating in coordinated packs across the wilderness." },
-            { id: 14, name: "Golden Jackal", category: "Predator", habitat: "Forest Edges", adaptable: true, desc: "Resourceful nocturnal canine with a golden-brown coat and cautious demeanor." },
-            { id: 15, name: "Red Fox", category: "Predator", habitat: "Wooded Hillsides", desc: "Small agile predator with a bushy white-tipped tail and sharp hearing." },
-            { id: 16, name: "Striped Hyena", category: "Predator", habitat: "Rocky Outcrops", desc: "Nocturnal scavenger with dark vertical stripes and a sloping back profile." },
-            { id: 17, name: "Gray Langur", category: "Primate", habitat: "Tree Canopies", desc: "Silver-furred arboreal monkey with a dark face, leaping effortlessly between branches." },
-            { id: 18, name: "Rhesus Macaque", category: "Primate", habitat: "Forest Clearings / Rocks", desc: "Curious and highly adaptable primate living in dynamic multi-male troops." },
-            { id: 19, name: "Gibbon", category: "Primate", habitat: "High Tree Canopies", desc: "Slender arboreal ape known for acrobatic brachiation and resonant morning calls." },
-            { id: 20, name: "Indian Giant Squirrel", category: "Rodent", habitat: "Upper Tree Canopy", desc: "Vibrantly colored large tree squirrel with deep maroon and cream fur." },
-            { id: 21, name: "Indian Porcupine", category: "Rodent", habitat: "Rocky Burrow Slopes", desc: "Nocturnal rodent defended by long banded quills that rattle when alarmed." },
-            { id: 22, name: "Indian Hare", category: "Rodent", habitat: "Grassy Clearings", desc: "Swift herbivore with long sensitive ears and powerful hind legs for rapid evasion." },
-            { id: 23, name: "Indian Peafowl", category: "Bird", habitat: "Forest Floors / Clearings", desc: "Resplendent ground bird featuring vibrant blue-green plumage and a magnificent fan tail." },
-            { id: 24, name: "Red Junglefowl", category: "Bird", habitat: "Undergrowth", desc: "Wild ancestor of domestic fowl with striking red crests and golden hackles." },
-            { id: 25, name: "Great Hornbill", category: "Bird", habitat: "High Canopy Trees", desc: "Imposing fruit-eating bird with a massive yellow and black casque atop its bill." },
-            { id: 26, name: "Parakeet", category: "Bird", habitat: "Canopy", desc: "Vibrant emerald-green parrot flying in noisy, fast-moving flocks across the treetops." },
-            { id: 27, name: "Kingfisher", category: "Bird", habitat: "Riverbanks", desc: "Brilliant azure and orange bird perched silently above streams, waiting to spear small fish." },
-            { id: 28, name: "Indian Eagle Owl", category: "Bird", habitat: "Rocky Cliffs / Old Trees", desc: "Large nocturnal raptor with striking orange eyes and prominent ear tufts." },
-            { id: 29, name: "Crocodile", category: "Reptile", habitat: "River Deltas / Mudbanks", desc: "Patient amphibious apex predator with armored scutes and crushing jaws." },
-            { id: 30, name: "Monitor Lizard", category: "Reptile", habitat: "Forest Floor / Riverbanks", desc: "Large predatory lizard with powerful limbs, forked tongue, and scaly skin." },
-            { id: 31, name: "Indian Python", category: "Reptile", habitat: "Wetlands / Dense Thickets", desc: "Heavy-bodied non-venomous constrictor patterned with dark blotches." },
-            { id: 32, name: "Cobra", category: "Reptile", habitat: "Tall Grass / Hollow Logs", desc: "Elusive venomous snake capable of rearing up and expanding its iconic hood." },
-            { id: 33, name: "Indian Rock Agama", category: "Reptile", habitat: "Sunlit Rock Faces", desc: "Colorful lizard whose males display brilliant orange heads and blue bodies in sunlight." },
-            { id: 34, name: "Freshwater Turtle", category: "Reptile", habitat: "Ponds / River Edges", desc: "Hard-shelled reptilian dweller basking peacefully on muddy river logs." },
-            { id: 35, name: "Fruit Bat", category: "Flying Mammal", habitat: "Cave Ceilings / Large Trees", desc: "Large nocturnal mammal hanging upside down in colonies before taking flight at dusk." }
-        ];
-
-        // --- SAVE MANAGER ---
-        class SaveManager {
-            constructor() {
-                this.key = "WILD_FRONTIER_SAVE_DATA_V1";
-                this.data = this.load();
-            }
-            load() {
-                try {
-                    const raw = localStorage.getItem(this.key);
-                    if (raw) return JSON.parse(raw);
-                } catch(e) { console.warn("Save load error", e); }
-                return { discovered: [], settings: { quality: 'medium', volume: 0.7, sensitivity: 1.2 } };
-            }
-            save() {
-                try {
-                    localStorage.setItem(this.key, JSON.stringify(this.data));
-                } catch(e) { console.warn("Save error", e); }
-            }
-            isDiscovered(id) {
-                return this.data.discovered.includes(id);
-            }
-            discover(id) {
-                if (!this.data.discovered.includes(id)) {
-                    this.data.discovered.push(id);
-                    this.save();
-                    return true;
-                }
-                return false;
-            }
-            reset() {
-                localStorage.removeItem(this.key);
-                this.data = { discovered: [], settings: { quality: 'medium', volume: 0.7, sensitivity: 1.2 } };
-            }
-        }
-
-        // --- AUDIO MANAGER ---
-        class AudioManager {
-            constructor(saveManager) {
-                this.saveManager = saveManager;
-                this.ctx = null;
-                this.gainNode = null;
-                this.initialized = false;
-                this.windNode = null;
-            }
-            init() {
-                if (this.initialized) return;
-                try {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    this.ctx = new AudioContext();
-                    this.gainNode = this.ctx.createGain();
-                    this.gainNode.gain.value = this.saveManager.data.settings.volume;
-                    this.gainNode.connect(this.ctx.destination);
-                    
-                    // Synthesize ambient jungle wind
-                    this.startWind();
-                    this.initialized = true;
-                } catch(e) {
-                    console.warn("Web Audio API not supported", e);
-                }
-            }
-            setVolume(val) {
-                if (this.gainNode && this.ctx) {
-                    this.gainNode.gain.setValueAtTime(val, this.ctx.currentTime);
-                }
-            }
-            startWind() {
-                if (!this.ctx) return;
-                try {
-                    const bufferSize = this.ctx.sampleRate * 2;
-                    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-                    const data = buffer.getChannelData(0);
-                    for (let i = 0; i < bufferSize; i++) {
-                        data[i] = Math.random() * 2 - 1;
-                    }
-                    const noise = this.ctx.createBufferSource();
-                    noise.buffer = buffer;
-                    noise.loop = true;
-
-                    const filter = this.ctx.createBiquadFilter();
-                    filter.type = 'lowpass';
-                    filter.frequency.value = 350;
-
-                    const windGain = this.ctx.createGain();
-                    windGain.gain.value = 0.15;
-
-                    noise.connect(filter);
-                    filter.connect(windGain);
-                    windGain.connect(this.gainNode);
-                    noise.start();
-                } catch(e) {}
-            }
-            playFootstep() {
-                if (!this.ctx || !this.initialized) return;
-                try {
-                    const osc = this.ctx.createOscillator();
-                    const gain = this.ctx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(80, this.ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 0.08);
-                    
-                    gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
-
-                    osc.connect(gain);
-                    gain.connect(this.gainNode);
-                    osc.start();
-                    osc.stop(this.ctx.currentTime + 0.08);
-                } catch(e) {}
-            }
-            playAnimalSound() {
-                if (!this.ctx || !this.initialized) return;
-                try {
-                    const osc = this.ctx.createOscillator();
-                    const gain = this.ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(250, this.ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.4);
-                    
-                    gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
-
-                    osc.connect(gain);
-                    gain.connect(this.gainNode);
-                    osc.start();
-                    osc.stop(this.ctx.currentTime + 0.4);
-                } catch(e) {}
-            }
-        }
-
-        // --- WEATHER & TIME SYSTEM ---
-        class WeatherSystem {
-            constructor(scene, renderer) {
-                this.scene = scene;
-                this.renderer = renderer;
-                this.timeOfDay = 6.5; // Starts at 6:30 AM
-                this.dayDuration = 300; // 5 minutes per full day cycle in seconds
-                this.sunLight = new THREE.DirectionalLight(0xfff5e6, 1.8);
-                this.sunLight.castShadow = true;
-                this.sunLight.shadow.mapSize.width = 1024;
-                this.sunLight.shadow.mapSize.height = 1024;
-                this.sunLight.shadow.camera.near = 10;
-                this.sunLight.shadow.camera.far = 250;
-                const d = 100;
-                this.sunLight.shadow.camera.left = -d;
-                this.sunLight.shadow.camera.right = d;
-                this.sunLight.shadow.camera.top = d;
-                this.sunLight.shadow.camera.bottom = -d;
-                this.scene.add(this.sunLight);
-
-                this.ambientLight = new THREE.AmbientLight(0xddeeff, 0.6);
-                this.scene.add(this.ambientLight);
-            }
-            update(delta) {
-                this.timeOfDay += (delta / this.dayDuration) * 24;
-                if (this.timeOfDay >= 24) this.timeOfDay = 0;
-
-                const angle = (this.timeOfDay / 24) * Math.PI * 2 - Math.PI / 2;
-                const radius = 200;
-                this.sunLight.position.set(
-                    Math.cos(angle) * radius,
-                    Math.sin(angle) * radius,
-                    50
-                );
-
-                // Color shifts based on time
-                if (this.timeOfDay >= 5 && this.timeOfDay < 7) {
-                    // Dawn
-                    this.sunLight.color.setHex(0xffaa55);
-                    this.sunLight.intensity = 1.2;
-                    this.ambientLight.color.setHex(0x557788);
-                    this.ambientLight.intensity = 0.5;
-                    this.scene.fog.color.setHex(0x2a3b32);
-                } else if (this.timeOfDay >= 7 && this.timeOfDay < 18) {
-                    // Day
-                    this.sunLight.color.setHex(0xfff5e6);
-                    this.sunLight.intensity = 2.0;
-                    this.ambientLight.color.setHex(0xddeeff);
-                    this.ambientLight.intensity = 0.7;
-                    this.scene.fog.color.setHex(0x3e594d);
-                } else if (this.timeOfDay >= 18 && this.timeOfDay < 19.5) {
-                    // Dusk
-                    this.sunLight.color.setHex(0xff5533);
-                    this.sunLight.intensity = 1.0;
-                    this.ambientLight.color.setHex(0x443344);
-                    this.ambientLight.intensity = 0.4;
-                    this.scene.fog.color.setHex(0x221a22);
-                } else {
-                    // Night
-                    this.sunLight.color.setHex(0x335588);
-                    this.sunLight.intensity = 0.3;
-                    this.ambientLight.color.setHex(0x112233);
-                    this.ambientLight.intensity = 0.2;
-                    this.scene.fog.color.setHex(0x0a1410);
-                }
-            }
-            getTimeString() {
-                const hours = Math.floor(this.timeOfDay);
-                const mins = Math.floor((this.timeOfDay - hours) * 60);
-                const period = hours >= 12 ? "PM" : "AM";
-                const displayHours = hours % 12 === 0 ? 12 : hours % 12;
-                const displayMins = mins < 10 ? "0" + mins : mins;
-                let phase = "DAY";
-                if (hours >= 5 && hours < 7) phase = "DAWN";
-                else if (hours >= 7 && hours < 18) phase = "DAY";
-                else if (hours >= 18 && hours < 19.5) phase = "DUSK";
-                else phase = "NIGHT";
-                return `${displayHours}:${displayMins} ${period} (${phase})`;
-            }
-        }
-
-        // --- TERRAIN & WORLD GENERATOR ---
-        class TerrainSystem {
-            constructor(scene) {
-                this.scene = scene;
-                this.size = 600;
-                this.segments = 128;
-                this.mesh = null;
-                this.buildTerrain();
-                this.buildWater();
-                this.buildVegetation();
-            }
-
-            getHeight(x, z) {
-                // Procedural height formula matching geometry generation
-                const nx = x * 0.005;
-                const nz = z * 0.005;
-                let h = Math.sin(nx * 2) * Math.cos(nz * 2) * 8 + Math.sin(nx * 0.5) * 15;
-                // River basin carve
-                const riverDist = Math.abs(x - Math.sin(z * 0.01) * 30);
-                if (riverDist < 25) {
-                    h -= (25 - riverDist) * 0.3;
-                }
-                return h;
-            }
-
-            buildTerrain() {
-                const geo = new THREE.PlaneGeometry(this.size, this.size, this.segments, this.segments);
-                geo.rotateX(-Math.PI / 2);
-
-                const pos = geo.attributes.position;
-                for (let i = 0; i < pos.count; i++) {
-                    const x = pos.getX(i);
-                    const z = pos.getZ(i);
-                    pos.setY(i, this.getHeight(x, z));
-                }
-                geo.computeVertexNormals();
-
-                const mat = new THREE.MeshStandardMaterial({
-                    color: 0x2e4f34,
-                    roughness: 0.9,
-                    metalness: 0.1,
-                    flatShading: true
-                });
-
-                this.mesh = new THREE.Mesh(geo, mat);
-                this.mesh.receiveShadow = true;
-                this.scene.add(this.mesh);
-            }
-
-            buildWater() {
-                const waterGeo = new THREE.PlaneGeometry(this.size, this.size);
-                waterGeo.rotateX(-Math.PI / 2);
-                const waterMat = new THREE.MeshStandardMaterial({
-                    color: 0x1b4d3e,
-                    roughness: 0.2,
-                    metalness: 0.8,
-                    transparent: true,
-                    opacity: 0.85
-                });
-                const water = new THREE.Mesh(waterGeo, waterMat);
-                water.position.y = -1.5;
-                this.scene.add(water);
-            }
-
-            buildVegetation() {
-                // Instanced trees for dense tropical forest
-                const treeGeo = new THREE.ConeGeometry(3, 12, 5);
-                const treeMat = new THREE.MeshStandardMaterial({ color: 0x143822, roughness: 0.8 });
-                const count = 400;
-                const instancedTrees = new THREE.InstancedMesh(treeGeo, treeMat, count);
-
-                const matrix = new THREE.Matrix4();
-                const dummy = new THREE.Object3D();
-
-                let placed = 0;
-                for (let i = 0; i < count * 2 && placed < count; i++) {
-                    const x = (Math.random() - 0.5) * (this.size - 50);
-                    const z = (Math.random() - 0.5) * (this.size - 50);
-                    // Avoid river center
-                    if (Math.abs(x - Math.sin(z * 0.01) * 30) < 30) continue;
-
-                    const y = this.getHeight(x, z);
-                    if (y < 0) continue; // Don't spawn underwater
-
-                    dummy.position.set(x, y + 6, z);
-                    const scale = 0.6 + Math.random() * 0.8;
-                    dummy.scale.set(scale, scale + Math.random() * 0.5, scale);
-                    dummy.updateMatrix();
-
-                    instancedTrees.setMatrixAt(placed, dummy.matrix);
-                    placed++;
-                }
-                instancedTrees.instanceMatrix.needsUpdate = true;
-                instancedTrees.castShadow = true;
-                instancedTrees.receiveShadow = true;
-                this.scene.add(instancedTrees);
-            }
-        }
-
-        // --- PROCEDURAL ANIMAL FACTORY & AI ---
-        class Animal {
-            constructor(speciesData, scene, terrainSystem) {
-                this.species = speciesData;
-                this.scene = scene;
-                this.terrain = terrainSystem;
-                this.group = new THREE.Group();
-                
-                // Position
-                this.x = (Math.random() - 0.5) * 400;
-                this.z = (Math.random() - 0.5) * 400;
-                this.y = this.terrain.getHeight(this.x, this.z);
-                this.group.position.set(this.x, Math.max(this.y, 0), this.z);
-
-                this.velocity = new THREE.Vector3();
-                this.speed = 2 + Math.random() * 3;
-                this.state = 'IDLE'; // IDLE, WALK, FLEE
-                this.stateTimer = Math.random() * 5;
-                this.targetRotation = 0;
-
-                this.buildModel();
-                this.scene.add(this.group);
-            }
-
-            buildModel() {
-                // Procedural distinct models based on category or archetype
-                const cat = this.species.category;
-                const matColor = this.getSpeciesColor();
-                const bodyMat = new THREE.MeshStandardMaterial({ color: matColor, roughness: 0.7 });
-
-                if (cat === "Apex Predator" || cat === "Predator") {
-                    // Quadruped sleek body
-                    const bodyGeo = new THREE.BoxGeometry(1.5, 0.8, 3);
-                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-                    this.bodyMesh.position.y = 1;
-                    this.bodyMesh.castShadow = true;
-                    this.group.add(this.bodyMesh);
-
-                    const headGeo = new THREE.BoxGeometry(0.8, 0.7, 1);
-                    const headMesh = new THREE.Mesh(headGeo, bodyMat);
-                    headMesh.position.set(0, 1.4, 1.6);
-                    this.group.add(headMesh);
-                } else if (cat === "Pachyderm") {
-                    // Massive body
-                    const bodyGeo = new THREE.BoxGeometry(3, 2.5, 5);
-                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-                    this.bodyMesh.position.y = 2;
-                    this.bodyMesh.castShadow = true;
-                    this.group.add(this.bodyMesh);
-                } else if (cat === "Herbivore") {
-                    // Slender quadruped
-                    const bodyGeo = new THREE.BoxGeometry(1.2, 1.2, 2.5);
-                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-                    this.bodyMesh.position.y = 1.3;
-                    this.bodyMesh.castShadow = true;
-                    this.group.add(this.bodyMesh);
-
-                    const headGeo = new THREE.BoxGeometry(0.5, 0.8, 0.8);
-                    const headMesh = new THREE.Mesh(headGeo, bodyMat);
-                    headMesh.position.set(0, 2, 1.4);
-                    this.group.add(headMesh);
-                } else if (cat === "Primate") {
-                    // Bipedal/Stooped
-                    const bodyGeo = new THREE.BoxGeometry(0.8, 1.5, 0.8);
-                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-                    this.bodyMesh.position.y = 1;
-                    this.bodyMesh.castShadow = true;
-                    this.group.add(this.bodyMesh);
-                } else if (cat === "Bird") {
-                    // Streamlined avian
-                    const bodyGeo = new THREE.ConeGeometry(0.5, 1.5, 5);
-                    bodyGeo.rotateX(Math.PI / 2);
-                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-                    this.bodyMesh.position.y = 1;
-                    this.bodyMesh.castShadow = true;
-                    this.group.add(this.bodyMesh);
-                } else {
-                    // Reptile / default
-                    const bodyGeo = new THREE.BoxGeometry(0.8, 0.5, 2.5);
-                    this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
-                    this.bodyMesh.position.y = 0.5;
-                    this.bodyMesh.castShadow = true;
-                    this.group.add(this.bodyMesh);
-                }
-            }
-
-            getSpeciesColor() {
-                const id = this.species.id;
-                if (id === 1) return 0xd97706; // Tiger orange
-                if (id === 2 || id === 10) return 0x92400e; // Lion/Nilgai
-                if (id === 4 || id === 5) return 0x6b7280; // Elephant/Rhino grey
-                if (id === 23) return 0x2563eb; // Peafowl blue
-                if (id === 26) return 0x10b981; // Parakeet green
-                if (id === 29 || id === 31) return 0x1f2937; // Crocodile dark
-                return 0x854d0e; // Default earthy brown
-            }
-
-            update(delta, playerPos) {
-                const distToPlayer = this.group.position.distanceTo(playerPos);
-
-                // AI State Machine
-                this.stateTimer -= delta;
-                if (this.stateTimer <= 0) {
-                    this.stateTimer = 3 + Math.random() * 5;
-                    if (distToPlayer < 20) {
-                        this.state = 'FLEE';
-                    } else {
-                        this.state = Math.random() > 0.4 ? 'WALK' : 'IDLE';
-                        this.targetRotation = Math.random() * Math.PI * 2;
-                    }
-                }
-
-                if (distToPlayer < 18) {
-                    this.state = 'FLEE';
-                    // Run away from player
-                    const angle = Math.atan2(this.group.position.x - playerPos.x, this.group.position.z - playerPos.z);
-                    this.targetRotation = angle;
-                }
-
-                if (this.state === 'WALK' || this.state === 'FLEE') {
-                    const currentRot = this.group.rotation.y;
-                    this.group.rotation.y = THREE.MathUtils.lerp(currentRot, this.targetRotation, delta * 3);
-                    
-                    const spd = this.state === 'FLEE' ? this.speed * 2.2 : this.speed * 0.6;
-                    this.group.translateZ(spd * delta);
-
-                    // Clamp to terrain
-                    this.x = this.group.position.x;
-                    this.z = this.group.position.z;
-                    this.y = this.terrain.getHeight(this.x, this.z);
-                    this.group.position.y = Math.max(this.y, -1);
-                }
-            }
-        }
-
-        // --- WILDLIFE MANAGER ---
-        class WildlifeManager {
-            constructor(scene, terrain, saveManager, onDiscover) {
-                this.scene = scene;
-                this.terrain = terrain;
-                this.saveManager = saveManager;
-                this.onDiscover = onDiscover;
-                this.animals = [];
-
-                // Spawn all 35 species across the world
-                SPECIES_DATA.forEach(data => {
-                    const animal = new Animal(data, this.scene, this.terrain);
-                    this.animals.push(animal);
-                });
-            }
-
-            update(delta, playerPos) {
-                this.animals.forEach(animal => {
-                    animal.update(delta, playerPos);
-
-                    // Check discovery trigger
-                    const dist = animal.group.position.distanceTo(playerPos);
-                    if (dist < 12) {
-                        if (this.saveManager.discover(animal.species.id)) {
-                            this.onDiscover(animal.species);
-                        }
-                    }
-                });
-            }
-        }
-
-        // --- PLAYER CONTROLLER ---
-        class PlayerController {
-            constructor(scene, terrain, audioManager) {
-                this.scene = scene;
-                this.terrain = terrain;
-                this.audio = audioManager;
-                
-                this.group = new THREE.Group();
-                this.group.position.set(0, 0, 10);
-                this.scene.add(this.group);
-
-                this.velocity = new THREE.Vector3();
-                this.speed = 6.0;
-                this.runMultiplier = 1.8;
-                this.isWalking = false;
-                this.isRunning = false;
-                this.isJumping = false;
-                this.stamina = 100;
-
-                this.buildHumanModel();
-            }
-
-            buildHumanModel() {
-                // Procedural Explorer 3D Model
-                const matBody = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.6 }); // Jacket
-                const matPants = new THREE.MeshStandardMaterial({ color: 0x3f3f46, roughness: 0.8 }); // Trousers
-                const matSkin = new THREE.MeshStandardMaterial({ color: 0xfbcfe8, roughness: 0.5 }); // Head
-                const matBackpack = new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.7 });
-
-                // Torso
-                const torsoGeo = new THREE.BoxGeometry(0.8, 1.1, 0.4);
-                this.torso = new THREE.Mesh(torsoGeo, matBody);
-                this.torso.position.y = 1.3;
-                this.torso.castShadow = true;
-                this.group.add(this.torso);
-
-                // Backpack
-                const bpGeo = new THREE.BoxGeometry(0.7, 0.9, 0.4);
-                const bp = new THREE.Mesh(bpGeo, matBackpack);
-                bp.position.set(0, 1.4, -0.3);
-                this.group.add(bp);
-
-                // Head
-                const headGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-                const head = new THREE.Mesh(headGeo, matSkin);
-                head.position.set(0, 2.0, 0);
-                this.group.add(head);
-
-                // Legs
-                const legGeo = new THREE.BoxGeometry(0.3, 0.9, 0.3);
-                this.leftLeg = new THREE.Mesh(legGeo, matPants);
-                this.leftLeg.position.set(-0.22, 0.5, 0);
-                this.group.add(this.leftLeg);
-
-                this.rightLeg = new THREE.Mesh(legGeo, matPants);
-                this.rightLeg.position.set(0.22, 0.5, 0);
-                this.group.add(this.rightLeg);
-            }
-
-            update(delta, input, cameraAngle) {
-                let moveX = input.x;
-                let moveZ = input.z;
-
-                this.isRunning = input.run && this.stamina > 10 && (moveX !== 0 || moveZ !== 0);
-                
-                if (this.isRunning) {
-                    this.stamina = Math.max(0, this.stamina - delta * 30);
-                } else {
-                    this.stamina = Math.min(100, this.stamina + delta * 15);
-                }
-
-                const currentSpeed = this.speed * (this.isRunning ? this.runMultiplier : 1.0);
-
-                if (moveX !== 0 || moveZ !== 0) {
-                    this.isWalking = true;
-                    // Calculate movement relative to camera angle
-                    const angle = Math.atan2(moveX, moveZ) + cameraAngle;
-                    const targetRotation = angle;
-                    this.group.rotation.y = THREE.MathUtils.lerp(this.group.rotation.y, targetRotation, delta * 10);
-
-                    const moveDir = new THREE.Vector3(Math.sin(angle), 0, Math.cos(angle));
-                    this.group.position.addScaledVector(moveDir, currentSpeed * delta);
-
-                    // Leg animation swing
-                    const swing = Math.sin(Date.now() * 0.015) * 0.4;
-                    this.leftLeg.rotation.x = swing;
-                    this.rightLeg.rotation.x = -swing;
-
-                    if (Math.random() < 0.15) {
-                        this.audio.playFootstep();
-                    }
-                } else {
-                    this.isWalking = false;
-                    this.leftLeg.rotation.x = 0;
-                    this.rightLeg.rotation.x = 0;
-                }
-
-                // Jump logic
-                if (input.jump && !this.isJumping && this.stamina > 20) {
-                    this.velocity.y = 7.0;
-                    this.isJumping = true;
-                    this.stamina -= 15;
-                }
-
-                // Apply gravity & terrain height
-                this.velocity.y -= 15.0 * delta;
-                this.group.position.y += this.velocity.y * delta;
-
-                const groundY = this.terrain.getHeight(this.group.position.x, this.group.position.z);
-                if (this.group.position.y <= groundY) {
-                    this.group.position.y = groundY;
-                    this.velocity.y = 0;
-                    this.isJumping = false;
-                }
-            }
-        }
-
-        // --- THIRD PERSON CAMERA ---
-        class ThirdPersonCamera {
-            constructor(camera, targetGroup) {
-                this.camera = camera;
-                this.target = targetGroup;
-                this.distance = 7;
-                this.height = 3;
-                this.angleX = 0;
-                this.angleY = 0.3;
-            }
-
-            rotate(deltaX, deltaY, sensitivity) {
-                this.angleX -= deltaX * sensitivity * 0.005;
-                this.angleY = Math.max(0.1, Math.min(1.2, this.angleY - deltaY * sensitivity * 0.005));
-            }
-
-            update() {
-                const idealOffset = new THREE.Vector3(
-                    Math.sin(this.angleX) * this.distance * Math.cos(this.angleY),
-                    Math.sin(this.angleY) * this.distance + this.height,
-                    Math.cos(this.angleX) * this.distance * Math.cos(this.angleY)
-                );
-
-                const idealLookAt = this.target.position.clone().add(new THREE.Vector3(0, 1.5, 0));
-                const targetCamPos = this.target.position.clone().add(idealOffset);
-
-                this.camera.position.copy(targetCamPos);
-                this.camera.lookAt(idealLookAt);
-            }
-        }
-
-        // --- GAME APP CONTROLLER ---
-        class GameApp {
-            constructor() {
-                this.saveManager = new SaveManager();
-                this.audioManager = new AudioManager(this.saveManager);
-                this.state = 'LOADING'; // LOADING, MENU, PLAYING, PAUSED
-                
-                this.input = { x: 0, z: 0, run: false, jump: false };
-                this.cameraAngle = 0;
-
-                this.initDOM();
-                this.initEngine();
-            }
-
-            initDOM() {
-                // Loading simulation
-                let progress = 0;
-                const bar = document.getElementById('loading-bar');
-                const interval = setInterval(() => {
-                    progress += Math.random() * 25;
-                    if (progress >= 100) {
-                        progress = 100;
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            document.getElementById('loading-screen').style.opacity = '0';
-                            setTimeout(() => {
-                                document.getElementById('loading-screen').style.display = 'none';
-                                document.getElementById('main-menu').style.display = 'flex';
-                                this.state = 'MENU';
-                            }, 500);
-                        }, 400);
-                    }
-                    bar.style.width = progress + '%';
-                }, 150);
-
-                // Menu Event Listeners
-                document.getElementById('btn-play').addEventListener('click', () => {
-                    this.audioManager.init();
-                    document.getElementById('main-menu').style.display = 'none';
-                    document.getElementById('game-hud').style.display = 'flex';
-                    this.state = 'PLAYING';
-                });
-
-                document.getElementById('btn-menu-journal').addEventListener('click', () => this.openJournal());
-                document.getElementById('btn-hud-journal').addEventListener('click', () => this.openJournal());
-                document.getElementById('btn-pause-journal').addEventListener('click', () => this.openJournal());
-                document.getElementById('btn-close-journal').addEventListener('click', () => this.closeJournal());
-
-                document.getElementById('btn-menu-settings').addEventListener('click', () => this.openSettings());
-                document.getElementById('btn-pause-settings').addEventListener('click', () => this.openSettings());
-                document.getElementById('btn-close-settings').addEventListener('click', () => this.closeSettings());
-
-                document.getElementById('btn-hud-pause').addEventListener('click', () => this.pauseGame());
-                document.getElementById('btn-resume').addEventListener('click', () => this.resumeGame());
-                document.getElementById('btn-quit-menu').addEventListener('click', () => location.reload());
-
-                // Quality buttons
-                document.querySelectorAll('.quality-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('bg-emerald-950/60', 'border-emerald-500'));
-                        e.target.classList.add('bg-emerald-950/60', 'border-emerald-500');
-                    });
-                });
-
-                // Reset Data
-                document.getElementById('btn-reset-save').addEventListener('click', () => {
-                    if (confirm("Are you sure you want to reset all wildlife discovery progress?")) {
-                        this.saveManager.reset();
-                        alert("Progress cleared.");
-                        location.reload();
-                    }
-                });
-
-                // Keyboard Controls
-                const keys = {};
-                window.addEventListener('keydown', (e) => {
-                    keys[e.code] = true;
-                    if (e.code === 'KeyW' || e.code === 'ArrowUp') this.input.z = -1;
-                    if (e.code === 'KeyS' || e.code === 'ArrowDown') this.input.z = 1;
-                    if (e.code === 'KeyA' || e.code === 'ArrowLeft') this.input.x = -1;
-                    if (e.code === 'KeyD' || e.code === 'ArrowRight') this.input.x = 1;
-                    if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') this.input.run = true;
-                    if (e.code === 'Space') {
-                        this.input.jump = true;
-                        setTimeout(() => this.input.jump = false, 150);
-                    }
-                    if (e.code === 'Escape') {
-                        if (this.state === 'PLAYING') this.pauseGame();
-                        else if (this.state === 'PAUSED') this.resumeGame();
-                    }
-                });
-
-                window.addEventListener('keyup', (e) => {
-                    keys[e.code] = false;
-                    if (!keys['KeyW'] && !keys['KeyS'] && !keys['ArrowUp'] && !keys['ArrowDown']) this.input.z = 0;
-                    if (!keys['KeyA'] && !keys['KeyD'] && !keys['ArrowLeft'] && !keys['ArrowRight']) this.input.x = 0;
-                    if (!keys['ShiftLeft'] && !keys['ShiftRight']) this.input.run = false;
-                });
-
-                // Mobile touch controls & mouse look
-                let isDragging = false;
-                let lastMouseX = 0, lastMouseY = 0;
-
-                window.addEventListener('mousedown', (e) => {
-                    if (this.state !== 'PLAYING') return;
-                    isDragging = true;
-                    lastMouseX = e.clientX;
-                    lastMouseY = e.clientY;
-                });
-
-                window.addEventListener('mousemove', (e) => {
-                    if (!isDragging || this.state !== 'PLAYING') return;
-                    const deltaX = e.clientX - lastMouseX;
-                    const deltaY = e.clientY - lastMouseY;
-                    lastMouseX = e.clientX;
-                    lastMouseY = e.clientY;
-                    this.camera.rotate(deltaX, deltaY, this.saveManager.data.settings.sensitivity);
-                    this.cameraAngle = this.camera.angleX;
-                });
-
-                window.addEventListener('mouseup', () => { isDragging = false; });
-
-                // Mobile action buttons
-                const btnRun = document.getElementById('btn-run');
-                if (btnRun) {
-                    btnRun.addEventListener('touchstart', () => this.input.run = true);
-                    btnRun.addEventListener('touchend', () => this.input.run = false);
-                }
-                const btnJump = document.getElementById('btn-jump');
-                if (btnJump) {
-                    btnJump.addEventListener('touchstart', () => {
-                        this.input.jump = true;
-                        setTimeout(() => this.input.jump = false, 150);
-                    });
-                }
-            }
-
-            initEngine() {
-                const container = document.getElementById('canvas-container');
-                this.scene = new THREE.Scene();
-                this.scene.background = new THREE.Color(0x3e594d);
-                this.scene.fog = new THREE.FogExp2(0x3e594d, 0.008);
-
-                this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
-                this.renderer.setSize(window.innerWidth, window.innerHeight);
-                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                this.renderer.shadowMap.enabled = true;
-                this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-                container.appendChild(this.renderer.domElement);
-
-                const threeCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.5, 1000);
-                
-                // Initialize systems
-                this.weather = new WeatherSystem(this.scene, this.renderer);
-                this.terrain = new TerrainSystem(this.scene);
-                this.player = new PlayerController(this.scene, this.terrain, this.audioManager);
-                this.camera = new ThirdPersonCamera(threeCamera, this.player.group);
-
-                this.wildlife = new WildlifeManager(this.scene, this.terrain, this.saveManager, (species) => {
-                    this.triggerDiscoveryToast(species);
-                    this.updateHUDDiscovery();
-                });
-
-                this.clock = new THREE.Clock();
-
-                window.addEventListener('resize', () => {
-                    threeCamera.aspect = window.innerWidth / window.innerHeight;
-                    threeCamera.updateProjectionMatrix();
-                    this.renderer.setSize(window.innerWidth, window.innerHeight);
-                });
-
-                this.updateHUDDiscovery();
-                this.animate();
-            }
-
-            triggerDiscoveryToast(species) {
-                const toast = document.getElementById('discovery-toast');
-                document.getElementById('toast-species-name').innerText = species.name;
-                toast.style.opacity = '1';
-                toast.style.transform = 'translateY(0)';
-                this.audioManager.playAnimalSound();
-
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.transform = 'translateY(-1rem)';
-                }, 4000);
-            }
-
-            updateHUDDiscovery() {
-                const discoveredCount = this.saveManager.data.discovered.length;
-                document.getElementById('hud-discovery-count').innerText = `${discoveredCount} / 35`;
-            }
-
-            openJournal() {
-                const grid = document.querySelector('#journal-modal .grid');
-                grid.innerHTML = '';
-
-                SPECIES_DATA.forEach(s => {
-                    const unlocked = this.saveManager.isDiscovered(s.id);
-                    const card = document.createElement('div');
-                    card.className = `glass-panel p-4 rounded-2xl flex flex-col justify-between border ${unlocked ? 'border-emerald-500/50 bg-emerald-950/20' : 'border-zinc-800 opacity-50'}`;
-                    
-                    card.innerHTML = `
-                        <div>
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded ${unlocked ? 'bg-emerald-500 text-black' : 'bg-zinc-800 text-zinc-400'}">${s.category}</span>
-                                <span class="text-xs font-mono text-zinc-400">#${s.id < 10 ? '0' + s.id : s.id}</span>
-                            </div>
-                            <h3 class="text-base font-bold text-white font-orbitron mb-1">${unlocked ? s.name : '??????????'}</h3>
-                            <p class="text-xs text-zinc-400 line-clamp-2">${unlocked ? s.desc : 'Explore deep jungle environments and approach closer to log this species.'}</p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-emerald-500/10 flex justify-between items-center text-[11px] text-emerald-400 font-semibold">
-                            <span>HABITAT:</span>
-                            <span class="text-zinc-300">${unlocked ? s.habitat : 'Unknown'}</span>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-
-                document.getElementById('journal-counter-badge').innerText = `${this.saveManager.data.discovered.length} / 35`;
-                document.getElementById('journal-modal').style.display = 'flex';
-            }
-
-            closeJournal() {
-                document.getElementById('journal-modal').style.display = 'none';
-            }
-
-            openSettings() {
-                document.getElementById('settings-modal').style.display = 'flex';
-            }
-
-            closeSettings() {
-                document.getElementById('settings-modal').style.display = 'none';
-            }
-
-            pauseGame() {
-                this.state = 'PAUSED';
-                document.getElementById('pause-modal').style.display = 'flex';
-            }
-
-            resumeGame() {
-                this.state = 'PLAYING';
-                document.getElementById('pause-modal').style.display = 'none';
-            }
-
-            animate() {
-                requestAnimationFrame(() => this.animate());
-
-                const delta = Math.min(this.clock.getDelta(), 0.1);
-
-                if (this.state === 'PLAYING') {
-                    this.weather.update(delta);
-                    this.player.update(delta, this.input, this.cameraAngle);
-                    this.camera.update();
-                    this.wildlife.update(delta, this.player.group.position);
-
-                    // Update HUD info
-                    document.getElementById('hud-time').innerText = this.weather.getTimeString();
-                    document.getElementById('stamina-bar').style.width = this.player.stamina + '%';
-                    document.getElementById('stamina-text').innerText = Math.round(this.player.stamina) + '%';
-                    
-                    // Compass update
-                    const headingDeg = Math.round(((this.player.group.rotation.y % (Math.PI * 2)) / (Math.PI * 2)) * 360 + 360) % 360;
-                    document.getElementById('compass-heading').innerText = `${headingDeg}°`;
-                }
-
-                this.renderer.render(this.scene, this.camera.camera);
-            }
-        }
-
-        // Start App Instance on Window Load
-        window.addEventListener('DOMContentLoaded', () => {
-            window.gameApp = new GameApp();
-        });
-    </script>
-</body>
-</html>
+🚜 PROJECT: ULTRA REALISTIC TRACTOR DRIVING SIMULATOR
+
+EXTREME AAA QUALITY — SINGLE HTML FILE — REAL-WORLD TRACTOR PHYSICS
+
+Act as a world-class AAA game developer, senior Three.js/WebGL engineer, vehicle physics engineer, realistic tractor simulation specialist, 3D environment artist, and professional game UI/UX designer.
+
+Your mission is to build an incredibly immersive, highly realistic 3D TRACTOR DRIVING SIMULATOR that runs directly in a web browser.
+
+This must NOT look or feel like a simple arcade game.
+
+The goal is to create the feeling that the player is sitting inside a real tractor, driving it on an endless real-world road with realistic terrain, trees, buildings, hills, villages, lighting, shadows, vehicle controls, and mechanical behavior.
+
+Use your strongest coding and game-development capabilities. Make intelligent design decisions yourself and implement additional realistic features wherever possible.
+
+Do not ask me questions. Make the best technical decisions independently.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. STRICT TECHNICAL REQUIREMENTS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create the COMPLETE GAME in ONE FILE ONLY:
+
+index.html
+
+All HTML, CSS, and JavaScript must be contained in this single file.
+
+Requirements:
+
+- Use Three.js through a browser-compatible CDN.
+- Use WebGL rendering.
+- Use procedural 3D modeling wherever possible.
+- Generate the road, environment, tractor, wheels, dashboard, and controls programmatically.
+- Use procedural textures and physically based materials where practical.
+- Do not require a build system, Node.js, a backend, or additional local files.
+- Do not create additional project files.
+- Make the game compatible with modern Android browsers and desktop browsers.
+- Make the game deployable on GitHub Pages or Vercel as a single HTML file.
+- Provide a complete, runnable implementation, not pseudocode.
+- Do not leave TODO comments or nonfunctional placeholder buttons.
+- If a feature cannot be fully simulated, implement the closest practical working approximation.
+
+External libraries and assets may be loaded over the internet, but the game must not depend on unavailable or imaginary URLs.
+
+If an external asset fails to load, the game must still work using procedural alternatives.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. CORE GAME CONCEPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a realistic human-operated tractor simulator.
+
+The player drives a tractor along an endless road through a beautiful, believable countryside.
+
+The road must never reach a visible end.
+
+Generate the world dynamically as the tractor moves forward.
+
+As the player travels, continuously create new road sections and remove or recycle distant sections to control memory usage.
+
+The environment must include:
+
+- Long countryside roads.
+- Indian village roads.
+- Beautiful green agricultural fields.
+- Trees of different sizes and shapes.
+- Mountain ranges.
+- Hills and valleys.
+- Small villages.
+- Houses and farm buildings.
+- Electric poles and wires.
+- Roadside grass and bushes.
+- Stone walls.
+- Dirt tracks.
+- Small bridges.
+- Roadside shops.
+- Occasional parked vehicles.
+- Drainage channels.
+- Realistic road markings.
+- Road signs.
+- Patches, cracks, and repairs in the asphalt.
+- Natural terrain elevation changes.
+
+Build an endless procedural road system with smooth transitions between road sections.
+
+The road should support:
+
+- Straight roads.
+- Gentle curves.
+- Sharp but safe curves.
+- Uphill sections.
+- Downhill sections.
+- Mountain roads.
+- Rural roads.
+- Different road widths.
+- Variable roadside terrain.
+
+Never create obvious repeating patterns. Randomize trees, terrain, buildings, road details, and scenery while maintaining a coherent landscape.
+
+The world must feel continuous rather than like disconnected game levels.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. REALISTIC HUMAN DRIVER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The tractor must have a visible human driver.
+
+The character should look like a believable adult human rather than a cartoon.
+
+Create a realistic-looking driver using procedural geometry if no suitable model is available.
+
+Include:
+
+- Head and neck.
+- Torso.
+- Arms.
+- Hands.
+- Legs.
+- Clothing.
+- Shoes.
+- Natural body proportions.
+
+The driver should sit in a believable tractor-driving posture.
+
+Add simple animated movements:
+
+- Hands positioned around the steering wheel.
+- Arms moving slightly when steering.
+- Foot movement when using the clutch, brake, and accelerator.
+- Hand movement when shifting gears.
+- Head movement over rough terrain.
+- Subtle body movement from engine vibration.
+
+The character must remain correctly seated and aligned with the tractor.
+
+IMPORTANT:
+The driver should be visible in external cameras. In cockpit mode, the player should see the dashboard, steering wheel, hands, and appropriate parts of the driver's body.
+
+If detailed character animation is too expensive for mobile hardware, prioritize correct posture and convincing basic animations over unrealistic movements.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. EXTREMELY DETAILED TRACTOR MODEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Build a recognizable, realistic agricultural tractor using detailed procedural 3D geometry.
+
+Do not use a simple box as the tractor.
+
+Create:
+
+- Tractor chassis.
+- Engine hood.
+- Front grille.
+- Headlights.
+- Front and rear fenders.
+- Large rear agricultural tires.
+- Smaller front tires.
+- Detailed tire treads.
+- Wheel hubs.
+- Axles.
+- Steering linkage.
+- Exhaust pipe.
+- Engine components.
+- Fuel tank.
+- Seat.
+- Steering wheel.
+- Dashboard.
+- Mirrors.
+- Mudguards.
+- Footboards.
+- Pedals.
+- Gear levers.
+- Hydraulic lift arms.
+- Three-point hitch.
+- Rear linkage.
+- Tow hitch.
+- Brake lights.
+- Indicators.
+- Number plate.
+- Realistic glass and metal surfaces.
+
+Use appropriate proportions for a conventional Indian agricultural tractor.
+
+Make the rear tires substantially larger than the front tires.
+
+The wheels must rotate according to vehicle speed.
+
+The front wheels must change steering angle when the player steers.
+
+The tractor body must react naturally to bumps, acceleration, braking, and uneven terrain.
+
+Use realistic materials:
+
+- Painted metal.
+- Rubber.
+- Glass.
+- Dark plastic.
+- Slightly worn metal.
+- Dust-covered surfaces.
+
+Include subtle imperfections rather than making every surface perfectly clean.
+
+Allow the player to select from at least three fictional tractor configurations with different power levels, gearing, tire sizes, and handling characteristics.
+
+Do not copy proprietary tractor branding or trademarks without permission.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. REALISTIC MANUAL TRANSMISSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This is one of the MOST IMPORTANT features.
+
+Implement a functional manual transmission system.
+
+The tractor must NOT automatically change gears like a basic arcade vehicle.
+
+Include:
+
+A. CLUTCH PEDAL
+
+- A dedicated clutch pedal.
+- Visible pedal movement.
+- A clutch engagement value from 0% to 100%.
+- Smooth clutch engagement and disengagement.
+- Engine RPM must respond to clutch operation.
+- The tractor should lose drive torque when the clutch is fully disengaged.
+- Gear changes should be performed through the clutch.
+
+B. MANUAL GEARBOX
+Include:
+
+- Neutral.
+- First gear.
+- Second gear.
+- Third gear.
+- Fourth gear.
+- Fifth gear.
+- Reverse.
+- Optional high/low range.
+- Optional additional gears if the selected tractor configuration supports them.
+
+Create a visible gear selector.
+
+The player must deliberately select a gear.
+
+When the clutch is disengaged, allow gear changes.
+
+When the player tries to change gears without properly disengaging the clutch, simulate gear resistance, grinding sounds, or an unsuccessful shift.
+
+Do not allow unrealistic instant changes between forward and reverse while moving.
+
+C. REALISTIC GEAR BEHAVIOR
+Each gear must have a different speed and torque range.
+
+First gear:
+
+- High wheel torque.
+- Low maximum speed.
+- Best for pulling heavy loads.
+
+Higher gears:
+
+- Progressively higher speed.
+- Reduced wheel torque.
+
+Reverse:
+
+- Lower maximum speed.
+- Reversed wheel rotation.
+
+Neutral:
+
+- No engine drive torque transmitted to the wheels.
+
+The transmission must influence actual tractor acceleration.
+
+D. RPM AND ENGINE LOAD
+Display:
+
+- Engine RPM.
+- Idle RPM.
+- Maximum RPM.
+- Current gear.
+- Vehicle speed.
+- Engine load.
+
+If the player releases the clutch too quickly at low RPM, the engine should be capable of stalling.
+
+Implement an engine restart procedure.
+
+E. TRANSMISSION OPTIONS
+Where appropriate, simulate:
+
+- Clutch slipping.
+- Gear ratios.
+- Final-drive reduction.
+- Engine braking.
+- Differential behavior.
+- Wheel traction.
+- Optional differential lock.
+
+The result should be a convincing, playable approximation of a real manual tractor transmission rather than a decorative gear selector.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. FULL TRACTOR PEDAL SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement separate working controls for:
+
+1. Clutch.
+2. Accelerator.
+3. Service brake.
+4. Left brake.
+5. Right brake.
+6. Parking brake.
+7. Differential lock.
+8. Optional throttle setting.
+
+Each control must influence the simulated tractor.
+
+ACCELERATOR:
+
+- Changes engine throttle.
+- Increases engine RPM.
+- Affects engine torque.
+- Produces realistic acceleration.
+
+CLUTCH:
+
+- Disconnects and reconnects engine drive.
+- Enables realistic gear shifting.
+- Can cause engine stalling if mishandled.
+
+SERVICE BRAKE:
+
+- Reduces wheel speed.
+- Produces believable braking behavior.
+- Stops the tractor without instantaneously freezing it.
+
+PARKING BRAKE:
+
+- Holds the tractor stationary when engaged.
+- Prevents normal driving while engaged.
+
+LEFT AND RIGHT BRAKES:
+
+- Independently influence the corresponding wheel brakes.
+- Can help the tractor turn more tightly at low speeds.
+- Must not behave like ordinary steering buttons.
+
+DIFFERENTIAL LOCK:
+
+- Improves traction in suitable low-speed situations.
+- Should be used carefully when turning.
+- Must not produce an unrealistic permanent speed boost.
+
+Make the physical pedal positions visible in cockpit mode.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. REALISTIC ENGINE SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Simulate a diesel tractor engine.
+
+Include:
+
+- Engine start.
+- Engine stop.
+- Idle RPM.
+- Throttle response.
+- Engine torque curve.
+- Engine load.
+- Engine vibration.
+- Exhaust smoke.
+- Cooling behavior.
+- Engine temperature.
+- Fuel consumption.
+- Fuel level.
+- Low-fuel warning.
+- Engine stall.
+- Engine restart.
+
+STARTING PROCEDURE:
+
+The player should be able to:
+
+1. Enter the tractor cockpit.
+2. Check that the gearbox is in neutral.
+3. Apply the appropriate starting conditions.
+4. Turn the ignition on.
+5. Operate the starter.
+6. Hear the engine start.
+7. Observe RPM rising and settling at idle.
+
+Do not make every tractor start instantly with one movement.
+
+Simulate engine-starting delay and a believable startup sound sequence.
+
+Use a procedural audio fallback if real sound assets are unavailable.
+
+Engine sound should change with:
+
+- RPM.
+- Throttle.
+- Load.
+- Gear.
+- Vehicle speed.
+
+Include:
+
+- Diesel idle sound.
+- Engine revving.
+- Gear shifting.
+- Clutch or transmission sounds.
+- Brake sounds.
+- Tire sounds.
+- Road vibration.
+- Horn.
+- Starter motor.
+- Engine shutdown.
+
+Use Web Audio API for procedural sound synthesis if necessary.
+
+Audio must start only after the player interacts with the page, in accordance with browser autoplay restrictions.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. REALISTIC STEERING AND VEHICLE PHYSICS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement a vehicle dynamics system.
+
+Do not simply move the tractor forward at a fixed speed.
+
+Include:
+
+- Vehicle mass.
+- Engine torque.
+- Gear ratios.
+- Wheel radius.
+- Wheel rotation.
+- Rolling resistance.
+- Aerodynamic drag where relevant.
+- Tire grip.
+- Braking force.
+- Steering angle.
+- Steering sensitivity.
+- Acceleration.
+- Deceleration.
+- Reverse motion.
+- Slope resistance.
+- Suspension response.
+- Chassis movement.
+- Wheel slip.
+- Basic traction loss.
+
+The tractor should accelerate slowly in higher gears.
+
+It should struggle when climbing a steep hill in an unsuitable gear.
+
+When towing a heavy trailer, acceleration and hill climbing should become harder.
+
+When descending a hill, gravity should influence speed.
+
+Braking distance should depend on speed, slope, and braking force.
+
+Do not let the tractor turn instantly at high speed.
+
+Use a fixed physics timestep or another stable integration method.
+
+Clamp unstable values and handle extreme situations gracefully.
+
+Prevent the tractor from falling through the road.
+
+Prevent wheels from rotating independently of vehicle movement unless wheel slip is being simulated.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. REALISTIC ROAD AND TERRAIN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Build an endless road that looks like a real Indian countryside road.
+
+Road materials must include:
+
+- Asphalt.
+- Fine surface grain.
+- Slight discoloration.
+- Road-edge wear.
+- Small patches.
+- Occasional cracks.
+- Dirt near the edges.
+- Realistic road markings.
+
+Create roadside environments with:
+
+- Grass.
+- Soil.
+- Gravel.
+- Trees.
+- Rocks.
+- Fences.
+- Fields.
+- Hills.
+- Small bridges.
+
+Use procedural terrain generation.
+
+Implement smooth elevation transitions.
+
+The road must follow the terrain without floating above it or cutting through the ground.
+
+The tractor must stay aligned with the road surface.
+
+When traveling uphill or downhill, the tractor's pitch must respond naturally.
+
+When turning, the vehicle should follow the road curvature.
+
+Include gentle road banking where appropriate.
+
+Do not generate impossible road geometry or sudden vertical road segments.
+
+The road should remain endless for as long as the player continues driving.
+
+If the tractor stops, the environment must stop advancing relative to the tractor.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. HIMACHAL-STYLE MOUNTAIN ENVIRONMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a beautiful environment inspired by the countryside and mountainous regions of Himachal Pradesh, India.
+
+Include:
+
+- Pine forests.
+- Deodar-like conifer trees.
+- Green mountain slopes.
+- Terraced agricultural fields.
+- Stone retaining walls.
+- Small hillside villages.
+- Traditional rural buildings.
+- Mountain roads.
+- Natural rock formations.
+- Distant layered mountains.
+- Narrow bridges.
+- Roadside vegetation.
+- Occasional streams.
+- Realistic roadside barriers on dangerous turns.
+
+Add flatter rural areas as well, so the player can experience different driving conditions.
+
+Create convincing transitions between:
+
+- Plains.
+- Village countryside.
+- Foothills.
+- Mountain roads.
+
+The environment should feel geographically believable.
+
+Do not place objects directly in the road unless they are intentional, visible obstacles.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. EXTREME VISUAL QUALITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Target the highest practical browser-based visual quality.
+
+Use:
+
+- Physically based materials.
+- Realistic lighting.
+- Directional sunlight.
+- Ambient lighting.
+- Soft shadows where supported.
+- Ambient occlusion approximation.
+- Fog.
+- Atmospheric perspective.
+- Realistic sky.
+- Dynamic clouds where practical.
+- Reflections where practical.
+- Natural terrain colors.
+- High-quality road materials.
+- Detailed tire geometry.
+- Smooth antialiasing where supported.
+- Realistic depth and scale.
+
+Create a convincing sense of distance.
+
+Use a color palette inspired by real outdoor photography.
+
+Avoid:
+
+- Neon colors.
+- Cartoon materials.
+- Oversaturated grass.
+- Plastic-looking roads.
+- Extremely shiny tires.
+- Unrealistically bright shadows.
+- Excessive bloom.
+- Artificial-looking fog.
+
+Support:
+
+- Morning lighting.
+- Noon lighting.
+- Evening lighting.
+- Optional sunset mode.
+
+Use an adjustable graphics quality setting.
+
+ULTRA mode should prioritize shadows, terrain details, and lighting.
+
+MEDIUM mode should maintain attractive visuals with fewer expensive effects.
+
+LOW mode should reduce draw calls, shadows, and object density for mobile devices.
+
+Do not sacrifice the core driving simulation to add unnecessary visual effects.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+12. THREE CAMERA MODES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement at least these camera modes:
+
+CAMERA 1 — COCKPIT:
+The player sits inside the tractor.
+
+Display:
+
+- Steering wheel.
+- Dashboard.
+- Gear lever.
+- Pedals.
+- Driver's hands.
+- Hood visible through the front.
+- Road ahead.
+
+CAMERA 2 — THIRD-PERSON:
+The camera follows behind the tractor.
+
+Show the complete tractor and surrounding scenery.
+
+Implement smooth camera movement.
+
+CAMERA 3 — EXTERNAL FREE LOOK:
+Allow the player to look around the tractor.
+
+Add camera rotation and a controlled zoom feature.
+
+Also provide a close-up camera option for inspecting the tractor from outside.
+
+Camera transitions must be smooth.
+
+Do not allow the camera to pass through terrain or the tractor body unnecessarily.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+13. REALISTIC COCKPIT DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a detailed tractor dashboard.
+
+Display analog-style or digital instruments:
+
+- Engine RPM.
+- Vehicle speed in km/h.
+- Gear position.
+- Fuel level.
+- Engine temperature.
+- Battery voltage.
+- Engine warning.
+- Oil-pressure warning.
+- Parking-brake indicator.
+- Headlight indicator.
+- Left and right indicators.
+- Differential-lock indicator.
+- Engine status.
+
+Make the instruments respond to actual simulated vehicle state.
+
+If the engine is off, the RPM gauge must read zero.
+
+If fuel is low, show a warning.
+
+If the engine overheats, show a temperature warning.
+
+If the engine stalls, show the corresponding state.
+
+Dashboard values must not be random decorations.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+14. REAL TRACTOR LIGHTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement:
+
+- Headlights.
+- Rear lights.
+- Brake lights.
+- Left indicator.
+- Right indicator.
+- Hazard lights.
+- Optional work lights.
+- Dashboard illumination.
+
+Lights must be functional.
+
+Headlights should illuminate nearby surfaces when technically practical.
+
+Brake lights should activate when braking.
+
+Indicators must blink.
+
+Hazard lights must activate both indicators.
+
+Support nighttime driving with an appropriately dark environment and useful road illumination.
+
+Maintain reasonable performance on mobile hardware.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+15. TRACTOR HYDRAULICS AND IMPLEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Include working representations of agricultural equipment.
+
+At minimum, implement:
+
+- Rear three-point hitch.
+- Hydraulic lift arms.
+- Trailer attachment point.
+- A basic agricultural trailer.
+- Optional plough.
+- Optional cultivator.
+
+Hydraulic controls should raise and lower the rear linkage.
+
+The attached equipment should move with the tractor.
+
+The trailer should follow the tractor using an articulated hitch.
+
+Trailer movement should respond to turns and braking.
+
+When towing a trailer:
+
+- Increase effective load.
+- Reduce acceleration.
+- Increase uphill difficulty.
+- Change braking behavior.
+- Make reversing more challenging.
+
+If a full agricultural simulation is too complex for a single-file browser game, prioritize a functional trailer and hydraulic lift over decorative but nonfunctional equipment.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+16. REALISTIC TRACTOR INTERACTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a usable in-game interaction system.
+
+The player should be able to:
+
+- Enter the tractor.
+- Exit the tractor.
+- Start the engine.
+- Stop the engine.
+- Change gears.
+- Operate the clutch.
+- Use the accelerator.
+- Apply brakes.
+- Operate lights.
+- Sound the horn.
+- Attach a trailer.
+- Detach a trailer.
+- Raise and lower the hydraulic linkage.
+- Change camera.
+- Adjust mirrors or camera views where practical.
+
+The player character should not disappear or teleport unpredictably.
+
+If walking outside the tractor is implemented, use basic third-person movement with collision detection and an interact button near the tractor.
+
+When outside the tractor, show the character standing beside it.
+
+Keep the first-person driving experience the highest priority.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+17. MOBILE TOUCH CONTROL SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The game must work extremely well on Android touchscreen devices.
+
+Create a professional, modern, responsive touch interface.
+
+Include large, clearly labeled controls:
+
+LEFT SIDE:
+
+- Steering left.
+- Steering right.
+- Optional steering wheel interface.
+
+LOWER CENTER:
+
+- Clutch pedal.
+- Brake pedal.
+- Accelerator pedal.
+
+RIGHT SIDE:
+
+- Gear selector.
+- Reverse.
+- Parking brake.
+- Horn.
+- Camera change.
+
+ADDITIONAL CONTROLS:
+
+- Engine start/stop.
+- Lights.
+- Indicators.
+- Differential lock.
+- Hydraulic lift.
+- Attach/detach trailer.
+
+Use proper touch handling.
+
+Requirements:
+
+- Support touchstart, touchend, and pointer events appropriately.
+- Prevent stuck buttons when a finger leaves the control.
+- Prevent the browser from scrolling while the player is actively driving.
+- Use pointer capture where appropriate.
+- Allow multiple simultaneous touches.
+
+IMPORTANT:
+The player must be able to press the clutch with one finger and select a gear with another finger.
+
+The player must be able to hold the accelerator while steering.
+
+The player must be able to operate multiple pedals simultaneously.
+
+Use proper pointer and touch state management rather than relying only on click events.
+
+Make the controls comfortable on smaller phone screens.
+
+Allow the control layout to adapt to portrait and landscape orientations, but optimize the driving experience for landscape mode.
+
+Add a pause button that remains accessible.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+18. DESKTOP CONTROLS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement keyboard controls:
+
+W:
+Accelerator.
+
+S:
+Brake.
+
+A / D:
+Steering.
+
+SPACE:
+Clutch.
+
+SHIFT:
+Parking brake or another clearly explained function.
+
+E:
+Engine interaction or start/stop.
+
+G:
+Gear interaction or next gear when clutch conditions permit.
+
+R:
+Reverse gear selection when safely stopped and clutch is disengaged.
+
+H:
+Horn.
+
+L:
+Headlights.
+
+C:
+Camera change.
+
+Q:
+Left indicator.
+
+E:
+Right indicator, if E is not being used for another function; otherwise choose a conflict-free alternative and document it.
+
+P:
+Pause.
+
+N:
+Neutral.
+
+Use a clear and consistent key mapping.
+
+For desktop users with a gamepad, support standard gamepad axes and buttons if practical.
+
+Never allow keyboard input to become stuck after a tab loses focus.
+
+Display the control instructions in a help menu.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+19. MANUAL GEAR SELECTOR UI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Design a beautiful gear selector that visually resembles a real tractor transmission control.
+
+Show:
+
+- Current gear.
+- Neutral.
+- Forward gears.
+- Reverse.
+- Optional range selection.
+
+The player should intentionally choose a gear.
+
+Do not change gears automatically.
+
+When the clutch is not sufficiently disengaged, display a helpful warning such as:
+
+"CLUTCH DABAO — GEAR SHIFT KARNE KE LIYE"
+
+When the tractor is moving too quickly to safely select reverse, prevent the shift and explain why.
+
+Use clear Hindi/Hinglish labels.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+20. PHYSICS-BASED DRIVING CHALLENGES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The player must experience meaningful differences between driving situations.
+
+Examples:
+
+SITUATION A:
+Starting on flat ground.
+
+SITUATION B:
+Starting uphill.
+
+SITUATION C:
+Driving downhill.
+
+SITUATION D:
+Pulling a heavy trailer.
+
+SITUATION E:
+Turning on a narrow mountain road.
+
+SITUATION F:
+Driving on a rough road.
+
+SITUATION G:
+Driving on a muddy roadside.
+
+SITUATION H:
+Reversing with a trailer.
+
+SITUATION I:
+Stopping at a roadside location.
+
+SITUATION J:
+Starting again after stalling the engine.
+
+The tractor should respond differently in each situation.
+
+Avoid unrealistic instant acceleration and instant stopping.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+21. WEATHER AND DAY-NIGHT SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Add an optional dynamic environment system.
+
+Include:
+
+- Clear weather.
+- Cloudy weather.
+- Light rain.
+- Fog.
+- Morning.
+- Afternoon.
+- Sunset.
+- Night.
+
+Weather changes must affect the visuals.
+
+Rain should make the road appear wet.
+
+Fog should reduce visibility.
+
+Night should require appropriate use of headlights.
+
+If weather affects traction, make the effect modest and consistent with the simulation.
+
+Do not let weather updates suddenly change the vehicle's position or velocity.
+
+Provide a simple weather selection menu.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+22. REALISTIC PARTICLE EFFECTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create subtle particle effects:
+
+- Dust behind the tires on dry dirt.
+- Small dust clouds on unpaved surfaces.
+- Tire spray during rain.
+- Exhaust particles.
+- Occasional leaves moving in the wind.
+
+Particles must respond to vehicle speed and terrain.
+
+Avoid excessive smoke or oversized particle clouds.
+
+Use pooling and reuse particles to prevent performance problems.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+23. IMMERSIVE AUDIO SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement an immersive soundscape.
+
+Include:
+
+- Diesel engine idle.
+- Engine revving.
+- Acceleration.
+- Engine braking.
+- Gear shifting.
+- Clutch engagement.
+- Horn.
+- Tire noise.
+- Road noise.
+- Gravel noise.
+- Wind.
+- Rain.
+- Birds.
+- Rural ambience.
+- Brake sounds.
+- Trailer movement.
+- Engine startup.
+- Engine shutdown.
+
+Engine audio should respond to actual engine RPM and throttle.
+
+Use procedural sounds or reliable optional audio assets.
+
+Include:
+
+- Master volume.
+- Engine volume.
+- Environment volume.
+- Mute button.
+
+The game must continue functioning when audio is unavailable.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+24. GAME MODES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Add the following modes:
+
+MODE 1 — FREE DRIVE:
+Drive endlessly without a destination.
+
+MODE 2 — MOUNTAIN DRIVE:
+Experience winding mountain roads and changing elevation.
+
+MODE 3 — VILLAGE DRIVE:
+Drive through rural roads, fields, and village surroundings.
+
+MODE 4 — TRAILER TEST:
+Practice attaching, towing, turning, and reversing with a trailer.
+
+MODE 5 — TRACTOR TRAINING:
+Learn clutch control, gear selection, braking, and hill starts.
+
+MODE 6 — NIGHT DRIVE:
+Drive at night using headlights and dashboard instruments.
+
+Keep the endless free-drive mode available at all times.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+25. REALISTIC SPEED AND DISTANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Display:
+
+- Speed in km/h.
+- Trip distance.
+- Total distance.
+- Travel time.
+- Engine operating time.
+- Fuel consumed.
+
+Calculate distance using actual simulated vehicle movement.
+
+Do not increase the trip distance while the tractor is stationary.
+
+Allow the player to reset the trip meter.
+
+Use consistent units throughout the game.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+26. GRAPHICS SETTINGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Provide:
+
+- LOW.
+- MEDIUM.
+- HIGH.
+- ULTRA.
+
+Allow adjustments for:
+
+- Shadow quality.
+- Environment density.
+- Render resolution.
+- View distance.
+- Antialiasing where supported.
+- Particle density.
+
+Automatically choose sensible defaults based on device capability.
+
+Do not force expensive effects on low-end Android devices.
+
+Use device pixel ratio limits to avoid excessive GPU workload.
+
+Reduce rendering workload when the game is paused or the tab is hidden.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+27. PERFORMANCE AND STABILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The game must be optimized for browser execution.
+
+Use:
+
+- Geometry reuse.
+- Material reuse.
+- InstancedMesh for repeated vegetation where appropriate.
+- Object pooling.
+- Limited active terrain segments.
+- Efficient shadow settings.
+- Stable physics updates.
+- Delta-time management.
+- Visibility-based rendering optimizations where useful.
+
+Avoid:
+
+- Unbounded arrays.
+- Unlimited terrain creation.
+- Creating new geometry every frame.
+- Creating new materials every frame.
+- Excessive draw calls.
+- Excessive DOM updates.
+- Repeated event listener registration.
+- Memory leaks.
+- Unnecessary full-screen post-processing.
+
+Ensure the tractor remains controllable during long driving sessions.
+
+Do not let the environment grow endlessly in memory even though the road is endless.
+
+Implement a proper loading screen and a visible error message if initialization fails.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+28. USER INTERFACE DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create a professional simulation-game interface.
+
+The UI should feel premium, modern, and functional.
+
+Use:
+
+- Dark dashboard panels.
+- Clean typography.
+- High-contrast indicators.
+- Readable instrument labels.
+- Responsive layouts.
+- Smooth but restrained animations.
+- Clear active states.
+- Realistic analog gauges where appropriate.
+- Minimal obstruction of the road view.
+
+The game title should be:
+
+REAL TRACTOR SIMULATOR
+
+Subtitle:
+
+"Drive. Control. Experience Reality."
+
+Include a start screen with:
+
+- Start Driving.
+- Select Tractor.
+- Select Environment.
+- Settings.
+- Controls.
+- Resume.
+- Restart Trip.
+
+During driving, show only essential HUD elements.
+
+Allow the player to hide unnecessary interface elements.
+
+All buttons must perform meaningful actions.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+29. REALISTIC TRACTOR CONFIGURATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Include three original fictional tractor configurations.
+
+Example configurations:
+
+TRACTOR A:
+
+- Approximately 35 HP.
+- Lightweight.
+- Easier handling.
+- Lower pulling capability.
+
+TRACTOR B:
+
+- Approximately 50 HP.
+- Balanced performance.
+- Moderate trailer capability.
+
+TRACTOR C:
+
+- Approximately 75 HP.
+- Higher torque.
+- Heavier chassis.
+- Better heavy-load performance.
+
+These are illustrative game configurations, not verified specifications for real-world tractor models.
+
+Each configuration must have different simulated:
+
+- Engine torque.
+- Engine RPM range.
+- Mass.
+- Wheel radius.
+- Gear ratios.
+- Maximum speed.
+- Fuel consumption.
+- Steering response.
+- Traction.
+
+Make the differences meaningful in actual gameplay.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+30. REALISTIC DAMAGE AND RECOVERY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Add an optional non-destructive vehicle condition system.
+
+Include:
+
+- Engine temperature.
+- Fuel level.
+- Tire traction.
+- Basic engine condition.
+- Optional collision damage.
+- Recovery or reset option.
+
+Do not allow a small collision to permanently break the entire game.
+
+If the tractor leaves the road:
+
+- Allow it to move onto suitable terrain where possible.
+- Reduce traction on unsuitable surfaces.
+- Provide a recovery button if it becomes stuck.
+
+If the tractor flips or falls into invalid terrain, offer a reset-to-road function.
+
+The reset should restore the tractor to a safe position without resetting all game progress unless requested.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+31. ACCESSIBILITY AND USABILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Include:
+
+- Hindi/Hinglish control labels.
+- English control labels where useful.
+- Adjustable UI scale.
+- Adjustable audio.
+- Pause/resume.
+- Restart trip.
+- Confirmation for resetting progress.
+- Clear warning messages.
+- Touch-friendly buttons.
+- Keyboard focus support.
+- Safe error recovery.
+
+The game should be understandable even to someone who has never played a tractor simulator.
+
+Add a short interactive driving tutorial.
+
+Teach the player:
+
+1. Starting the engine.
+2. Selecting neutral.
+3. Pressing the clutch.
+4. Selecting first gear.
+5. Applying gentle throttle.
+6. Releasing the clutch gradually.
+7. Steering.
+8. Braking.
+9. Shifting to a higher gear.
+10. Stopping safely.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+32. FINAL IMPLEMENTATION REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Before finishing, carefully inspect the complete implementation.
+
+Check the following:
+
+- The page loads without syntax errors.
+- Three.js initializes correctly.
+- The tractor is visible.
+- The road is visible.
+- The road continues generating.
+- The tractor can move forward.
+- The tractor can reverse.
+- Steering works.
+- The wheels rotate.
+- The clutch affects drivetrain power.
+- Manual gear selection works.
+- Neutral works.
+- Engine RPM changes with throttle.
+- The engine can stall and restart.
+- Brakes work.
+- Parking brake works.
+- The dashboard reflects the actual simulated state.
+- The lights work.
+- The camera modes work.
+- The trailer can attach and detach.
+- The trailer follows the tractor.
+- The mobile touch controls work.
+- Multiple touch controls can be held simultaneously.
+- Keyboard controls work.
+- The game pauses correctly.
+- The game does not leak memory continuously.
+- The game can run for an extended driving session.
+- Missing optional audio or textures do not crash the game.
+- The player can recover if the tractor becomes stuck.
+
+Do not claim that the game has been tested unless you actually execute it and verify the relevant behaviors.
+
+Prioritize a fully functioning, coherent driving simulator over a large number of fake features.
+
+If the complete requested feature set is too large for a single implementation pass, implement the core driving simulation first and then add the remaining systems without breaking the existing mechanics.
+
+Do not respond with a tutorial about how I could make the game.
+
+Generate the complete, polished, self-contained index.html file.
+
+OUTPUT REQUIREMENTS:
+
+Return the entire index.html source code in one complete deliverable.
+
+Do not omit sections.
+
+Do not replace implementation with descriptions.
+
+Do not use pseudocode.
+
+Do not leave unfinished placeholders.
+
+The finished result should be an immersive, realistic, playable browser-based tractor simulator with an endless road, believable countryside, a visible human driver, manual clutch-and-gear operation, realistic vehicle behavior, and comprehensive tractor controls.
+
+MAKE THE BEST POSSIBLE GAME WITHIN THE TECHNICAL LIMITS OF A SINGLE HTML FILE.
